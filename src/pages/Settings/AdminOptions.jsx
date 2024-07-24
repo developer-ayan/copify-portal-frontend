@@ -4,6 +4,11 @@ import { Loader, Page } from "../../components";
 import TeacherSerach from "../../components/DashBoardSection/TeacherDashboard/TeacherSerach";
 import TeacherSubject from "../../components/DashBoardSection/TeacherDashboard/TeacherSubject";
 import TeacherSubscribe from "../../components/DashBoardSection/TeacherDashboard/TeacherSubscribe";
+import TeacherUpload from "../../components/DashBoardSection/TeacherDashboard/TeacherUpload"
+import TeacherFiles from "../../components/DashBoardSection/TeacherDashboard/TeacherFiles"
+
+
+
 
 const getUrl = `${base_url}/setting`;
 const editUrl = `${base_url}/edit-setting`;
@@ -57,7 +62,8 @@ const AdminOptions = () => {
               />
               {selectedOption === 1 && <TeacherSubject />}
               {selectedOption === 2 && <TeacherSubscribe />}
-              {/* {selectedOption === 3 && <PersonalUpload />} */}
+              {selectedOption === 3 && <TeacherFiles />}
+              {selectedOption === 4 && <TeacherUpload />}
             </main>
           )}
         </div>

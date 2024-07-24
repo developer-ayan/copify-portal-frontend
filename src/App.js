@@ -3,7 +3,7 @@ import { ContextProvider } from "./context";
 import Router from "./routes";
 
 function App() {
-  const balance = '300'
+
   return (
     <ContextProvider>
       <Router />

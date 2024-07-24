@@ -1,105 +1,52 @@
-// import React, { useState } from "react";
-// import { VscClose } from "react-icons/vsc";
-// import Button from "../Buttons/Button";
+import React from 'react';
 
-// const AddNewModal = ({ addNewModal, setAddNewModal, addNew }) => {
-//   const [state, setState] = useState("");
-//   const [isLoading, setIsLoading] = useState(false);
+const Modal = ({ isOpen, onClose, onRecharge }) => {
+  const [amount, setAmount] = React.useState('');
 
-//   const handleChange = (e) => {
-//     setState(e.target.value);
-//   };
+  const handleRecharge = () => {
+    onRecharge(amount);
+    onClose();
+  };
 
-//   const handleSubmit = (e) => {
-//     e.preventDefault();
-//     // Do something with the form data
-//     console.log(state);
+  if (!isOpen) return null;
 
-//     setIsLoading(true);
-//     setTimeout(() => {
-//       setIsLoading(false);
-//       addNew(state);
-//       close();
-//     }, 2000);
-//   };
+  return (
+    <div className="fixed z-10 inset-0 overflow-y-auto flex items-center justify-center">
+      <div className="fixed inset-0 bg-gray-500 opacity-75"></div>
+      <div className="bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:max-w-lg sm:w-full sm:p-6">
+        <div className="sm:flex sm:items-center sm:justify-center sm:flex-col">
+          <h1 className="text-lg leading-6 font-medium text-gray-900 text-center">
+            Recharge
+          </h1>
+          <div className="mt-2 w-full text-center">
+            <input
+              type="number"
+              value={amount}
+              onChange={(e) => setAmount(e.target.value)}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              placeholder="Enter amount"
+            />
+          </div>
+        </div>
+        <div className="mt-5 sm:mt-4 sm:flex sm:justify-center">
+          <button
+            type="button"
+            className="w-full sm:w-auto sm:mx-2 inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-500 text-base font-medium text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+            onClick={handleRecharge}
+          >
+            Submit
+          </button>
+          <button
+            type="button"
+            className="mt-3 w-full sm:w-auto sm:mx-2 inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0"
+            onClick={onClose}
+          >
+            Cancel
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
 
-//   const close = () => {
-//     setAddNewModal({ ...addNewModal, isOpen: false });
-//   };
-
-//   const styles = {
-//     modal: {
-//       base: "fixed top-0 left-0 right-0 bottom-0 flex justify-center items-center bg-black bg-opacity-50 z-50 transition-opacity px-5",
-//       open: addNewModal.isOpen
-//         ? "opacity-100 pointer-events-auto"
-//         : "opacity-0 pointer-events-none",
-//     },
-//     content: "bg-white rounded w-full max-w-sm",
-//     header: "flex justify-between items-center py-2 px-4 border-b",
-//     main: {
-//       base: "p-4 overflow-y-auto max-h-[70vh]",
-//       grid: `grid grid-cols-1 gap-4`,
-//     },
-//     footer: "flex justify-end py-3 px-4 border-t",
-//     closeButton:
-//       "text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-base p-1.5 ml-auto inline-flex items-center",
-//     input:
-//       "min-h-[37px] w-[300px] shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-500/50 focus:border-blue-600 block p-2.5",
-//     createButton: `!w-full !rounded ${isLoading ? "!py-1.5" : "!py-2.5"}`,
-//   };
-
-//   const handleBackdropClick = (e) => {
-//     if (e.target === e.currentTarget) {
-//       close();
-//     }
-//   };
-
-//   return (
-//     <div
-//       className={`${styles.modal.base} ${styles.modal.open}`}
-//       onClick={handleBackdropClick}
-//     >
-//       <form onSubmit={handleSubmit} className={styles.content}>
-//         <div className={styles.header}>
-//           <h2 className="text-lg font-semibold">Add New</h2>
-//           <button onClick={close} className={styles.closeButton}>
-//             <VscClose />
-//           </button>
-//         </div>
-//         <div
-//           className={`${styles.main.base} ${styles.main.grid} ${styles.main.gap}`}
-//         >
-//           <div className="col-span-1 sm:col-span-2">
-//             <label
-//               htmlFor="name"
-//               className="block mb-2 text-xs font-medium text-left text-gray-900 capitalize"
-//             >
-//               Name
-//             </label>
-//             <input
-//               type="text"
-//               name="name"
-//               id="name"
-//               value={state}
-//               onChange={handleChange}
-//               className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5"
-//               required={true}
-//               autoFocus={true}
-//             />
-//           </div>
-//         </div>
-//         <div className={styles.footer}>
-//           <Button
-//             type="submit"
-//             title={isLoading ? "Adding" : "Add"}
-//             // handleClick={() => console.log("click")}
-//             extraStyles={styles.createButton}
-//             isLoading={isLoading}
-//           />
-//         </div>
-//       </form>
-//     </div>
-//   );
-// };
-
-// export default AddNewModal;
+export default Modal;

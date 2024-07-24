@@ -1,223 +1,51 @@
-// import React, { useState } from "react";
-// import { VscClose } from "react-icons/vsc";
-// import Button from "../Buttons/Button";
-// import { getInputType } from "../../utils";
-// import { DropdownField, TextArea, UploadField } from "../Fields";
-// import toast from "react-hot-toast";
+import React from 'react';
 
-// const EditModal = ({
-//   editUrl,
-//   editModal,
-//   setEditModal,
-//   gridCols = 2,
-//   excludeFields = ["id"],
-//   textAreaFields = ["address"],
-//   dropdownFields = [],
-//   uploadFields = [],
-//   hideFields = [],
-//   required = false,
-//   neededProps,
-//   successCallback,
-//   template,
-// }) => {
-//   const initialState = editModal.data;
-//   const [state, setState] = useState(initialState);
-//   const [isLoading, setIsLoading] = useState(false);
+const transactions = [
+  { id: 1, date: '21 March 2021', invoiceId: 'OP01214784', amount: '$250 USD', status: 'Receive',action:'Details' },
+  { id: 2, date: '20 March 2021', invoiceId: 'OP01214784', amount: '-$20 USD', status: 'Transfer',action:'Details' },
+  { id: 3, date: '19 March 2021', invoiceId: 'OP67452148', amount: '-$80 USD', status: 'Receive',action:'Details'},
+  // Add more transactions as needed
+];
 
-//   console.log("state", state);
+const TransactionModal = ({ isOpen, onClose }) => {
+  if (!isOpen) return null;
 
-//   const uploadKeys = uploadFields.map((e) => e.key);
-//   const dropdownKeys = dropdownFields.map((e) => e.key);
+  return (
+    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+      <div className="bg-white w-full max-w-4xl rounded-lg p-8 shadow-lg relative">
+        <button
+          className="absolute top-4 right-4 text-gray-500"
+          onClick={onClose}
+        >
+          &times;
+        </button>
+        <h2 className="text-2xl font-bold mb-6 text-center">Transactions</h2>
+        <table className="min-w-full divide-y divide-gray-200">
+          <thead>
+            <tr>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Invoice ID</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Amount</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
 
-//   const keys =
-//     template && Object.keys(template).filter((e) => !excludeFields.includes(e));
-//   const handleInputChange = (e) => {
-//     setState({ ...state, [e.target.name]: e.target.value });
-//   };
+            </tr>
+          </thead>
+          <tbody className="bg-white divide-y divide-gray-200">
+            {transactions.map((transaction) => (
+              <tr key={transaction.id}>
+                <td className="px-6 py-4 whitespace-nowrap">{transaction.date}</td>
+                <td className="px-6 py-4 whitespace-nowrap">{transaction.invoiceId}</td>
+                <td className="px-6 py-4 whitespace-nowrap">{transaction.amount}</td>
+                <td className="px-6 py-4 whitespace-nowrap">{transaction.status}</td>
+                <td className="px-6 py-4 whitespace-nowrap">{transaction.action}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+};
 
-//   const handleSubmit = async (e) => {
-//     e.preventDefault();
-//     setIsLoading(true);
-
-//     try {
-//       const formdata = new FormData();
-//       keys.forEach((item, indx) => {
-//         let key = neededProps.find(
-//           (elem) => elem?.to === item || elem === item
-//         );
-//         key = typeof key === "object" ? key.from : key.replace(/^_/, "");
-
-//         console.log(key, state[item]);
-//         formdata.append(key, state[item]);
-//       });
-
-//       const requestOptions = {
-//         headers: {
-//           accept: "application/json",
-//         },
-//         method: "POST",
-//         body: formdata,
-//         redirect: "follow",
-//       };
-
-//       const res = await fetch(
-//         `${editUrl}/${editModal?.data?.id}`,
-//         requestOptions
-//       );
-//       const json = await res.json();
-
-//       console.log("json", json);
-
-//       if (json.success) {
-//         successCallback && successCallback(json, state);
-//         close();
-//       } else if (json.error) {
-//         toast.error(
-//           json?.error?.message ||
-//             json?.error[0]?.message ||
-//             "Unable to update!",
-//           { duration: 2000 }
-//         );
-//       }
-//     } catch (error) {
-//       toast.error("Unable to update!", { duration: 2000 });
-//       console.error(error);
-//     } finally {
-//       setIsLoading(false);
-//     }
-//   };
-//   const close = () => {
-//     setEditModal({ ...editModal, isOpen: false });
-//   };
-
-//   const styles = {
-//     modal: {
-//       base: "fixed top-0 left-0 right-0 bottom-0 flex justify-center items-center bg-black bg-opacity-50 z-50 transition-opacity",
-//       open: editModal.isOpen
-//         ? "opacity-100 pointer-events-auto"
-//         : "opacity-0 pointer-events-none",
-//     },
-//     content: `bg-white rounded-md w-full mx-5 ${
-//       gridCols === 2 ? "max-w-xl" : "max-w-xs"
-//     }`,
-//     header: "flex justify-between items-center py-3 px-4 border-b",
-//     main: {
-//       base: "p-4 overflow-y-auto max-h-[70vh]",
-//       grid: `grid grid-cols-1 sm:grid-cols-${gridCols} gap-4`,
-//       get() {
-//         return `${this.base} ${this.grid}`;
-//       },
-//     },
-//     footer: "flex justify-end py-3 px-4 border-t",
-//     closeButton:
-//       "text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-base p-1.5 ml-auto inline-flex items-center",
-//     input:
-//       "w-full shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-500/50 focus:border-blue-600 block p-2.5",
-//     createButton: `!w-full !rounded-md ${isLoading ? "!py-2" : "!py-3"}`,
-//   };
-
-//   const handleBackdropClick = (e) => {
-//     if (e.target === e.currentTarget) {
-//       close();
-//     }
-//   };
-
-//   return (
-//     <div
-//       className={`${styles.modal.base} ${styles.modal.open}`}
-//       onClick={handleBackdropClick}
-//     >
-//       <form onSubmit={handleSubmit} className={styles.content}>
-//         <div className={styles.header}>
-//           <h2 className="text-lg font-semibold">Edit</h2>
-//           <button type="button" onClick={close} className={styles.closeButton}>
-//             <VscClose />
-//           </button>
-//         </div>
-//         <div className={styles.main.get()}>
-//           {keys.map((elem) => {
-//             if (hideFields.includes(elem)) return null;
-
-//             if (textAreaFields.includes(elem)) {
-//               return (
-//                 <TextArea
-//                   {...{
-//                     key: elem,
-//                     keyName: elem,
-//                     gridCols,
-//                     state: state[elem],
-//                     setState,
-//                     required,
-//                   }}
-//                 />
-//               );
-//             } else if (uploadKeys.includes(elem)) {
-//               const index = uploadKeys.indexOf(elem);
-//               const data = index !== -1 ? uploadFields[index] : {};
-
-//               return (
-//                 <UploadField
-//                   {...{
-//                     ...data,
-//                     keyName: elem,
-//                     state: state[elem],
-//                     setState,
-//                     required,
-//                   }}
-//                 />
-//               );
-//             } else if (dropdownKeys.includes(elem)) {
-//               const index = dropdownKeys.indexOf(elem);
-//               const data = index !== -1 ? dropdownFields[index] : {};
-
-//               return (
-//                 <DropdownField
-//                   {...{
-//                     ...data,
-//                     keyName: elem,
-//                     state: state[elem],
-//                     setState,
-//                     required,
-//                     defaultValue: data?.defaultValue
-//                       ? data.defaultValue(state)
-//                       : undefined,
-//                   }}
-//                 />
-//               );
-//             } else {
-//               return (
-//                 <div key={elem}>
-//                   <label
-//                     htmlFor={elem}
-//                     className="block mb-1 text-xs font-medium capitalize"
-//                   >
-//                     {elem.replace(/_/g, " ")}
-//                   </label>
-//                   <input
-//                     type={getInputType(elem)}
-//                     id={elem}
-//                     name={elem}
-//                     value={state[elem] || ""}
-//                     onChange={handleInputChange}
-//                     className={styles.input}
-//                     required={required}
-//                   />
-//                 </div>
-//               );
-//             }
-//           })}
-//         </div>
-//         <div className={styles.footer}>
-//           <Button
-//             type="submit"
-//             title="Update"
-//             isLoading={isLoading}
-//             extraStyles={styles.createButton}
-//           />
-//         </div>
-//       </form>
-//     </div>
-//   );
-// };
-
-// export default EditModal;
+export default TransactionModal;
