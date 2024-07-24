@@ -1,138 +1,70 @@
-import GeneralPage from "./GeneralPage";
+import Advertising from "../components/NavOptions/Advertising"
+import React, { useEffect, useState } from "react";
 import { base_url } from "../utils/url";
-import { useState, useEffect } from "react";
-import { convertPropsToObject, fetchData } from "../utils";
+import { Loader, Page } from "../components";
+import ToCampus from "../components/NavOptions/ToCampus"
 
-const neededProps = [
-  "id",
-  "name",
-  "duration",
-  "price",
-  "no_of_pm",
-  "no_of_user",
-  "status",
-];
-const template = convertPropsToObject(neededProps);
-const showAllPackages = `${base_url}/get-package`;
-const createUrl = `${base_url}/store-package`;
-const editUrl = `${base_url}/edit-package`;
 
-const dropdownFields = [
-  {
-    key: "status",
-    title: "status",
-    arr: ["Active", "InActive"],
-    getOption: (val) => val,
-  },
-];
+
 
 const Packages = () => {
-  const [data, setData] = useState(null);
+  const [analytics, setAnalytics] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [, setSearchText] = useState("");
-  const [paginatedData, setPaginatedData] = useState({
-    items: [],
-    curItems: [],
-  });
+  const [selectedOption, setSelectedOption] = useState(1); 
 
-  const search = (e) => {
-    const str = e.target.value;
-    setSearchText(str.trim());
+  const fetchAnalytics = async () => {
+    setIsLoading(true);
+    const url = base_url + "/super-admin-dashboard";
 
-    if (str.trim() === "") {
-      setPaginatedData((prev) => ({ ...prev, items: data }));
-    } else {
-      setPaginatedData((prev) => ({
-        ...prev,
-        items: data.filter((item) =>
-          Object.keys(template).some((key) =>
-            String(item?.[key])?.toLowerCase()?.includes(str?.toLowerCase())
-          )
-        ),
-      }));
+    try {
+      const res = await fetch(url);
+      const json = await res.json();
+
+      if (json.success) {
+        const data = json.success.data;
+        console.log("data", data);
+        setIsLoading(false);
+        setAnalytics(data);
+      }
+    } catch (err) {
+      console.error(err);
     }
   };
 
-  const modalState = convertPropsToObject([
-    "id",
-    "name",
-    "duration",
-    "price",
-    "no_of_pm",
-    "no_of_user",
-    "status",
-  ]);
-
-  const createCallback = (res) => {
-    const resData = res?.success?.data;
-    const newState = [resData, ...data];
-    setData(newState);
-    setPaginatedData((prev) => ({ ...prev, items: newState }));
-
-    console.log("response ===>", resData);
-  };
-
-  const editCallback = (res) => {
-    const resData = res?.success?.data;
-    const stateCopy = data?.map((e) => (e.id === resData.id ? resData : e));
-
-    setData(stateCopy);
-    setPaginatedData((prev) => ({ ...prev, items: stateCopy }));
-    console.log("response ===>", resData);
-  };
-
-  const props = {
-    title: "Packages",
-    actionCols: ["Edit"],
-    data,
-    setData,
-    template,
-    isLoading,
-    search: {
-      type: "text",
-      onChange: search,
-      placeholder: "Search by Name, Duration, Price...",
-    },
-    pagination: {
-      paginatedData,
-      setPaginatedData,
-      curLength: paginatedData.items.length,
-    },
-    createModalProps: {
-      excludeFields: ["id", "created_at", "updated_at"],
-      dropdownFields,
-      neededProps,
-      createUrl,
-      initialState: modalState,
-      successCallback: createCallback,
-    },
-    editModalProps: {
-      excludeFields: ["id", "created_at", "updated_at"],
-      dropdownFields,
-      neededProps,
-      editUrl,
-      successCallback: editCallback,
-      template: modalState,
-    },
-    tableProps: {
-      dollarFields: ["price"],
-    },
-  };
-
   useEffect(() => {
-    fetchData({
-      neededProps,
-      url: showAllPackages,
-      setIsLoading,
-      sort: (data) => data.sort((a, b) => b.id - a.id),
-      callback: (data) => {
-        setData(data);
-        setPaginatedData((prev) => ({ ...prev, items: data }));
-      },
-    });
+    fetchAnalytics();
   }, []);
 
-  return <GeneralPage {...props} />;
+  return (
+    <Page
+      title="Collegio de Kidapawan Branch"
+      containerStyles={`relative !bg-[#EEF2F5] !p-0`}
+      headerStyles="px-5 !m-0 !py-2 bg-white"
+      enableHeader
+    >
+      <div className="flex flex-col md:flex-row">
+        <div className="flex-1">
+          {isLoading ? (
+            <div className="w-full flex justify-center items-center min-h-[90vh]">
+              <Loader extraStyles="!static !bg-transparent" />
+            </div>
+          )
+           : (
+            <main className="p-8">
+              <Advertising
+                selectedOption={selectedOption}
+                setSelectedOption={setSelectedOption}
+              />
+              
+              {selectedOption === 1 && <ToCampus />}
+              {/* {selectedOption === 2 && <OrderFiles />} */}
+              {/* {selectedOption === 3 && <PersonalUpload />} */}
+            </main>
+          )}
+        </div>
+      </div>
+    </Page>
+  );
 };
 
 export default Packages;

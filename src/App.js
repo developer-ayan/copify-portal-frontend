@@ -1,9 +1,8 @@
-import { Toaster } from "react-hot-toast";
-import { ContextProvider } from "./context";
-import Router from "./routes";
+import { Toaster } from 'react-hot-toast';
+import { ContextProvider } from './context';
+import Router from './routes';
 
 function App() {
-
   return (
     <ContextProvider>
       <Router />
@@ -21,7 +20,6 @@ function App() {
             background: "#363636",
             color: "#fff",
           },
-
           // Default options for specific types
           success: {
             duration: 3000,
