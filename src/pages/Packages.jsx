@@ -3,6 +3,8 @@ import React, { useEffect, useState } from "react";
 import { base_url } from "../utils/url";
 import { Loader, Page } from "../components";
 import ToCampus from "../components/NavOptions/ToCampus"
+import Analysis from "../components/NavOptions/Analysis"
+import ToMobile from "../components/NavOptions/ToMobile";
 
 
 
@@ -57,8 +59,11 @@ const Packages = () => {
               />
               
               {selectedOption === 1 && <ToCampus />}
-              {/* {selectedOption === 2 && <OrderFiles />} */}
-              {/* {selectedOption === 3 && <PersonalUpload />} */}
+              {/* {selectedOption === 2 && <ToStudent />}
+              {selectedOption === 3 && <ToTeacher />}
+              {selectedOption === 4 && <ToBikeRider />} */}
+              {selectedOption === 5 && <ToMobile />}
+              {selectedOption === 6 && <Analysis />}
             </main>
           )}
         </div>

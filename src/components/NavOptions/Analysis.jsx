@@ -1,22 +1,19 @@
 import React, { useState } from 'react';
 import DonutChart from './DonutChart';
 
-const ToMobile = () => {
+const Analysis = () => {
   const [formData, setFormData] = useState({
     department: '',
     course: '',
     section: '',
     adsAnnouncement: '',
     fromDate: '',
-    time1: '',
-    time2: '',
-    toDate: ''
   });
 
   return (
     <div className="container">
       <div className="bg-white p-4 rounded shadow">
-        <h1 className="text-2xl font-bold text-center mb-8">Text to All Mobile Number and Register</h1>
+        <h1 className="text-2xl font-bold text-center mb-8">Advertising and Announcement</h1>
         <div className="flex flex-col lg:flex-row gap-5">
           <div className="flex-1">
             <h2 className="text-xl font-bold mb-4">File Recipient</h2>
@@ -35,6 +32,7 @@ const ToMobile = () => {
                 type="text"
                 name="course"
                 value={formData.course}
+               
                 className="w-full p-2 border rounded"
               />
             </div>
@@ -53,51 +51,34 @@ const ToMobile = () => {
               <textarea
                 name="adsAnnouncement"
                 value={formData.adsAnnouncement}
-                className="w-full p-2 border rounded h-32 "placeholder='Message...'
+                
+                className="w-full p-2 border rounded h-32"
+                placeholder='Message...'
               ></textarea>
             </div>
             <button className="bg-blue-500 text-white px-4 py-2 rounded">Send</button>
           </div>
-          <div className="flex-2">
-            <h2 className="text-xl font-bold mb-4">Announcement Send to All Schedule</h2>
+          <div className="flex-1">
+            <h2 className="text-xl font-bold mb-4">Announcement Schedule</h2>
             <div className="mb-4">
-              <label className="block mb-2">From Date</label>
+              <label className="block mb-2"> Date Sent</label>
               <input
                 type=""
                 name="fromDate"
-                value={formData.fromDate}
+            
                 className="w-full p-2 border rounded"
               />
             </div>
-            <div className="mb-4">
-              <label className="block mb-2">Time 1</label>
-              <input
-                type=""
-                name="time1"
-                value={formData.time1}
-                className="w-full p-2 border rounded"
-              />
+            <div className="flex gap-4 mb-4">
+              <div className="flex-1">
+                <label className="block mb-2">Time 1</label>
+                <DonutChart />
+              </div>
+              <div className="flex-1">
+                <label className="block mb-2">Time 2</label>
+                <DonutChart />
+              </div>
             </div>
-            <div className="mb-4">
-              <label className="block mb-2">Time 2</label>
-              <input
-                type=""
-                name="time2"
-                value={formData.time2}
-                className="w-full p-2 border rounded"
-              />
-            </div>
-            <button className="bg-blue-500 text-white px-4 py-2 rounded mb-4">+ Add Time</button>
-            <div className="mb-4">
-              <label className="block mb-2">To Date</label>
-              <input
-                type=""
-                name="toDate"
-                value={formData.toDate}
-                className="w-full p-2 border rounded"
-              />
-            </div>
-            <button className="bg-blue-500 text-white px-4 py-2 rounded">Send</button>
           </div>
           <div className="flex-1">
           <h2 className="text-center text-lg font-semibold mb-4 mt-4">User Received Analysis</h2>
@@ -110,4 +91,4 @@ const ToMobile = () => {
   );
 };
 
-export default ToMobile;
+export default Analysis;

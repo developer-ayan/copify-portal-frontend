@@ -9,7 +9,7 @@ import {
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-const PieChart = () => {
+const DonutChart = () => {
   const data = {
     labels: ['Received', 'Not yet Delivered'],
     datasets: [
@@ -23,17 +23,17 @@ const PieChart = () => {
   };
 
   const options = {
-    cutout: '70%', // Makes the donut chart
+    cutout: '70%', // Creates the donut shape
     responsive: true,
-    maintainAspectRatio: false,
+    maintainAspectRatio: true,
     plugins: {
       legend: {
         position: 'bottom',
       },
       tooltip: {
         callbacks: {
-          label: function (tooltipItem) {
-            return `${tooltipItem.label}: ${tooltipItem.raw}%`;
+          label: function (context) {
+            return `${context.label}: ${context.raw}%`;
           },
         },
       },
@@ -41,10 +41,11 @@ const PieChart = () => {
   };
 
   return (
-    <div className="w-full max-w-sm mx-auto">
-      <h2 className="text-center text-lg font-semibold mb-4">User Received Analysis</h2>
+    <div className="w-full max-w-[200px] mx-auto" style={{ height: '400px' }}>
+      {/* <h2 className="text-center text-lg font-semibold mb-4 mt-4">User Received Analysis</h2> */}
       <Doughnut data={data} options={options} />
     </div>
   );
 };
-export default PieChart;
+
+export default DonutChart;
