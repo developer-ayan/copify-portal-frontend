@@ -1,121 +1,65 @@
-import GeneralPage from "./GeneralPage";
-import { base_url } from "../utils/url";
-import { useState, useEffect } from "react";
-import { convertPropsToObject, fetchData } from "../utils";
-
-const neededProps = ["id", "name"];
-const template = convertPropsToObject(neededProps);
-const showAllWorkTypes = `${base_url}/get-work`;
-const createUrl = `${base_url}/create-work-type`;
-const editUrl = `${base_url}/edit-work-type`;
-
-const dropdownFields = [
-  {
-    key: "status",
-    title: "status",
-    arr: ["Active", "InActive"],
-    getOption: (val) => val,
-  },
-];
+import React, { useEffect, useState } from "react";
+import { base_url } from "../../src/components/";
+import { Loader, Page } from "../../src/components";
+import RidersSearch from "../components/DashBoardSection/RiderDashboard/RidersSearch";
+import Order from "../components/DashBoardSection/RiderDashboard/Order"
+import PickUp from "../components/DashBoardSection/RiderDashboard/PickUp"
+import Sorting from "../components/DashBoardSection/RiderDashboard/Sorting"
+import Transection from "../components/DashBoardSection/RiderDashboard/Transection"
 
 const WorkTypes = () => {
-  const [data, setData] = useState(null);
+  const [analytics, setAnalytics] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [, setSearchText] = useState("");
-  const [paginatedData, setPaginatedData] = useState({
-    items: [],
-    curItems: [],
-  });
+  const [selectedOption, setSelectedOption] = useState(1);
 
-  const search = (e) => {
-    const str = e.target.value;
-    setSearchText(str.trim());
-
-    if (str.trim() === "") {
-      setPaginatedData((prev) => ({ ...prev, items: data }));
-    } else {
-      setPaginatedData((prev) => ({
-        ...prev,
-        items: data.filter((item) =>
-          Object.keys(template).some((key) =>
-            String(item?.[key])?.toLowerCase()?.includes(str?.toLowerCase())
-          )
-        ),
-      }));
+  const fetchAnalytics = async () => {
+    setIsLoading(true);
+    try {
+      const res = await fetch(`${base_url}/super-admin-dashboard`);
+      const json = await res.json();
+      if (json.success) {
+        setAnalytics(json.success.data);
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setIsLoading(false);
     }
   };
 
-  const modalState = convertPropsToObject(["id", "name"]);
-
-  const createCallback = (res) => {
-    const resData = res?.success?.data;
-    const newState = [resData, ...data];
-    setData(newState);
-    setPaginatedData((prev) => ({ ...prev, items: newState }));
-
-    console.log("response ===>", resData);
-  };
-
-  const editCallback = (res) => {
-    const resData = res?.success?.data;
-    const stateCopy = [...data].map((e) => (e.id === resData.id ? resData : e));
-
-    setData(stateCopy);
-    setPaginatedData((prev) => ({ ...prev, items: stateCopy }));
-    console.log("response ===>", resData);
-  };
-
-  const props = {
-    title: "Work Types",
-    actionCols: ["Edit"],
-    data,
-    setData,
-    template,
-    isLoading,
-    search: {
-      type: "text",
-      onChange: search,
-      placeholder: "Search by Name",
-    },
-    pagination: {
-      paginatedData,
-      setPaginatedData,
-      curLength: paginatedData.items.length,
-    },
-    createModalProps: {
-      excludeFields: ["id", "created_at", "updated_at"],
-      dropdownFields,
-      neededProps,
-      createUrl,
-      initialState: modalState,
-      successCallback: createCallback,
-      gridCols: 1,
-    },
-    editModalProps: {
-      excludeFields: ["id", "created_at", "updated_at"],
-      dropdownFields,
-      neededProps,
-      editUrl,
-      successCallback: editCallback,
-      gridCols: 1,
-      template: modalState,
-    },
-  };
-
   useEffect(() => {
-    fetchData({
-      neededProps,
-      url: showAllWorkTypes,
-      setIsLoading,
-      sort: (data) => data.sort((a, b) => b.id - a.id),
-      callback: (data) => {
-        setData(data);
-        setPaginatedData((prev) => ({ ...prev, items: data }));
-      },
-    });
+    fetchAnalytics();
   }, []);
 
-  return <GeneralPage {...props} />;
+  return (
+    <Page
+      title="Collegio de Kidapawan Branch"
+      containerStyles="relative !bg-[#EEF2F5] !p-0"
+      headerStyles="px-5 !m-0 !py-2 bg-white"
+      enableHeader
+    >
+      <div className="flex flex-col md:flex-row">
+        <div className="flex-1">
+          {isLoading ? (
+            <div className="w-full flex justify-center items-center min-h-[90vh]">
+              <Loader extraStyles="!static !bg-transparent" />
+            </div>
+          ) : (
+            <main className="p-8">
+              <RidersSearch
+                selectedOption={selectedOption}
+                setSelectedOption={setSelectedOption}
+              />
+              {selectedOption === 1 && <Order />}
+               {selectedOption === 2 && <PickUp />}
+              {selectedOption === 3 && <Sorting />}
+              {selectedOption === 4 && <Transection />} 
+            </main>
+          )}
+        </div>
+      </div>
+    </Page>
+  );
 };
 
 export default WorkTypes;
