@@ -1,17 +1,11 @@
-import React, { useEffect, useState } from "react";
-import { base_url } from "../../utils/url";
+import React, { useState,useEffect } from "react";
+import { base_url } from "../../components"
 import { Loader, Page } from "../../components";
 import TeacherSerach from "../../components/DashBoardSection/TeacherDashboard/TeacherSerach";
 import TeacherSubject from "../../components/DashBoardSection/TeacherDashboard/TeacherSubject";
 import TeacherSubscribe from "../../components/DashBoardSection/TeacherDashboard/TeacherSubscribe";
-import TeacherUpload from "../../components/DashBoardSection/TeacherDashboard/TeacherUpload"
-import TeacherFiles from "../../components/DashBoardSection/TeacherDashboard/TeacherFiles"
-
-
-
-
-const getUrl = `${base_url}/setting`;
-const editUrl = `${base_url}/edit-setting`;
+import TeacherUpload from "../../components/DashBoardSection/TeacherDashboard/TeacherUpload";
+import TeacherFiles from "../../components/DashBoardSection/TeacherDashboard/TeacherFiles";
 
 const AdminOptions = () => {
   const [analytics, setAnalytics] = useState(null);

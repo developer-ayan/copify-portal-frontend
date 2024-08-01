@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import UploadModal from "../Modals/UploadModal";
-import DetailsModal from '../Modals/DetailsModal';
+import UploadModal from "../../Modals/UploadModal";
+import DetailsModal from '../../Modals/DetailsModal';
 
 
 const PersonalUpload = () => {

@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { base_url } from "../utils/url";
 import { Loader, Page } from "../components";
-import SearchSection from "../components/DashBoardSection/SearchSection";
-import SubscribeSubject from "../components/DashBoardSection/SubscribeSubject";
-import OrderFiles from "../components/DashBoardSection/OrderFiles";
-import PersonalUpload from "../components/DashBoardSection/PersonalUpload";
+import SearchSection from "../components/DashBoardSection/StudentDashboard/SearchSection";
+import SubscribeSubject from "../components/DashBoardSection/StudentDashboard/SubscribeSubject";
+import OrderFiles from "../components/DashBoardSection/StudentDashboard/OrderFiles";
+import PersonalUpload from "../components/DashBoardSection/StudentDashboard/PersonalUpload";
 
 
 const Dashboard = () => {

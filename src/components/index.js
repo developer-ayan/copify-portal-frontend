@@ -8,7 +8,7 @@ import ConfirmationCodeFeilds from "./ConfirmationCodeFeilds";
 import Pagination from "./Pagination";
 import Editor from "./Editor";
 export * from "./Fields";
-export * from "./Tables";
+// export * from "./Tables";
 export * from "./Modals";
 export * from "./Buttons";
 export * from "./Loaders";

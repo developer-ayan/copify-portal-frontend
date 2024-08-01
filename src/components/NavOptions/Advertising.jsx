@@ -9,33 +9,28 @@ const Advertising = ({ selectedOption, setSelectedOption }) => {
     { value: "To Bike Riders", id: 4 },
     { value: "Mobile", id: 5 },
     { value: "All send Analysis report", id: 6 },
+  ];
 
-  ]
-  return(
+  return (
     <div className="bg-white p-5 rounded-lg shadow-md mb-8">
       <h1 className="text-2xl font-semibold mb-4 text-center">Advertisement & Announcement</h1>
-      <div className="mt-4 mb-4 flex justify-center">
-        {radioButtons.map((item, index) => {
-          return (
-            <label className="mr-4" key={index}>
-              <input
-                type="radio"
-                name="option"
-                className="mr-2"
-                value={item.value}
-                checked={selectedOption === item.id}
-                onChange={(e) => setSelectedOption(item.id)}
-              />
-              {item.value}
-            </label>
-          )
-        })}
-
-      
+      <div className="mt-4 mb-4 flex flex-wrap justify-center">
+        {radioButtons.map((item, index) => (
+          <label className="mr-4 mb-2 sm:mb-0" key={index}>
+            <input
+              type="radio"
+              name="option"
+              className="mr-2"
+              value={item.value}
+              checked={selectedOption === item.id}
+              onChange={(e) => setSelectedOption(item.id)}
+            />
+            {item.value}
+          </label>
+        ))}
       </div>
-      </div>
-  )
+    </div>
+  );
+};
 
-}
-
-export default Advertising
+export default Advertising;

@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUsers } from '@fortawesome/free-solid-svg-icons';
 import UploadModal from "../../../components/Modals/UploadModal";
 
-const TeacherUpload = () => {
+const TeacherFiles = () => {
 
   const [showUploadModal, setShowUploadModal] = useState(false);
   
@@ -91,4 +91,4 @@ const TeacherUpload = () => {
   );
 };
 
-export default TeacherUpload;
+export default TeacherFiles;

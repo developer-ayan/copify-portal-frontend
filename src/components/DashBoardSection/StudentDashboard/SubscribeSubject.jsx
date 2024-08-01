@@ -1,6 +1,6 @@
 // SubscribeSection.js
 import React, { useState } from 'react';
-import Modal from '../Modals/Modal';
+import Modal from '../../Modals/Modal';
 
 
 const SubscribeSection = () => {
@@ -30,42 +30,7 @@ const SubscribeSection = () => {
   };
 
   return (
-//     <div className="bg-white p-5 rounded-lg shadow-md">
-//       <h2 className="text-2xl font-semibold mb-4">Subscribe Subject</h2>
-      
-//       <div>
-//         {subjects.map((subject, index) => (
-//           <div key={index} className="flex justify-between items-center mb-4">
-//             <div className="flex items-center">
-//               <input
-//                 type="radio"
-//                 id={`subscribe-${index}`}
-//                 name="subscribe"
-//                 value={subject}
-//                 checked={selectedSubject === subject}
-//                 onChange={handleChange}
-//                 className="mr-2"
-//               />
-//               <label htmlFor={`subscribe-${index}`} className="mr-4">{subject}</label>
-//             </div>
-//             <span className="flex items-center mb-4">
-//               <button
-//                 className="bg-blue-500 text-white px-4 py-2 rounded"
-//                 onClick={() => handleUnsubscribe(subject)}
-//               >
-//                 Unsubscribe
-//               </button>
-//             </span>
-//           </div>
-//         ))}
-//       </div>
 
-//       {showAlert && (
-//         <Modal unsubscribeSubject={unsubscribeSubject} closeModal={closeModal} />
-//       )}
-//     </div>
-//   );
-// };
 <div className="bg-white p-5 rounded-lg text-center shadow-md ">
 <h2 className="text-2xl font-semibold mb-4 text-left">Subscribe Subject</h2>
 <div className="overflow-x-auto">
@@ -99,14 +64,14 @@ const SubscribeSection = () => {
             </div>
           </td>
           <td className="py-2 px-4 border-b text-center">
-          {/* <span className="py-2 px-4 border-b text-center"> */}
+  
            <button
                 className="bg-blue-500 text-white px-4 py-2 rounded "
                 onClick={() => handleUnsubscribe(subject)}
               >
                 Unsubscribe
               </button>
-            {/* </span> */}
+           
           </td>
         </tr>
       ))}

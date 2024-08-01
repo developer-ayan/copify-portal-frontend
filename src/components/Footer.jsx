@@ -1,5 +1,4 @@
 import React from "react";
-import HorizontalTable from "./Tables/HorizontalTable";
 
 const Footer = ({ firstColData, secondColData, title }) => {
   return (
@@ -8,13 +7,7 @@ const Footer = ({ firstColData, secondColData, title }) => {
         <TextData data={firstColData} />
       </div>
 
-      {secondColData.type === "text" ? (
-        <TextData data={secondColData.data} />
-      ) : secondColData.type === "table" ? (
-        <HorizontalTable state={secondColData.data} title={title} />
-      ) : (
-        ""
-      )}
+      {secondColData.type === "text" && <TextData data={secondColData.data} />}
     </footer>
   );
 };
@@ -23,7 +16,7 @@ const TextData = ({ data }) => {
   return Object.entries(data).map(([key, val]) => {
     const str = `${key.replace(/_/g, " ")}=   ${val}`;
     return (
-      <p className="p-2 text-sm font-medium text-white capitalize">{str}</p>
+      <p key={key} className="p-2 text-sm font-medium text-white capitalize">{str}</p>
     );
   });
 };
