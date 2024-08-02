@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { base_url } from "../utils/url";
 import { Loader, Page } from "../components";
-import Branch from "../components/Orders/Branch";
+// import Branch from "../components/Orders/Branch";
 import Search from "../components/Orders/Search";
 
 const Dashboard = () => {
@@ -54,7 +54,7 @@ const Dashboard = () => {
               <Branch  />
             </>
           )} */}
-          <Branch/>
+          <Search/>
         </div>
       </div>
     </Page>

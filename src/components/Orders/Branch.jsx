@@ -91,19 +91,15 @@ const Branch = () => {
                         <td className="px-4 py-2 border">{order.color}</td>
                         <td className="px-4 py-2 border">{order.pages}</td>
                         <td className="px-4 py-2 border">{order.copies}</td>
+                        {/* <button
+                                key={idx}
+                                className="bg-blue-500 text-white text-s font-semibold mr-2 mb-2 px-3 py-3 rounded"
+                              >
+                                {action}
+                              </button> */}
+                        
                       </tr>
-                      <tr className="border-t border-gray-200">
-                        <td colSpan="7" className="px-4 py-2 border text-center">
-                          {order.actions.map((action, idx) => (
-                            <button
-                              key={idx}
-                              className="inline-block bg-blue-500 text-white text-xs font-semibold mr-2 mb-2 px-2 py-2 rounded"
-                            >
-                              {action}
-                            </button>
-                          ))}
-                        </td>
-                      </tr>
+                 
                     </React.Fragment>
                   ))}
                 </tbody>

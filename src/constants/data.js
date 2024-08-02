@@ -55,7 +55,7 @@ export const navLinks = [
       },
       {
         title: "Teachers Dashboard",
-        path: "/settings/admin-options",
+        path: "settings/admin-options",
       },
       {
         title: "Riders Dashboard ",
