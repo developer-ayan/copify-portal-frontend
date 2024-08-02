@@ -51,7 +51,7 @@ export const navLinks = [
     items: [
         {
         title: "Students Dashboard",
-        path: "/settings/admin-options",
+        path: "/Dashboard",
       },
       {
         title: "Teachers Dashboard",
