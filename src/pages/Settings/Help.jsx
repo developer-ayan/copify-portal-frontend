@@ -18,7 +18,7 @@ const Terms = () => {
           <main className="p-8">
             <EducationSearch />
           </main>
-    <Dept/>
+          <Dept />
         </div>
       </div>
     </Page>

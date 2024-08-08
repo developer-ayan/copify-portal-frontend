@@ -8,6 +8,7 @@ import { useContext } from "react";
 import { AppContext } from "../../context";
 import { Button, Page } from "../../components";
 import toast from "react-hot-toast";
+import { call } from "../../utils/helper";
 
 const Login = () => {
   const { user, setUser } = useContext(AppContext);
@@ -35,51 +36,24 @@ const Login = () => {
     setPassword((prev) => ({ ...prev, isVisible: !prev.isVisible }));
 
   const handleSubmit = async (e) => {
+    setToggleBtn(true)
     e.preventDefault();
-
-    setToggleBtn(true);
-    let json = null;
-
     try {
-      let formdata = new FormData();
-      formdata.append("email", email);
-      formdata.append("password", password.value);
-
-      let requestOptions = {
-        headers: {
-          Accept: "application/json",
-        },
-        method: "POST",
-        body: formdata,
-        redirect: "follow",
-      };
-
-      const res = await fetch(`${base_url}/admin-login`, requestOptions);
-      json = await res.json();
-
-      if (json.success) {
-        let data = json.success.data;
-
-        toast.success("Login successful!", { duration: 2000 });
-        localStorage.setItem("user", JSON.stringify(data));
-        setUser(data);
-
-        setTimeout(() => {
-          navigate("/dashboard");
-        }, 2000);
-      } else {
-        toast.error(
-          json.error.message === "Incorrect Credential"
-            ? "Your Email or password is incorrect!"
-            : json.error.message,
-          { duration: 2000 }
-        );
-      }
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setToggleBtn(false);
+      const formData = new FormData()
+      formData.append('email', email)
+      formData.append('password', password.value)
+      console.log('formData', formData)
+      const response = await call('/admin/login', 'POST', formData)
+      localStorage.setItem("user_detail", JSON.stringify(response?.data))
+      setUser(response.data)
+      toast.success(response?.message, { duration: 2000 })
+      setToggleBtn(false)
+    } catch (error) {
+      toast.error(error?.message, { duration: 2000 }
+      );
+      setToggleBtn(false)
     }
+
   };
 
   return (

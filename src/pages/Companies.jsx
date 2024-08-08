@@ -169,7 +169,7 @@ const Companies = () => {
   ];
 
   const props = {
-    title: "Companies",
+    title: "subscribers",
     actionCols: ["View", "Edit", "Delete", "Block/Unblock"],
     data,
     setData,

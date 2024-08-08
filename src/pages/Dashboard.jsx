@@ -9,31 +9,31 @@ import PersonalUpload from "../components/DashBoardSection/StudentDashboard/Pers
 
 const Dashboard = () => {
   const [analytics, setAnalytics] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [selectedOption, setSelectedOption] = useState(1); 
 
-  const fetchAnalytics = async () => {
-    setIsLoading(true);
-    const url = base_url + "/super-admin-dashboard";
+  // const fetchAnalytics = async () => {
+  //   setIsLoading(true);
+  //   const url = base_url + "/super-admin-dashboard";
 
-    try {
-      const res = await fetch(url);
-      const json = await res.json();
+  //   try {
+  //     const res = await fetch(url);
+  //     const json = await res.json();
 
-      if (json.success) {
-        const data = json.success.data;
-        console.log("data", data);
-        setIsLoading(false);
-        setAnalytics(data);
-      }
-    } catch (err) {
-      console.error(err);
-    }
-  };
+  //     if (json.success) {
+  //       const data = json.success.data;
+  //       console.log("data", data);
+  //       setIsLoading(false);
+  //       setAnalytics(data);
+  //     }
+  //   } catch (err) {
+  //     console.error(err);
+  //   }
+  // };
 
-  useEffect(() => {
-    fetchAnalytics();
-  }, []);
+  // useEffect(() => {
+  //   fetchAnalytics();
+  // }, []);
 
   return (
     <Page

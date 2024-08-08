@@ -17,10 +17,10 @@ import {
   // PaymentMethods,
   TransactionLogs,
   Dashboard,
-  AdminOptions,
-  Help,
-  Terms,
-  WorkTypes,
+  AdminOptions as TeachersDashbord,
+  Help as EducationInstitute,
+  Terms as ClaimStationDasboard,
+  WorkTypes as RidersDashboard,
 } from "../pages";
 import { base_url } from "../utils/url";
 
@@ -94,13 +94,15 @@ const Router = () => {
           >
             <Route path="/dashboard" element={privateRoutes(Dashboard)} />
             <Route path="/edit-profile" element={privateRoutes(EditProfile)} />
-            <Route path="/companies" element={privateRoutes(Companies)} />
-            <Route path="/packages" element={privateRoutes(Packages)} />
+            <Route path="/subscribers" element={privateRoutes(Companies)} />
+            <Route path="/advertising-and-annoucements" element={privateRoutes(Packages)} />
             <Route path="/jobs" element={privateRoutes(Jobs)} />
             {/* <Route
               path="/payment-methods"
               element={privateRoutes(PaymentMethods)}
             /> */}
+              <Route path="/education-institute" element={privateRoutes(EducationInstitute)} />
+
             <Route
               path="/transactions"
               element={privateRoutes(TransactionLogs)}
@@ -108,20 +110,20 @@ const Router = () => {
 
             <Route
               index
-              path="/company-invoices"
+              path="/orders"
               element={privateRoutes(Invoices)}
             />
 
-            <Route path="/settings">
+            <Route path="/dashboard">
               <Route
-                path="/settings/admin-options"
-                element={privateRoutes( AdminOptions)}
+                index
+                element={privateRoutes(TeachersDashbord)}
               />
-              <Route path="/settings/help" element={privateRoutes(Help)} />
-              <Route path="/settings/terms" element={privateRoutes(Terms)} />
+              <Route path="/dashboard/teachers" element={privateRoutes(TeachersDashbord)} />
+              <Route path="/dashboard/riders" element={privateRoutes(RidersDashboard)} />
               <Route
-                path="/settings/work-types"
-                element={privateRoutes(WorkTypes)}
+                path="/dashboard/claim-station"
+                element={privateRoutes(ClaimStationDasboard)}
               />
             </Route>
           </Route>

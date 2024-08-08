@@ -49,63 +49,61 @@ export const navLinks = [
     id: 5,
     title: "Dashboard",
     items: [
-        {
+      {
         title: "Students Dashboard",
-        path: "/Dashboard",
+        path: "/dashboard",
       },
       {
         title: "Teachers Dashboard",
-        path: "settings/admin-options",
+        path: "/dashboard/teachers",
       },
       {
         title: "Riders Dashboard ",
-        path: "/settings/work-types",
+        path: "/dashboard/riders",
       },
       {
         title: "Claim Station Dashboard",
-        path: "/settings/terms",
+        path: "/dashboard/claim-station",
       },
-    
+
     ],
   },
   {
     icon: <BiSolidPackage className="-ml-0.5 text-xl" title="Packages" />,
     id: 6,
-    path: "/settings/Help",
+    path: "/education-institute",
     title: "Education Institute",
   },
   {
     icon: <AiFillDollarCircle className="-ml-0.5 text-xl" title="Invoices" />,
     id: 3,
-    path: "/company-invoices",
+    path: "/orders",
     title: "Orders",
   },
   {
-    icon: <BsBuildingsFill className="text-base" title="Companies" />,
+    icon: <BsBuildingsFill className="text-base" title="subscribers" />,
     id: 4,
-    path: "/companies",
+    path: "/subscribers",
     title: "Subcribers",
   },
   {
-    icon: <BiSolidPackage className="-ml-0.5 text-xl" title="Packages" />,
+    icon: <BiSolidPackage className="-ml-0.5 text-xl" title="Advertising and Annoucements" />,
     id: 5,
-    path: "/packages",
+    path: "/advertising-and-annoucements",
     title: "Advertising and Annoucements",
   },
-  
-  {
-    icon: (
-      <FaMoneyBillTransfer
-        className="-ml-0.5 text-lg"
-        title="General Reports"
-      />
-    ),
-    id: 5,
-    path: "/transactions",
-    title: "transaction_logs",
-    
-    
-  },
+
+  // {
+  //   icon: (
+  //     <FaMoneyBillTransfer
+  //       className="-ml-0.5 text-lg"
+  //       title="General Reports"
+  //     />
+  //   ),
+  //   id: 5,
+  //   path: "/transactions",
+  //   title: "transaction_logs",
+  // },
 
   // {
   //   icon: <RiSettingsFill className="-ml-0.5 text-lg" title="Settings" />,
