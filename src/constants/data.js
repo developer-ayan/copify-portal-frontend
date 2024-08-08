@@ -65,7 +65,14 @@ export const navLinks = [
         title: "Claim Station Dashboard",
         path: "/settings/terms",
       },
+    
     ],
+  },
+  {
+    icon: <BiSolidPackage className="-ml-0.5 text-xl" title="Packages" />,
+    id: 6,
+    path: "/settings/Help",
+    title: "Education Institute",
   },
   {
     icon: <AiFillDollarCircle className="-ml-0.5 text-xl" title="Invoices" />,
@@ -85,6 +92,7 @@ export const navLinks = [
     path: "/packages",
     title: "Advertising and Annoucements",
   },
+  
   {
     icon: (
       <FaMoneyBillTransfer
@@ -95,7 +103,10 @@ export const navLinks = [
     id: 5,
     path: "/transactions",
     title: "transaction_logs",
+    
+    
   },
+
   // {
   //   icon: <RiSettingsFill className="-ml-0.5 text-lg" title="Settings" />,
   //   id: 5,
