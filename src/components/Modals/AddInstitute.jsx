@@ -46,34 +46,11 @@ const UploadModal = ({ show, onClose, onSave, isLoading }) => {
           <div className="flex justify-center space-x-2">
 
             <button
-              className="w-6/12 px-3 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75 flex items-center justify-center"
-              disabled={isLoading}
+              className={`w-6/12 px-3 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75 flex items-center justify-center ${isLoading ? 'opacity-50' : 'opacity-100'}`}
               onClick={handleSave}
+              disabled={isLoading}
             >
-              {isLoading ? (
-                <svg
-                  className="w-5 h-5 text-white animate-spin"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                >
-                  <circle
-                    className="opacity-25"
-                    cx="12"
-                    cy="12"
-                    r="10"
-                    stroke="currentColor"
-                    strokeWidth="4"
-                  />
-                  <path
-                    className="opacity-75"
-                    fill="currentColor"
-                    d="M4 12a8 8 0 018-8v2a6 6 0 00-6 6H4z"
-                  />
-                </svg>
-              ) : (
-                'Save'
-              )}
+              {isLoading ? 'Load' : 'Save'}
             </button>
             <button
               onClick={onClose}

@@ -1,15 +1,12 @@
 
 import React, { useState } from 'react';
 
-const AddDepartmentModal = ({ isOpen, closeModal, addDepartment }) => {
+const AddDepartmentModal = ({ isOpen, closeModal, addDepartment, isLoading }) => {
   const [newDepartment, setNewDepartment] = useState('');
+  const [newSemester, setNewSemester] = useState('');
 
   const handleAdd = () => {
-    if (newDepartment) {
-      addDepartment(newDepartment);
-      setNewDepartment('');
-      closeModal();
-    }
+    addDepartment(newDepartment, newSemester);
   };
 
   if (!isOpen) return null;
@@ -23,14 +20,22 @@ const AddDepartmentModal = ({ isOpen, closeModal, addDepartment }) => {
           value={newDepartment}
           onChange={(e) => setNewDepartment(e.target.value)}
           className="w-full px-3 py-2 border rounded-md mb-4"
-          placeholder="Enter department name"
+          placeholder="Department name"
         />
+        {/* <input
+          type="number"
+          value={newSemester}
+          onChange={(e) => setNewSemester(e.target.value)}
+          className="w-full px-3 py-2 border rounded-md mb-4"
+          placeholder="Department semester"
+        /> */}
         <div className="flex space-x-2 mt-2">
           <button
-            className="w-6/12 px-3 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-opacity-75"
+            className={`w-6/12 px-3 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75 flex items-center justify-center ${isLoading ? 'opacity-50' : 'opacity-100'}`}
             onClick={handleAdd}
+            disabled={isLoading}
           >
-            Add
+            {isLoading ? 'Load' : 'Add'}
           </button>
           <button
             className="w-6/12 px-3 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-opacity-75"

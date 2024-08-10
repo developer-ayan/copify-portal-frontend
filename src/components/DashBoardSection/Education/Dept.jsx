@@ -32,7 +32,7 @@ const Order = () => {
       formData.append('institute_location', location)
       console.log('formData', formData)
       const response = await call('/admin/create_institute', 'POST', formData)
-      getList()
+      await getList()
       setShowUploadModal(false);
       setButtonLoader(false);
       toast.success(response?.message, { duration: 2000 })
@@ -45,9 +45,7 @@ const Order = () => {
   const getList = async (listLoader) => {
     try {
       listLoader && setScreenLoader(true)
-      const formData = new FormData()
-      console.log('formData', formData)
-      const response = await call('/admin/fetch_institute_list', 'POST', formData)
+      const response = await call('/admin/fetch_institute_list', 'POST')
       setScreenLoader(false)
       setUploads(response?.data)
     } catch (error) {
@@ -56,9 +54,21 @@ const Order = () => {
     }
   };
 
-  const deleteUpload = (name) => {
-    setUploads(uploads.filter(upload => upload.name !== name));
-    setShowDeleteModal(false);
+  const deleteIntitute = async () => {
+    try {
+      setButtonLoader(true)
+      const formData = new FormData()
+      formData.append('institute_id', currentDept?.institute_id)
+      console.log('formData', formData)
+      const response = await call('/admin/delete_institute', 'POST', formData)
+      await getList()
+      setButtonLoader(false);
+      setShowDeleteModal(false);
+      toast.success(response?.message, { duration: 2000 })
+    } catch (error) {
+      setButtonLoader(false);
+      toast.success(error?.message, { duration: 2000 })
+    }
   };
 
   const handleEdit = (institute) => {
@@ -66,13 +76,32 @@ const Order = () => {
     setShowEditModal(true);
   };
 
-  const saveEdit = (originalName, newName, newLocation) => {
-    setUploads(uploads.map(upload =>
-      upload.name === originalName
-        ? { ...upload, name: newName, location: newLocation }
-        : upload
-    ));
-    setShowEditModal(false);
+  // const saveEdit = (originalName, newName, newLocation) => {
+  //   setUploads(uploads.map(upload =>
+  //     upload.name === originalName
+  //       ? { ...upload, name: newName, location: newLocation }
+  //       : upload
+  //   ));
+  //   setShowEditModal(false);
+  // };
+
+  const saveEdit = async (originalName, newName, newLocation) => {
+    try {
+      setButtonLoader(true)
+      const formData = new FormData()
+      formData.append('institute_id', currentDept?.institute_id)
+      formData.append('institute_name', newName || '')
+      formData.append('institute_location', newLocation || '')
+      console.log('formData', formData)
+      const response = await call('/admin/edit_institute', 'POST', formData)
+      await getList()
+      setShowUploadModal(false);
+      setButtonLoader(false);
+      toast.success(response?.message, { duration: 2000 })
+    } catch (error) {
+      setButtonLoader(false);
+      toast.success(error?.message, { duration: 2000 })
+    }
   };
 
   useEffect(() => {
@@ -111,7 +140,7 @@ const Order = () => {
                   <td className="px-4 py-2 border flex space-x-2 justify-center">
                     <button
                       className="px-3 py-2 bg-blue-500 text-white rounded-md"
-                      onClick={() => { setCurrentDept(upload.name); setShowViewModal(true); }}
+                      onClick={() => { setCurrentDept(upload); setShowViewModal(true); }}
                     >
                       Depatment
                     </button>
@@ -123,7 +152,7 @@ const Order = () => {
                     </button>
                     <button
                       className="px-3 py-2 bg-red-500 text-white rounded-md"
-                      onClick={() => { setCurrentDept(upload.name); setShowDeleteModal(true); }}
+                      onClick={() => { setCurrentDept(upload); setShowDeleteModal(true); }}
                     >
                       Delete
                     </button>
@@ -145,20 +174,19 @@ const Order = () => {
       )}
 
       {showDeleteModal && (
-        <DeleteModal closeModal={() => setShowDeleteModal(false)}>
-          {/* Add delete logic here */}
-        </DeleteModal>
+        <DeleteModal isLoading={buttonLoader} delete_name={currentDept?.institute_name} confirmModal={() => deleteIntitute()} closeModal={() => setShowDeleteModal(false)} />
       )}
 
       {showViewModal && (
         <ViewModal
-          institutes={uploads}
+          dept={currentDept}
           closeModal={() => setShowViewModal(false)}
         />
       )}
 
       {showEditModal && (
         <EditInstituteModal
+          isLoading={buttonLoader}
           show={showEditModal}
           onClose={() => setShowEditModal(false)}
           onSave={saveEdit}

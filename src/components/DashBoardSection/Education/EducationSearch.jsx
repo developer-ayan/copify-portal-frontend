@@ -21,16 +21,10 @@ const Search = ({ selectedOption, setSelectedOption }) => {
         />
         <button
           className="w-full sm:w-auto ml-0 sm:ml-2 p-2 bg-blue-500 text-white rounded mb-2 sm:mb-0"
-         
         >
           Search
         </button>
-       
       </div>
-
-
-
-     
     </div>
   );
 };
