@@ -1,12 +1,12 @@
 import React, { useContext, useEffect, useState } from 'react';
-import DeleteModal from '../../components/Modals/DeleteModal';
+import DeleteModal from './DeleteModal';
 import EditInstituteModal from '../../components/Modals//EducationEdit';
-import AddDepartmentModal from '../../components/Modals/addDepart';
+import AddDepartmentModal from './DepartmentModal/addDepart';
 import { Loader } from '../Loaders';
 import { call } from '../../utils/helper';
 import toast from 'react-hot-toast';
 import { AppContext } from '../../context';
-import EditDepartmentModal from './editDepartment';
+import EditDepartmentModal from './DepartmentModal/editDepartment';
 
 const ViewInstitutesModal = ({ closeModal, dept }) => {
   const { user } = useContext(AppContext);

@@ -16,7 +16,7 @@ const Modal = ({ isOpen, onClose, onRecharge }) => {
       <div className="bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:max-w-lg sm:w-full sm:p-6">
         <div className="sm:flex sm:items-center sm:justify-center sm:flex-col">
           <h1 className="text-lg leading-6 font-medium text-gray-900 text-center">
-            Withdraw
+            Recharge
           </h1>
           <div className="mt-2 w-full text-center">
             <input
@@ -28,17 +28,17 @@ const Modal = ({ isOpen, onClose, onRecharge }) => {
             />
           </div>
         </div>
-        <div className="mt-5 sm:mt-4 sm:flex sm:justify-center">
+        <div className="flex justify-center space-x-2 mt-3">
           <button
             type="button"
-            className="w-full sm:w-auto sm:mx-2 inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-500 text-base font-medium text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+            className="w-6/12 px-2 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75 flex items-center justify-center"
             onClick={handleRecharge}
           >
             Submit
           </button>
           <button
             type="button"
-            className="mt-3 w-full sm:w-auto sm:mx-2 inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0"
+            className="w-6/12 px-2 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-opacity-75"
             onClick={onClose}
           >
             Cancel

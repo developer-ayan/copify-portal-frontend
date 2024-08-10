@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import RechargeModal from '../../Modals/AddNewModal';
-import WithdrawModal from '../../Modals/CreateModal';
-import TransferModal from '../../Modals/MarkPaidModal';
-import TransactionModal from '../../Modals/EditModal';
+import RechargeModal from '../../Modals/TeacherModal/RechargeModal';
+import WithdrawModal from '../../Modals/TeacherModal/WithdrawModal';
+import TransferModal from '../../Modals/TeacherModal/TransferModal';
+import TransactionModal from '../../Modals/TeacherModal/TransectionModal';
 
 const WalletDashboard = () => {
   const [isRechargeModalOpen, setIsRechargeModalOpen] = useState(false);

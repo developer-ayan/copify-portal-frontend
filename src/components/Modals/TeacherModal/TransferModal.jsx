@@ -40,16 +40,16 @@ const MarkPaidModal = ({ isOpen, onClose }) => {
               placeholder="Enter amount"
             />
           </div>
-        <div className="flex justify-end mt-3 sm:flex sm:justify-center" >
+        <div className="flex justify-center space-x-2 mt-3" >
           <button
             onClick={onClose}
-            className="bg-blue-500 text-white px-4 py-2 rounded-md mr-2"
+            className="w-6/12 px-2 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75 flex items-center justify-center"
           >
             Submit
           </button>
           <button
             onClick={handleSubmit}
-            className="  px-4 py-2 mt-3 w-full sm:w-auto sm:mx-2 inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0"
+            className=" w-6/12 px-2 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-opacity-75"
           >
             Cancel
           </button>
