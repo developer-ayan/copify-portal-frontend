@@ -84,7 +84,7 @@ export const navLinks = [
     icon: <BsBuildingsFill className="text-base" title="subscribers" />,
     id: 4,
     path: "/subscribers",
-    title: "Subcribers",
+    title: "Environmental setup",
   },
   {
     icon: <BiSolidPackage className="-ml-0.5 text-xl" title="Advertising and Annoucements" />,

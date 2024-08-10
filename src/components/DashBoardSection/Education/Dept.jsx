@@ -35,7 +35,7 @@ const Order = () => {
       await getList()
       setShowUploadModal(false);
       setButtonLoader(false);
-      toast.success(response?.message, { duration: 2000 })
+      toast.success(response?.message, { duration: 2000 }) 
     } catch (error) {
       setButtonLoader(false);
       toast.success(error?.message, { duration: 2000 })
