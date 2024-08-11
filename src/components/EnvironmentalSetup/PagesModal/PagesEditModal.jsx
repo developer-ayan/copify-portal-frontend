@@ -26,7 +26,7 @@ const PagesEditModal = ({ show, onClose, onSave, currentInstitute, isLoading }) 
       <div className="bg-white w-full max-w-md mx-auto">
         <div className="bg-white rounded-lg shadow-lg p-4 overflow-y-auto max-h-screen">
           <div className="flex justify-between items-center mb-2">
-            <h2 className="text-xl font-semibold text-gray-800">Edit Page Name</h2>
+            <h2 className="text-xl font-semibold text-gray-800">Edit Paper size</h2>
             <button onClick={onClose} className="text-gray-400 hover:text-gray-600">&times;</button>
           </div>
           <div className="mb-2">
@@ -35,6 +35,7 @@ const PagesEditModal = ({ show, onClose, onSave, currentInstitute, isLoading }) 
               id="text-input"
               value={name}
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              placeholder='Paper size'
               onChange={handleInputChange}
             />
           </div>
