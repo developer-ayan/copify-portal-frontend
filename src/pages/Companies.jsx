@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Loader, Page } from "../components";
 import  RiderRadius from "../components/EnvironmentalSetup/Section/RiderRadius"
 import  DeliveryCharges from "../components/EnvironmentalSetup/Section/DeliveryCharges"
+import Pages from "../components/EnvironmentalSetup/Section/Pages"
 
 
 
@@ -19,6 +20,9 @@ const Education = () => {
         <div className="flex-1">
           <main className="p-8">
           <RiderRadius />
+         
+ 
+          <Pages/>
           <DeliveryCharges />
           </main>
        
