@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Loader } from '../../Loaders';
 import DeliveryEdit from '../PagesModal/PagesEditModal';
 import DeliveryAdd from "../PagesModal/AddPagesModal";
+import DeleteModal from "../PagesModal/DeleteModal"
+import toast from 'react-hot-toast';
 
 const Pages = () => {
   const [showDelivery, setShowDelivery] = useState(false); 
@@ -13,6 +15,7 @@ const Pages = () => {
   const [buttonLoader, setButtonLoader] = useState(false);
   const [currentDept, setCurrentDept] = useState(null);
   const [errorMessage, setErrorMessage] = useState("");
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   const handleAddDelivery = (newDelivery) => {
  
@@ -45,7 +48,11 @@ const Pages = () => {
     );
     setShowEditModal(false); 
   };
-
+  const deleteShop = () => {
+    setUploads(uploads.filter(upload => upload.shop_name !== currentDept?.shop_name));
+    setShowDeleteModal(false);
+    toast.success('Institute deleted successfully', { duration: 2000 });
+  };
   return screenLoader ? (
     <div className="w-full flex justify-center items-center min-h-[90vh]">
       <Loader extraStyles="!static !bg-transparent" />
@@ -54,7 +61,7 @@ const Pages = () => {
     <div className="mt-7 bg-white rounded-lg shadow-lg p-6 flex flex-col sm:flex-row justify-between mx-2 sm:mx-4 md:mx-8 lg:mx-7">  
       <div className="w-full mb-4 md:mb-0">
         <div className="flex justify-between items-center mb-4">
-          <h2 className="text-2xl font-bold">Paper Size</h2>
+          <h2 className="text-2xl font-bold">Paper Sizes</h2>
           <button
             className="px-4 py-2 bg-blue-500 text-white rounded-md"
             onClick={() => setShowDelivery(true)} 
@@ -90,6 +97,12 @@ const Pages = () => {
                     >
                       Edit
                     </button>
+                    <button
+                      className="px-3 py-2 bg-red-500 text-white rounded-md"
+                      onClick={() => { setCurrentDept(upload); setShowDeleteModal(true); }}
+                    >
+                      Delete
+                    </button>
                   </td>
                 </tr>
               ))}
@@ -97,6 +110,10 @@ const Pages = () => {
           </table>
         </div>
       </div>
+      {showDeleteModal && (
+        <DeleteModal isLoading={buttonLoader} delete_name={currentDept?.shop_name} confirmModal={() => deleteShop()} closeModal={() => setShowDeleteModal(false)} />
+      )}
+
 
       {showEditModal && (
         <DeliveryEdit
