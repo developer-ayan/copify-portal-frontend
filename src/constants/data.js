@@ -92,6 +92,12 @@ export const navLinks = [
     path: "/advertising-and-annoucements",
     title: "Advertising and Annoucements",
   },
+  {
+    icon: <BiSolidPackage className="-ml-0.5 text-xl" title="Advertising and Annoucements" />,
+    id: 5,
+    path: "/AdminChat",
+    title: "Admin chat",
+  },
 
   {
     icon: (
