@@ -60,25 +60,7 @@ const ViewInstitutesModal = ({ closeModal, dept }) => {
   //       : department
   //   ));
   // };
-  const handleEdit = async (originalName, newName, newSemester) => {
-    try {
-      setButtonLoader(true)
-      const formData = new FormData()
-      formData.append('department_id', currentDepartment?.department_id)
-      formData.append('department_name', newName)
-      // formData.append('department_semester', newSemester)
-      console.log('formData', formData)
-      const response = await call('/admin/edit_department', 'POST', formData)
-      await getList()
-      closeEditModal()
-      setShowAddModal(false);
-      setButtonLoader(false);
-      toast.success(response?.message, { duration: 2000 })
-    } catch (error) {
-      setButtonLoader(false);
-      toast.success(error?.message, { duration: 2000 })
-    }
-  };
+
 
   const openAddModal = () => {
     setButtonLoader(false)
@@ -100,6 +82,26 @@ const ViewInstitutesModal = ({ closeModal, dept }) => {
       const response = await call('/admin/create_department', 'POST', formData)
       await getList()
       closeAddModal()
+      setButtonLoader(false);
+      toast.success(response?.message, { duration: 2000 })
+    } catch (error) {
+      setButtonLoader(false);
+      toast.success(error?.message, { duration: 2000 })
+    }
+  };
+
+  const handleEdit = async (originalName, newName, newSemester) => {
+    try {
+      setButtonLoader(true)
+      const formData = new FormData()
+      formData.append('department_id', currentDepartment?.department_id)
+      formData.append('department_name', newName)
+      // formData.append('department_semester', newSemester)
+      console.log('formData', formData)
+      const response = await call('/admin/edit_department', 'POST', formData)
+      await getList()
+      closeEditModal()
+      setShowAddModal(false);
       setButtonLoader(false);
       toast.success(response?.message, { duration: 2000 })
     } catch (error) {

@@ -6,8 +6,6 @@ const AddPagesModal = ({ show, onClose, onSave, isLoading }) => {
   const handleSave = () => {
     if (pagesName) {
       onSave(pagesName); 
-      setPagesName(''); 
-      onClose(); 
     }
   };
 
@@ -30,7 +28,6 @@ const AddPagesModal = ({ show, onClose, onSave, isLoading }) => {
           </div>
           <div className="mb-2">
             <input
-              type="text"
               id="text-input"
               value={pagesName}
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -45,7 +42,7 @@ const AddPagesModal = ({ show, onClose, onSave, isLoading }) => {
               onClick={handleSave}
               disabled={isLoading}
             >
-              {isLoading ? 'Loading...' : 'Save'}
+              {isLoading ? 'Load' : 'Save'}
             </button>
             <button
               onClick={onClose}

@@ -7,7 +7,6 @@ const DeliveryAdd = ({ show, onClose, onSave, isLoading }) => {
     if (radiusName) {
       onSave(radiusName); 
       setRadiusName(''); 
-      onClose(); 
     } else {
       alert('Please enter a radius.');
     }
@@ -48,7 +47,7 @@ const DeliveryAdd = ({ show, onClose, onSave, isLoading }) => {
               onClick={handleSave}
               disabled={isLoading}
             >
-              {isLoading ? 'Loading...' : 'Save'}
+              {isLoading ? 'Load' : 'Save'}
             </button>
             <button
               onClick={onClose}

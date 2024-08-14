@@ -1,11 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import DeleteModal from './SubjectDeleteModal.jsx';
 import EditModal from '../SubjectModal/EditModal.js';
 import AddSubjectModal from '../SubjectModal/AddSubject.jsx';
 import { Loader } from '../../Loaders';
 import toast from 'react-hot-toast';
+import { call } from '../../../utils/helper.js';
+import { AppContext } from '../../../context/index.js';
 
 const SubjectModal = ({ closeModal, dept }) => {
+  const { user } = useContext(AppContext);
   const [selectedInstitute, setSelectedInstitute] = useState(null);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [buttonLoader, setButtonLoader] = useState(false);
@@ -42,15 +45,6 @@ const SubjectModal = ({ closeModal, dept }) => {
     setButtonLoader(false);
   };
 
-  const handleEdit = (originalName, newName) => {
-    setSubjects(subjects.map(subject =>
-      subject.Subject_name === originalName
-        ? { ...subject, Subject_name: newName }
-        : subject
-    ));
-    toast.success('Subject updated successfully!', { duration: 2000 });
-    closeEditModal();
-  };
 
   const openAddModal = () => {
     setButtonLoader(false);
@@ -61,25 +55,82 @@ const SubjectModal = ({ closeModal, dept }) => {
     setShowAddModal(false);
   };
 
-  const addDepartment = (newSubjectName) => {
-    setSubjects([...subjects, { Subject_name: newSubjectName }]);
-    toast.success('Subject added successfully!', { duration: 2000 });
-    closeAddModal();
+  const addDepartment = async (newDepartment) => {
+    try {
+      setButtonLoader(true)
+      const formData = new FormData()
+      formData.append('user_id', user?.user_id)
+      formData.append('institute_id', dept?.institute_id)
+      formData.append('subject_name', newDepartment)
+      // formData.append('department_semester', newSemester)
+      const response = await call('/admin/create_subject', 'POST', formData)
+      await getList()
+      closeAddModal()
+      setButtonLoader(false);
+      toast.success(response?.message, { duration: 2000 })
+    } catch (error) {
+      setButtonLoader(false);
+      toast.success(error?.message, { duration: 2000 })
+    }
   };
 
-  const deleteDepartment = () => {
-    setSubjects(subjects.filter(subject => subject !== currentDepartment));
-    toast.success('Subject deleted successfully!', { duration: 2000 });
-    closeDeleteModal();
+  const handleEdit = async (originalName, newName) => {
+    try {
+      setButtonLoader(true)
+      const formData = new FormData()
+      formData.append('institute_subject_id', currentDepartment?.institute_subject_id)
+      formData.append('subject_name', newName)
+      // formData.append('department_semester', newSemester)
+      console.log('formData', formData)
+      const response = await call('/admin/edit_subject', 'POST', formData)
+      await getList()
+      closeEditModal()
+      setShowAddModal(false);
+      setButtonLoader(false);
+      toast.success(response?.message, { duration: 2000 })
+    } catch (error) {
+      setButtonLoader(false);
+      toast.success(error?.message, { duration: 2000 })
+    }
   };
+
+
+  const deleteDepartment = async () => {
+    try {
+      setButtonLoader(true)
+      const formData = new FormData()
+      formData.append('institute_subject_id', currentDepartment?.institute_subject_id)
+      const response = await call('/admin/delete_subject', 'POST', formData)
+      await getList()
+      closeDeleteModal();
+      setButtonLoader(false);
+      toast.success(response?.message, { duration: 2000 })
+    } catch (error) {
+      setButtonLoader(false);
+      toast.success(error?.message, { duration: 2000 })
+    }
+  };
+
+  const getList = async (listLoader) => {
+    try {
+      listLoader && setScreenLoader(true)
+      const formData = new FormData()
+      formData.append('institute_id', dept?.institute_id)
+      const response = await call('/admin/fetch_subject_list', 'POST', formData)
+      setScreenLoader(false)
+      setSubjects(response?.data)
+    } catch (error) {
+      setScreenLoader(false)
+      setSubjects([])
+      toast.success(error?.message, { duration: 2000 })
+    }
+  };
+
+  console.log('dept =>', dept)
 
   useEffect(() => {
-    // Simulate fetching data
-    setScreenLoader(true);
-    setTimeout(() => {
-      setScreenLoader(false);
-    }, 1000);
-  }, []);
+    getList(true)
+  }, [])
 
   return (
     <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center p-6">
@@ -102,7 +153,7 @@ const SubjectModal = ({ closeModal, dept }) => {
                 <tbody>
                   {subjects.map((subject, index) => (
                     <tr key={index}>
-                      <td className="px-4 py-2 border text-center">{subject.Subject_name}</td>
+                      <td className="px-4 py-2 border text-center">{subject.subject_name}</td>
                       <td className="px-4 py-2 border flex flex-col space-y-2 sm:flex-row sm:space-x-2 sm:space-y-0 justify-center">
                         <button
                           className="px-3 py-2 bg-blue-500 text-white rounded-md"
@@ -144,7 +195,7 @@ const SubjectModal = ({ closeModal, dept }) => {
         <DeleteModal
           confirmModal={deleteDepartment}
           isLoading={buttonLoader}
-          delete_name={currentDepartment?.Subject_name}
+          delete_name={currentDepartment?.subject_name}
           closeModal={closeDeleteModal}
         />
       )}

@@ -37,7 +37,7 @@ const Order = ({ buttonLoaderStatefromParent, searchDataFromChild }) => {
       await getList()
       setShowUploadModal(false);
       setButtonLoader(false);
-      toast.success(response?.message, { duration: 2000 }) 
+      toast.success(response?.message, { duration: 2000 })
     } catch (error) {
       setButtonLoader(false);
       toast.success(error?.message, { duration: 2000 })
@@ -145,7 +145,7 @@ const Order = ({ buttonLoaderStatefromParent, searchDataFromChild }) => {
                   <td className="px-4 py-2 border text-center">{upload.institute_name}</td>
                   <td className="px-4 py-2 border text-center">{upload.institute_location}</td>
                   <td className="px-4 py-2 border flex space-x-2 justify-center">
-                    
+
                     <button
                       className="px-3 py-2 bg-blue-500 text-white rounded-md"
                       onClick={() => { setCurrentDept(upload); setShowViewModal(true); }}
@@ -156,7 +156,7 @@ const Order = ({ buttonLoaderStatefromParent, searchDataFromChild }) => {
                       className="px-3 py-2 bg-blue-500 text-white rounded-md"
                       onClick={() => { setCurrentDept(upload); setShowSubjectModal(true); }}
                     >
-                    Subject
+                      Subject
                     </button>
 
                     <button
@@ -209,7 +209,7 @@ const Order = ({ buttonLoaderStatefromParent, searchDataFromChild }) => {
         />
       )}
 
-{showSubjectModal && (
+      {showSubjectModal && (
         <SubjectModal
           dept={currentDept}
           closeModal={() => setShowSubjectModal(false)}
