@@ -8,7 +8,7 @@ import toast from 'react-hot-toast';
 import { call } from '../../../utils/helper';
 import { Loader } from '../../Loaders';
 
-const Order = () => {
+const Order = ({ buttonLoaderStatefromParent, searchDataFromChild }) => {
   const { user } = useContext(AppContext);
   const [showUploadModal, setShowUploadModal] = useState(false);
   const [buttonLoader, setButtonLoader] = useState(false);
@@ -49,6 +49,7 @@ const Order = () => {
       setScreenLoader(false)
       setUploads(response?.data)
     } catch (error) {
+      setUploads([])
       setScreenLoader(false)
       toast.success(error?.message, { duration: 2000 })
     }
@@ -108,7 +109,11 @@ const Order = () => {
     getList(true)
   }, [])
 
-  return screenLoader ? <div className="w-full flex justify-center items-center min-h-[90vh]">
+  useEffect(() => {
+    setUploads(searchDataFromChild)
+  }, [searchDataFromChild])
+
+  return screenLoader || buttonLoaderStatefromParent ? <div className="w-full flex justify-center items-center min-h-[90vh]">
     <Loader extraStyles="!static !bg-transparent" />
   </div> : (
     <div className="bg-white rounded-lg shadow-lg p-6 flex flex-col sm:flex-row justify-between mx-2 sm:mx-4 md:mx-8 lg:mx-7">

@@ -7,7 +7,6 @@ const UploadModal = ({ show, onClose, onSave, isLoading }) => {
   const handleSave = () => {
     if (instituteName && location) {
       onSave(instituteName, location);
-      onClose();
     } else {
       alert('Please provide both institute name and location.');
     }

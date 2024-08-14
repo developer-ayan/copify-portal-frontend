@@ -37,12 +37,12 @@ const EditInstituteModal = ({ show, onClose, onSave, currentInstitute, isLoading
           </div>
           <div className="flex justify-center space-x-2">
             <button
-            className={`w-6/12 px-3 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75 flex items-center justify-center ${isLoading ? 'opacity-50' : 'opacity-100'}`}
-            onClick={handleSave}
-            disabled={isLoading}
-          >
-            {isLoading ? 'Load' : 'Save'}
-          </button>
+              className={`w-6/12 px-3 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75 flex items-center justify-center ${isLoading ? 'opacity-50' : 'opacity-100'}`}
+              onClick={handleSave}
+              disabled={isLoading}
+            >
+              {isLoading ? 'Load' : 'Save'}
+            </button>
             <button
               onClick={onClose}
               className="w-6/12 px-3 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-opacity-75"
