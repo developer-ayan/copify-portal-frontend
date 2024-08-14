@@ -117,7 +117,7 @@ const Router = () => {
             <Route path="/dashboard">
               <Route
                 index
-                element={privateRoutes(TeachersDashbord)}
+                element={privateRoutes(Dashboard)}
               />
               <Route path="/dashboard/teachers" element={privateRoutes(TeachersDashbord)} />
               <Route path="/dashboard/riders" element={privateRoutes(RidersDashboard)} />

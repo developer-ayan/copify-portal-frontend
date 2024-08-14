@@ -3,6 +3,7 @@ import DeleteModal from '../../Modals/DeleteModal';
 import ViewModal from '../../Modals/ViewModal';
 import UploadModal from '../../Modals/AddInstitute';
 import EditInstituteModal from '../../Modals/EducationEdit';
+import SubjectModal from "../../Modals/SubjectModal/SubjectModal"
 import { AppContext } from '../../../context';
 import toast from 'react-hot-toast';
 import { call } from '../../../utils/helper';
@@ -17,6 +18,7 @@ const Order = ({ buttonLoaderStatefromParent, searchDataFromChild }) => {
   const [showViewModal, setShowViewModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [currentDept, setCurrentDept] = useState(null);
+  const [showSubjectModal, setShowSubjectModal] = useState(false);
   const [uploads, setUploads] = useState([
     // { name: 'School', location: 'Gulshan-e-Iqbal', status: "" },
     // { name: 'College', location: 'Saddar', status: "" },
@@ -35,7 +37,7 @@ const Order = ({ buttonLoaderStatefromParent, searchDataFromChild }) => {
       await getList()
       setShowUploadModal(false);
       setButtonLoader(false);
-      toast.success(response?.message, { duration: 2000 })
+      toast.success(response?.message, { duration: 2000 }) 
     } catch (error) {
       setButtonLoader(false);
       toast.success(error?.message, { duration: 2000 })
@@ -143,12 +145,20 @@ const Order = ({ buttonLoaderStatefromParent, searchDataFromChild }) => {
                   <td className="px-4 py-2 border text-center">{upload.institute_name}</td>
                   <td className="px-4 py-2 border text-center">{upload.institute_location}</td>
                   <td className="px-4 py-2 border flex space-x-2 justify-center">
+                    
                     <button
                       className="px-3 py-2 bg-blue-500 text-white rounded-md"
                       onClick={() => { setCurrentDept(upload); setShowViewModal(true); }}
                     >
                       Depatment
                     </button>
+                    <button
+                      className="px-3 py-2 bg-blue-500 text-white rounded-md"
+                      onClick={() => { setCurrentDept(upload); setShowSubjectModal(true); }}
+                    >
+                    Subject
+                    </button>
+
                     <button
                       className="px-3 py-2 bg-blue-500 text-white rounded-md"
                       onClick={() => handleEdit(upload)}
@@ -196,6 +206,13 @@ const Order = ({ buttonLoaderStatefromParent, searchDataFromChild }) => {
           onClose={() => setShowEditModal(false)}
           onSave={saveEdit}
           currentInstitute={currentDept}
+        />
+      )}
+
+{showSubjectModal && (
+        <SubjectModal
+          dept={currentDept}
+          closeModal={() => setShowSubjectModal(false)}
         />
       )}
     </div>

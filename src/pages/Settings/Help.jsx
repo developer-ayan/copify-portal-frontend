@@ -5,7 +5,7 @@ import Dept from "../../components/DashBoardSection/Education/Dept";
 import { call } from "../../utils/helper";
 import toast from "react-hot-toast";
 
-const Terms = () => {
+const Education = () => {
   const [selectedOption, setSelectedOption] = useState(1);
   const [buttonLoader, setButtonLoader] = useState(false);
   const [uploads, setUploads] = useState([]);
@@ -47,4 +47,4 @@ const Terms = () => {
   );
 };
 
-export default Terms;
+export default Education;
