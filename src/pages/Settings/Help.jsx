@@ -3,6 +3,7 @@ import { Loader, Page } from "../../components";
 import EducationSearch from "../../components/DashBoardSection/Education/EducationSearch";
 import Dept from "../../components/DashBoardSection/Education/Dept";
 
+
 const Education = () => {
   const [selectedOption, setSelectedOption] = useState(1);
 

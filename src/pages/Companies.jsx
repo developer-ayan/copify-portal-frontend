@@ -3,6 +3,7 @@ import { Loader, Page } from "../components";
 import  RiderRadius from "../components/EnvironmentalSetup/Section/RiderRadius"
 import  DeliveryCharges from "../components/EnvironmentalSetup/Section/DeliveryCharges"
 import Pages from "../components/EnvironmentalSetup/Section/Pages"
+import DiscountPromo from "../components/EnvironmentalSetup/Section/DiscountPromoCode"
 
 
 
@@ -24,6 +25,7 @@ const Education = () => {
  
           <Pages/>
           <DeliveryCharges />
+          <DiscountPromo/>
           </main>
        
         </div>

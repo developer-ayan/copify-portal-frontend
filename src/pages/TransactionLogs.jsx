@@ -1,6 +1,7 @@
 import React from "react";
 import { Loader, Page } from "../components";
-import CopifyShop from "../components/Shop/CopifyShop"
+import CopifyShop from "../components/Branches/CopifyBranches"
+import Extension from "../components/Branches/Extension"
 
 const shop = () => {
  
@@ -16,6 +17,7 @@ const shop = () => {
         <div className="flex-1">
           <main className="p-8">
        <CopifyShop/>
+   <Extension/>
           </main>
         </div>
       </div>

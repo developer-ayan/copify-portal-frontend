@@ -78,7 +78,7 @@ export const navLinks = [
     icon: <AiFillDollarCircle className="-ml-0.5 text-xl" title="Invoices" />,
     id: 3,
     path: "/orders",
-    title: "Branch Operation System",
+    title: "Orders",
   },
   {
     icon: <BsBuildingsFill className="text-base" title="subscribers" />,
@@ -108,7 +108,7 @@ export const navLinks = [
     ),
     id: 7,
     path: "/transactions",
-    title: "Shop",
+    title: "Branches",
   },
 
   // {

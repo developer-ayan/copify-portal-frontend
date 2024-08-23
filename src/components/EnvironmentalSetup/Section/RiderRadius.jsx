@@ -20,7 +20,6 @@ const RiderRadius = () => {
       return;
     }
 
-    
     const radiusExists = uploads.some(upload => upload.name === newRadius);
 
     if (radiusExists) {
@@ -28,7 +27,6 @@ const RiderRadius = () => {
       return;
     }
 
-    
     setIsLoading(true); 
     setUploads([...uploads, { name: newRadius, status: "" }]);
     setIsLoading(false); 
@@ -76,15 +74,15 @@ const RiderRadius = () => {
           <table className="min-w-full bg-white">
             <thead>
               <tr>
-                <th className="px-4 py-2 border">Miles</th>
-                <th className="px-4 py-2 border">Action</th>
+                <th className="px-4 py-2 border w-1/2">Miles</th>
+                <th className="px-4 py-2 border w-1/2">Action</th>
               </tr>
             </thead>
             <tbody>
               {uploads.map((upload, index) => (
                 <tr key={index}>
-                  <td className="px-4 py-2 border text-center">{upload.name}</td>
-                  <td className="px-4 py-2 border flex space-x-2 justify-center">
+                  <td className="px-4 py-2 border text-center w-1/2">{upload.name}</td>
+                  <td className="px-4 py-2 border flex space-x-2 justify-center w-1/2">
                     <button
                       className="px-3 py-2 bg-blue-500 text-white rounded-md"
                       onClick={() => {

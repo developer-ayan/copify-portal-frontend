@@ -18,7 +18,6 @@ const Pages = () => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   const handleAddDelivery = (newDelivery) => {
- 
     const deliveryExists = uploads.some(upload => upload.name === newDelivery);
 
     if (deliveryExists) {
@@ -26,13 +25,11 @@ const Pages = () => {
       return;
     }
 
-    
     if (isLoading) {
       setErrorMessage("Please wait until the current process is complete.");
       return;
     }
 
-   
     setIsLoading(true); 
     setUploads([...uploads, { name: newDelivery, status: "" }]);
     setIsLoading(false); 
@@ -53,6 +50,7 @@ const Pages = () => {
     setShowDeleteModal(false);
     toast.success('Institute deleted successfully', { duration: 2000 });
   };
+
   return screenLoader ? (
     <div className="w-full flex justify-center items-center min-h-[90vh]">
       <Loader extraStyles="!static !bg-transparent" />
@@ -79,15 +77,15 @@ const Pages = () => {
           <table className="min-w-full bg-white">
             <thead>
               <tr>
-                <th className="px-4 py-2 border">Paper Size</th>
-                <th className="px-4 py-2 border">Action</th>
+                <th className="px-4 py-2 border w-1/2">Paper Size</th>
+                <th className="px-4 py-2 border w-1/2">Action</th>
               </tr>
             </thead>
             <tbody>
               {uploads.map((upload, index) => (
                 <tr key={index}>
-                  <td className="px-4 py-2 border text-center">{upload.name}</td>
-                  <td className="px-4 py-2 border flex space-x-2 justify-center">
+                  <td className="px-4 py-2 border text-center w-1/2">{upload.name}</td>
+                  <td className="px-4 py-2 border flex space-x-2 justify-center w-1/2">
                     <button
                       className="px-3 py-2 bg-blue-500 text-white rounded-md"
                       onClick={() => {
@@ -113,7 +111,6 @@ const Pages = () => {
       {showDeleteModal && (
         <DeleteModal isLoading={buttonLoader} delete_name={currentDept?.shop_name} confirmModal={() => deleteShop()} closeModal={() => setShowDeleteModal(false)} />
       )}
-
 
       {showEditModal && (
         <DeliveryEdit
