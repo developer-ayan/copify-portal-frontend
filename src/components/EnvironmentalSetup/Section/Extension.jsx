@@ -1,8 +1,8 @@
 
 import React, { useContext, useEffect, useState } from 'react';
-import ShopDeleteModal from '../../Branches/ExtensionModal/DeleteExtension';
-import AddShopModal from '../../Branches/ExtensionModal/AddExtension';
-import EditModal from '../../Branches/ExtensionModal/EditExtension';
+import ShopDeleteModal from '../ExtensionModal/DeleteExtension';
+import AddShopModal from '../ExtensionModal/AddExtension';
+import EditModal from '../ExtensionModal/EditExtension';
 import { AppContext } from '../../../context';
 import toast from 'react-hot-toast';
 import { Loader } from '../../Loaders';
