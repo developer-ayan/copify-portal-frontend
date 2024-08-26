@@ -1,22 +1,16 @@
 import React, { useState, useEffect } from 'react';
 
-const PagesEditModal = ({ show, onClose, onSave, currentInstitute, isLoading }) => {
-  const [name, setName] = useState('');
+const PagesEditModal = ({ show, onClose, onSave, dept, isLoading }) => {
+  const [name, setName] = useState(dept?.paper_size);
 
-  useEffect(() => {
-    if (currentInstitute) {
-      setName(currentInstitute.name); 
-    }
-  }, [currentInstitute]);
 
   const handleInputChange = (e) => {
-    const value = e.target.value.replace(/[0-9]/g, ''); 
+    const value = e.target.value;
     setName(value);
   };
 
   const handleSave = () => {
-    onSave(currentInstitute.name, name); 
-    onClose();
+    onSave(dept?.paper_size, name); 
   };
 
   if (!show) return null;
@@ -31,8 +25,8 @@ const PagesEditModal = ({ show, onClose, onSave, currentInstitute, isLoading }) 
           </div>
           <div className="mb-2">
             <input
-              type="text"  
               id="text-input"
+              type="text" // Accepts both numbers and text
               value={name}
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               placeholder='Paper size'
@@ -46,7 +40,7 @@ const PagesEditModal = ({ show, onClose, onSave, currentInstitute, isLoading }) 
               onClick={handleSave}
               disabled={isLoading}
             >
-              {isLoading ? 'Loading...' : 'Save'}
+              {isLoading ? 'Load' : 'Save'}
             </button>
             <button
               onClick={onClose}

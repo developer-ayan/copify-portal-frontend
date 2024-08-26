@@ -11,7 +11,7 @@ const DeleteModal = ({ delete_name, closeModal, confirmModal, isLoading }) => {
           </div>
           <h3 className="text-xl font-semibold mb-2">Confirm</h3>
         </div>
-        <p className="text-center mb-6">Are you sure you want to delete {delete_name} Subject?</p>
+        <p className="text-center mb-6">Are you sure you want to delete {delete_name} subject?</p>
         <div className="flex justify-center space-x-4">
           <button className="bg-gray-300 text-black px-4 py-2 rounded" onClick={closeModal}>Cancel</button>
           <button

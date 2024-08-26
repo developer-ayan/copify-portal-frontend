@@ -9,7 +9,7 @@ import toast from 'react-hot-toast';
 import { call } from '../../../utils/helper';
 import { Loader } from '../../Loaders';
 
-const Order = () => {
+const Order = ({ buttonLoaderStatefromParent, searchDataFromChild }) => {
   const { user } = useContext(AppContext);
   const [showUploadModal, setShowUploadModal] = useState(false);
   const [buttonLoader, setButtonLoader] = useState(false);
@@ -37,7 +37,7 @@ const Order = () => {
       await getList()
       setShowUploadModal(false);
       setButtonLoader(false);
-      toast.success(response?.message, { duration: 2000 }) 
+      toast.success(response?.message, { duration: 2000 })
     } catch (error) {
       setButtonLoader(false);
       toast.success(error?.message, { duration: 2000 })
@@ -51,6 +51,7 @@ const Order = () => {
       setScreenLoader(false)
       setUploads(response?.data)
     } catch (error) {
+      setUploads([])
       setScreenLoader(false)
       toast.success(error?.message, { duration: 2000 })
     }
@@ -110,7 +111,11 @@ const Order = () => {
     getList(true)
   }, [])
 
-  return screenLoader ? <div className="w-full flex justify-center items-center min-h-[90vh]">
+  useEffect(() => {
+    setUploads(searchDataFromChild)
+  }, [searchDataFromChild])
+
+  return screenLoader || buttonLoaderStatefromParent ? <div className="w-full flex justify-center items-center min-h-[90vh]">
     <Loader extraStyles="!static !bg-transparent" />
   </div> : (
     <div className="bg-white rounded-lg shadow-lg p-6 flex flex-col sm:flex-row justify-between mx-2 sm:mx-4 md:mx-8 lg:mx-7">
@@ -140,7 +145,7 @@ const Order = () => {
                   <td className="px-4 py-2 border text-center">{upload.institute_name}</td>
                   <td className="px-4 py-2 border text-center">{upload.institute_location}</td>
                   <td className="px-4 py-2 border flex space-x-2 justify-center">
-                    
+
                     <button
                       className="px-3 py-2 bg-blue-500 text-white rounded-md"
                       onClick={() => { setCurrentDept(upload); setShowViewModal(true); }}
@@ -151,7 +156,7 @@ const Order = () => {
                       className="px-3 py-2 bg-blue-500 text-white rounded-md"
                       onClick={() => { setCurrentDept(upload); setShowSubjectModal(true); }}
                     >
-                    Subject
+                      Subject
                     </button>
 
                     <button
@@ -204,7 +209,7 @@ const Order = () => {
         />
       )}
 
-{showSubjectModal && (
+      {showSubjectModal && (
         <SubjectModal
           dept={currentDept}
           closeModal={() => setShowSubjectModal(false)}

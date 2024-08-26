@@ -1,17 +1,10 @@
 import React, { useState, useEffect } from 'react';
 
-const DeliveryEdit = ({ show, onClose, onSave, currentInstitute, isLoading }) => {
-  const [name, setName] = useState('');
-
-  useEffect(() => {
-    if (currentInstitute) {
-      setName(currentInstitute.name); 
-    }
-  }, [currentInstitute]);
+const DeliveryEdit = ({ show, onClose, onSave, dept, isLoading }) => {
+  const [name, setName] = useState(dept?.delivery_charges);
 
   const handleSave = () => {
-    onSave(currentInstitute.name, name); 
-    onClose();
+    onSave('', name);
   };
 
   if (!show) return null;
@@ -25,7 +18,7 @@ const DeliveryEdit = ({ show, onClose, onSave, currentInstitute, isLoading }) =>
             <button onClick={onClose} className="text-gray-400 hover:text-gray-600">&times;</button>
           </div>
           <div className="mb-2">
-          <input
+            <input
               type="number"
               id="number-input"
               value={name}
@@ -33,14 +26,14 @@ const DeliveryEdit = ({ show, onClose, onSave, currentInstitute, isLoading }) =>
               onChange={(e) => setName(e.target.value)}
             />
           </div>
-         
+
           <div className="flex justify-center space-x-2">
             <button
               className={`w-6/12 px-3 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75 flex items-center justify-center ${isLoading ? 'opacity-50' : 'opacity-100'}`}
               onClick={handleSave}
               disabled={isLoading}
             >
-              {isLoading ? 'Loading...' : 'Save'}
+              {isLoading ? 'Load' : 'Save'}
             </button>
             <button
               onClick={onClose}

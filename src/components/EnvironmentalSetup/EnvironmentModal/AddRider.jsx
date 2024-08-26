@@ -6,8 +6,6 @@ const AddRider = ({ show, onClose, onSave, isLoading }) => {
   const handleSave = () => {
     if (radiusName) {
       onSave(radiusName); 
-      setRadiusName(''); 
-      onClose(); 
     } else {
       alert('Please enter a radius.');
     }
@@ -48,7 +46,7 @@ const AddRider = ({ show, onClose, onSave, isLoading }) => {
               onClick={handleSave}
               disabled={isLoading}
             >
-              {isLoading ? 'Loading...' : 'Save'}
+              {isLoading ? 'Load' : 'Save'}
             </button>
             <button
               onClick={onClose}

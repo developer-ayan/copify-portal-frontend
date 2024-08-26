@@ -1,17 +1,11 @@
 import React, { useState, useEffect } from 'react';
 
-const EditInstituteModal = ({ show, onClose, onSave, currentInstitute, isLoading }) => {
-  const [name, setName] = useState('');
+const EditInstituteModal = ({ show, onClose, onSave, dept, isLoading }) => {
+  const [name, setName] = useState(dept?.rider_radius);
 
-  useEffect(() => {
-    if (currentInstitute) {
-      setName(currentInstitute.name); 
-    }
-  }, [currentInstitute]);
 
   const handleSave = () => {
-    onSave(currentInstitute.name, name); 
-    onClose();
+    onSave(dept?.rider_radius, name); 
   };
 
   if (!show) return null;
@@ -40,7 +34,7 @@ const EditInstituteModal = ({ show, onClose, onSave, currentInstitute, isLoading
               onClick={handleSave}
               disabled={isLoading}
             >
-              {isLoading ? 'Loading...' : 'Save'}
+              {isLoading ? 'Load' : 'Save'}
             </button>
             <button
               onClick={onClose}

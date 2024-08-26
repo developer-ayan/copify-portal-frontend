@@ -1,12 +1,15 @@
-import React, { useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Loader } from '../../Loaders';
 import DeliveryEdit from '../PagesModal/PagesEditModal';
 import DeliveryAdd from "../PagesModal/AddPagesModal";
 import DeleteModal from "../PagesModal/DeleteModal"
 import toast from 'react-hot-toast';
+import { call } from '../../../utils/helper';
+import { AppContext } from '../../../context';
 
 const Pages = () => {
-  const [showDelivery, setShowDelivery] = useState(false); 
+  const { user } = useContext(AppContext);
+  const [showDelivery, setShowDelivery] = useState(false);
   const [uploads, setUploads] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [screenLoader, setScreenLoader] = useState(false);
@@ -17,52 +20,86 @@ const Pages = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [showDeleteModal, setShowDeleteModal] = useState(false);
 
-  const handleAddDelivery = (newDelivery) => {
-    const deliveryExists = uploads.some(upload => upload.name === newDelivery);
 
-    if (deliveryExists) {
-      setErrorMessage("This delivery charge already exists.");
-      return;
+  const handleAddDelivery = async (newDelivery) => {
+    try {
+      setButtonLoader(true)
+      const formData = new FormData()
+      formData.append('user_id', user?.user_id)
+      formData.append('paper_size', newDelivery)
+      const response = await call('/admin/create_paper_size', 'POST', formData)
+      await getList()
+      setShowDelivery(false);
+      setButtonLoader(false);
+      toast.success(response?.message, { duration: 2000 })
+    } catch (error) {
+      setButtonLoader(false);
+      toast.success(error?.message, { duration: 2000 })
     }
+  };
 
-    if (isLoading) {
-      setErrorMessage("Please wait until the current process is complete.");
-      return;
+  const saveEdit = async (oldName, newName) => {
+    try {
+      setButtonLoader(true)
+      const formData = new FormData()
+      formData.append('paper_size', newName)
+      formData.append('paper_size_id', currentDept?.paper_size_id)
+      const response = await call('/admin/edit_paper_size', 'POST', formData)
+      await getList()
+      setShowEditModal(false);
+      setButtonLoader(false);
+      toast.success(response?.message, { duration: 2000 })
+    } catch (error) {
+      setButtonLoader(false);
+      toast.success(error?.message, { duration: 2000 })
     }
-
-    setIsLoading(true); 
-    setUploads([...uploads, { name: newDelivery, status: "" }]);
-    setIsLoading(false); 
-    setErrorMessage(""); 
-    setShowDelivery(false); 
   };
 
-  const saveEdit = (oldName, newName) => {
-    setUploads((prevUploads) =>
-      prevUploads.map((upload) =>
-        upload.name === oldName ? { ...upload, name: newName } : upload
-      )
-    );
-    setShowEditModal(false); 
-  };
-  const deleteShop = () => {
-    setUploads(uploads.filter(upload => upload.shop_name !== currentDept?.shop_name));
-    setShowDeleteModal(false);
-    toast.success('Institute deleted successfully', { duration: 2000 });
+  const deleteShop = async (newDelivery) => {
+    try {
+      setButtonLoader(true)
+      const formData = new FormData()
+      formData.append('paper_size_id', currentDept?.paper_size_id)
+      const response = await call('/admin/delete_paper_size', 'POST', formData)
+      await getList()
+      setButtonLoader(false);
+      setShowDeleteModal(false);
+      toast.success(response?.message, { duration: 2000 })
+    } catch (error) {
+      setButtonLoader(false);
+      toast.success(error?.message, { duration: 2000 })
+    }
   };
 
-  return screenLoader ? (
-    <div className="w-full flex justify-center items-center min-h-[90vh]">
-      <Loader extraStyles="!static !bg-transparent" />
-    </div>
-  ) : (
-    <div className="mt-7 bg-white rounded-lg shadow-lg p-6 flex flex-col sm:flex-row justify-between mx-2 sm:mx-4 md:mx-8 lg:mx-7">  
-      <div className="w-full mb-4 md:mb-0">
+  const getList = async (listLoader) => {
+    try {
+      listLoader && setScreenLoader(true)
+      const response = await call('/admin/fetch_paper_size_list', 'POST')
+      setScreenLoader(false)
+      setUploads(response?.data)
+    } catch (error) {
+      setUploads([])
+      setScreenLoader(false)
+      toast.error(error?.message, { duration: 2000 })
+    }
+  };
+
+  useEffect(() => {
+    getList(true)
+  }, [])
+
+  return (
+    <div className="mt-7 bg-white rounded-lg shadow-lg p-6 flex flex-col sm:flex-row justify-between mx-2 sm:mx-4 md:mx-8 lg:mx-7">
+      {screenLoader ? (
+        <div className="w-full flex justify-center items-center">
+          <Loader extraStyles="!static !bg-transparent" />
+        </div>
+      ) : <div className="w-full mb-4 md:mb-0">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-2xl font-bold">Paper Sizes</h2>
           <button
             className="px-4 py-2 bg-blue-500 text-white rounded-md"
-            onClick={() => setShowDelivery(true)} 
+            onClick={() => setShowDelivery(true)}
             disabled={isLoading}
           >
             + Add Paper size
@@ -84,13 +121,13 @@ const Pages = () => {
             <tbody>
               {uploads.map((upload, index) => (
                 <tr key={index}>
-                  <td className="px-4 py-2 border text-center w-1/2">{upload.name}</td>
-                  <td className="px-4 py-2 border flex space-x-2 justify-center w-1/2">
+                  <td className="px-4 py-2 border text-center">{upload.paper_size}</td>
+                  <td className="px-4 py-2 border flex space-x-2 justify-center">
                     <button
                       className="px-3 py-2 bg-blue-500 text-white rounded-md"
                       onClick={() => {
-                        setCurrentDept(upload); 
-                        setShowEditModal(true); 
+                        setCurrentDept(upload);
+                        setShowEditModal(true);
                       }}
                     >
                       Edit
@@ -107,9 +144,10 @@ const Pages = () => {
             </tbody>
           </table>
         </div>
-      </div>
+      </div>}
+
       {showDeleteModal && (
-        <DeleteModal isLoading={buttonLoader} delete_name={currentDept?.shop_name} confirmModal={() => deleteShop()} closeModal={() => setShowDeleteModal(false)} />
+        <DeleteModal isLoading={buttonLoader} delete_name={currentDept?.paper_size} confirmModal={() => deleteShop()} closeModal={() => setShowDeleteModal(false)} />
       )}
 
       {showEditModal && (
@@ -117,16 +155,16 @@ const Pages = () => {
           isLoading={buttonLoader}
           show={showEditModal}
           onClose={() => setShowEditModal(false)}
-          onSave={saveEdit} 
-          currentInstitute={currentDept} 
+          onSave={saveEdit}
+          dept={currentDept}
         />
       )}
       {showDelivery && (
         <DeliveryAdd
           show={showDelivery}
-          onClose={() => setShowDelivery(false)} 
+          onClose={() => setShowDelivery(false)}
           onSave={handleAddDelivery}
-          isLoading={isLoading}
+          isLoading={buttonLoader}
         />
       )}
     </div>
