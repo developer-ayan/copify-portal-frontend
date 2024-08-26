@@ -4,6 +4,7 @@ import  RiderRadius from "../components/EnvironmentalSetup/Section/RiderRadius"
 import  DeliveryCharges from "../components/EnvironmentalSetup/Section/DeliveryCharges"
 import Pages from "../components/EnvironmentalSetup/Section/Pages"
 import DiscountPromo from "../components/EnvironmentalSetup/Section/DiscountPromoCode"
+import Extension from "../components/EnvironmentalSetup/Section/Extension"
 
 
 
@@ -26,6 +27,7 @@ const Education = () => {
           <Pages/>
           <DeliveryCharges />
           <DiscountPromo/>
+          <Extension/>
           </main>
        
         </div>
