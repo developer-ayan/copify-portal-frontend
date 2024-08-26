@@ -5,6 +5,7 @@ import Dept from "../../components/DashBoardSection/Education/Dept";
 import { call } from "../../utils/helper";
 import toast from "react-hot-toast";
 
+
 const Education = () => {
   const [selectedOption, setSelectedOption] = useState(1);
   const [buttonLoader, setButtonLoader] = useState(false);

@@ -16,6 +16,7 @@ import {
   Packages,
   // PaymentMethods,
   TransactionLogs,
+  AdminChat,
   Dashboard,
   AdminOptions as TeachersDashbord,
   Help as EducationInstitute,
@@ -107,6 +108,11 @@ const Router = () => {
               path="/transactions"
               element={privateRoutes(TransactionLogs)}
             />
+             <Route
+              path="/AdminChat"
+              element={privateRoutes(AdminChat)}
+            />
+
 
             <Route
               index

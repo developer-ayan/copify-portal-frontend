@@ -7,6 +7,7 @@ import PaymentMethods from "./PaymentMethods";
 import TransactionLogs from "./TransactionLogs";
 import Dashboard from "./Dashboard";
 import WorkTypes from "./WorkTypes";
+import AdminChat from "./AdminChat"
 export * from "./Auth";
 export * from "./User";
 export * from "./Settings";
@@ -21,4 +22,5 @@ export {
   TransactionLogs,
   Dashboard,
   WorkTypes,
+  AdminChat,
 };

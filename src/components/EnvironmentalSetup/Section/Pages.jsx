@@ -114,8 +114,8 @@ const Pages = () => {
           <table className="min-w-full bg-white">
             <thead>
               <tr>
-                <th className="px-4 py-2 border">Paper Size</th>
-                <th className="px-4 py-2 border">Action</th>
+                <th className="px-4 py-2 border w-1/2">Paper Size</th>
+                <th className="px-4 py-2 border w-1/2">Action</th>
               </tr>
             </thead>
             <tbody>
@@ -149,7 +149,6 @@ const Pages = () => {
       {showDeleteModal && (
         <DeleteModal isLoading={buttonLoader} delete_name={currentDept?.paper_size} confirmModal={() => deleteShop()} closeModal={() => setShowDeleteModal(false)} />
       )}
-
 
       {showEditModal && (
         <DeliveryEdit

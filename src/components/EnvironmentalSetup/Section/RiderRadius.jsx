@@ -33,12 +33,7 @@ const RiderRadius = () => {
   //   }
 
 
-  //   setIsLoading(true); 
-  //   setUploads([...uploads, { name: newRadius, status: "" }]);
-  //   setIsLoading(false); 
-  //   setErrorMessage(""); 
-  //   setShowRiderRadius(false); 
-  // };
+    const radiusExists = uploads.some(upload => upload.name === newRadius);
 
   // const saveEdit = (oldName, newName) => {
   //   if (!newName || typeof newName !== 'string') {
@@ -140,8 +135,8 @@ const RiderRadius = () => {
           <table className="min-w-full bg-white">
             <thead>
               <tr>
-                <th className="px-4 py-2 border">Miles</th>
-                <th className="px-4 py-2 border">Action</th>
+                <th className="px-4 py-2 border w-1/2">Miles</th>
+                <th className="px-4 py-2 border w-1/2">Action</th>
               </tr>
             </thead>
             <tbody>
