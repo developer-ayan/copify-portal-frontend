@@ -1,17 +1,10 @@
 import React, { useState, useEffect } from 'react';
 
 const EditSubjectModal = ({ isOpen, onClose, dept, onSave, isLoading }) => {
-    const [newSubject, setNewSubject] = useState('');
+    const [newSubject, setNewSubject] = useState(dept?.subject_name);
   
-
-    useEffect(() => {
-        if (dept) {
-            setNewSubject(dept.Subject_name || '');
-          
-        }
-    }, [dept]); 
     const handleSave = () => {
-        onSave(dept.Subject_name, newSubject);
+        onSave(dept.subject_name, newSubject);
     };
 
     if (!isOpen) return null;
@@ -40,7 +33,7 @@ const EditSubjectModal = ({ isOpen, onClose, dept, onSave, isLoading }) => {
                         onClick={handleSave}
                         disabled={isLoading}
                     >
-                        {isLoading ? 'Loading...' : 'Save'}
+                        {isLoading ? 'Load' : 'Save'}
                     </button>
                     <button
                         className="w-6/12 px-3 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-opacity-75"

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const Search = ({ selectedOption, setSelectedOption }) => {
+const Search = ({ selectedOption, setSelectedOption, searchMethod , isLoading }) => {
   const [searchName, setSearchName] = useState('');
   const [walletBalance, setWalletBalance] = useState('');
   const [claimCode, setClaimCode] = useState('');
@@ -20,10 +20,14 @@ const Search = ({ selectedOption, setSelectedOption }) => {
           onChange={(e) => setSearchName(e.target.value)}
         />
         <button
-          className="w-full sm:w-auto ml-0 sm:ml-2 p-2 bg-blue-500 text-white rounded mb-2 sm:mb-0"
+          className={`w-full sm:w-auto ml-0 sm:ml-2 p-2 bg-blue-500 text-white rounded mb-2 sm:mb-0 ${isLoading ? 'opacity-50' : 'opacity-100'}`}
+          disabled={isLoading}
+          onClick={() => searchName ? searchMethod(searchName) : searchMethod('')}
         >
-          Search
+          {'Search'}
         </button>
+
+     
       </div>
     </div>
   );
