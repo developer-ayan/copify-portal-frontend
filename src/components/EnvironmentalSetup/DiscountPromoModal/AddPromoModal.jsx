@@ -4,9 +4,12 @@ const AddSubjectModal = ({ isOpen, closeModal, addDepartment, isLoading }) => {
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [promoCode, setPromoCode] = useState('');
+  const [discount, setDiscount] = useState('');
+
+  console.log('startDate' , startDate)
 
   const handleAdd = () => {
-    addDepartment(startDate, endDate, promoCode);
+    addDepartment(startDate, endDate, promoCode, discount);
   };
 
   if (!isOpen) return null;
@@ -15,7 +18,20 @@ const AddSubjectModal = ({ isOpen, closeModal, addDepartment, isLoading }) => {
     <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center p-4">
       <div className="bg-white p-6 rounded-lg shadow-md w-full max-w-lg">
         <h3 className="text-xl font-semibold mb-4">Add Discount Promo Code</h3>
-        
+
+        <div className="relative w-full mb-4">
+          <input
+            type="number"
+            value={discount}
+            onChange={(e) => setDiscount(e.target.value)}
+            className="w-full px-3 py-2 border rounded-md pr-10"
+            placeholder="Discount"
+          />
+          <span className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500">
+            %
+          </span>
+        </div>
+
         <input
           type="date"
           value={startDate}
