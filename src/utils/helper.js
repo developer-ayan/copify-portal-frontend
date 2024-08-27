@@ -1,3 +1,4 @@
+import moment from 'moment/moment';
 import { base_url } from './url';
 
 /* ============================================================================= 
@@ -112,6 +113,20 @@ const _deleteObject = (param, val, arr) => arr.filter(v => v[param] !== val);
 ============================================================================= */
 const _getObject = (param, val, arr) => arr.filter(v => v[param] === val)?.[0]?.[param];
 
+const formatDate = (dateString) => {
+    if (!dateString) return ''; // Handle empty date case
+
+    // Parse the ISO date string and format it to DD/MM/YYYY
+    return moment(dateString).format('DD/MM/YYYY');
+};
+
+const formatDateState = (dateString) => {
+    if (!dateString) return ''; // Handle empty date case
+
+    // Parse the ISO date string and format it to DD/MM/YYYY
+    return moment(dateString).format('YYYY-MM-DD');
+};
+
 /* Exports
 ============================================================================= */
-export { call, _concatArray, _updateObject, _deleteObject, _getObject };
+export { call, _concatArray, _updateObject, _deleteObject, _getObject, formatDate, formatDateState };

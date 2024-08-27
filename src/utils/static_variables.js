@@ -1,0 +1,1 @@
+export const date_formate = 'DD/MM/YYYY'
