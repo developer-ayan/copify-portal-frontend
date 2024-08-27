@@ -24,14 +24,14 @@ const Extension = () => {
     };
     setUploads([...uploads, newShop]);
     setShowAddShopModal(false);
-    toast.success('Branch added successfully', { duration: 2000 });
+    toast.success('Extension added successfully', { duration: 2000 });
   };
 
 
   const deleteShop = () => {
     setUploads(uploads.filter(upload => upload !== currentDept));
     setShowDeleteModal(false);
-    toast.success('Branch deleted successfully', { duration: 2000 });
+    toast.success('Extension deleted successfully', { duration: 2000 });
   };
 
 
@@ -49,7 +49,7 @@ const Extension = () => {
       )
     );
     setShowEditModal(false);
-    toast.success('Branch updated successfully', { duration: 2000 });
+    toast.success('Extension updated successfully', { duration: 2000 });
   };
 
   useEffect(() => {

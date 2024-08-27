@@ -5,7 +5,7 @@ const EditPointModal = ({ isOpen, closeModal, onSave, currentPromo, isLoading })
   const [php, setPhp] = useState('');
 
   useEffect(() => {
-    // Load the current promo values into the input fields when the modal opens
+   
     if (currentPromo) {
       setPoints(currentPromo.points);
       setPhp(currentPromo.php);
@@ -13,7 +13,7 @@ const EditPointModal = ({ isOpen, closeModal, onSave, currentPromo, isLoading })
   }, [currentPromo]);
 
   const handleSave = () => {
-    // Save the edited promo
+ 
     onSave(currentPromo.points, points, php);
   };
 
@@ -21,7 +21,14 @@ const EditPointModal = ({ isOpen, closeModal, onSave, currentPromo, isLoading })
 
   return (
     <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center p-4">
-      <div className="bg-white p-6 rounded-lg shadow-md w-full max-w-lg">
+     <div className="bg-white p-6 rounded-lg shadow-md w-full max-w-lg relative">
+      
+      <button 
+        className="absolute top-2 right-2 text-gray-500 hover:text-gray-700 focus:outline-none"
+        onClick={closeModal}
+      >
+        &times; 
+      </button>
         <h3 className="text-xl font-semibold mb-4 text-center">Edit Points</h3>
 
         <div className="flex justify-center items-center space-x-4 mb-4">

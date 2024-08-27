@@ -5,8 +5,8 @@ import DeliveryCharges from "../components/EnvironmentalSetup/Section/DeliveryCh
 import Pages from "../components/EnvironmentalSetup/Section/Pages"
 import DiscountPromo from "../components/EnvironmentalSetup/Section/DiscountPromoCode"
 import Extension from "../components/EnvironmentalSetup/Section/Extension"
-
 import Point from "../components/EnvironmentalSetup/Section/Point"
+import Subcription from "../components/EnvironmentalSetup/Section/Subcription"
 
 
 
@@ -29,6 +29,7 @@ const Education = () => {
           <DiscountPromo/>
           <Extension/>
           <Point/>
+          <Subcription/>
           </main>
         </div>
       </div>
