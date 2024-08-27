@@ -18,36 +18,6 @@ const RiderRadius = () => {
   const [currentDept, setCurrentDept] = useState(null);
   const [errorMessage, setErrorMessage] = useState("");
 
-  // const handleAddRadius = (newRadius) => {
-  //   if (!newRadius || typeof newRadius !== 'string') {
-  //     setErrorMessage("Invalid radius value.");
-  //     return;
-  //   }
-
-
-  //   const radiusExists = uploads.some(upload => upload.name === newRadius);
-
-  //   if (radiusExists) {
-  //     setErrorMessage("This radius already exists.");
-  //     return;
-  //   }
-
-
-    const radiusExists = uploads.some(upload => upload.name === newRadius);
-
-  // const saveEdit = (oldName, newName) => {
-  //   if (!newName || typeof newName !== 'string') {
-  //     setErrorMessage("Invalid name.");
-  //     return;
-  //   }
-
-  //   setUploads((prevUploads) =>
-  //     prevUploads.map((upload) =>
-  //       upload.name === oldName ? { ...upload, name: newName } : upload
-  //     )
-  //   );
-  //   setShowEditModal(false); 
-  // };
 
   const handleAddRadius = async (newRadius) => {
     try {
