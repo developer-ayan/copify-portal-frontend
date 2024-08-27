@@ -1,10 +1,10 @@
 
 import React, { useState } from 'react';
 
-const EditExtension = ({ show, onClose, onSave, currentBranch, isLoading }) => {
-  const [description, setDescription] = useState(currentBranch?.description || '');
+const EditExtension = ({ show, onClose, onSave, currentDept, isLoading }) => {
+  const [description, setDescription] = useState(currentDept?.extension_name || '');
   const [file, setFile] = useState(null);
-  const [previewUrl, setPreviewUrl] = useState(currentBranch?.image || '');
+  const [previewUrl, setPreviewUrl] = useState(currentDept?.file_upload || '');
 
   const handleFileChange = (e) => {
     const selectedFile = e.target.files[0];
@@ -23,8 +23,7 @@ const EditExtension = ({ show, onClose, onSave, currentBranch, isLoading }) => {
 
   const handleSave = () => {
     if (description && (file || previewUrl)) {
-      onSave(currentBranch?.image, file ? URL.createObjectURL(file) : previewUrl, description);
-      onClose();
+      onSave(currentDept?.file_upload, file, description);
     } else {
       alert('Please provide a description and an image.');
     }
@@ -85,11 +84,11 @@ const EditExtension = ({ show, onClose, onSave, currentBranch, isLoading }) => {
         {/* Action Buttons */}
         <div className="flex justify-center space-x-2">
           <button
+            className={`w-6/12 px-3 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75 flex items-center justify-center ${isLoading ? 'opacity-50' : 'opacity-100'}`}
             onClick={handleSave}
-            className={`w-6/12 px-3 py-2 rounded-md ${isLoading ? 'bg-gray-500' : 'bg-blue-500'} text-white hover:${isLoading ? 'bg-gray-600' : 'bg-blue-600'} focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75`}
             disabled={isLoading}
           >
-            {isLoading ? 'Saving...' : 'Save'}
+            {isLoading ? 'Load' : 'Save'}
           </button>
           <button
             onClick={onClose}

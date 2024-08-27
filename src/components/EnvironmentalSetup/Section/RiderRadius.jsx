@@ -32,7 +32,7 @@ const RiderRadius = () => {
       toast.success(response?.message, { duration: 2000 })
     } catch (error) {
       setButtonLoader(false);
-      toast.success(error?.message, { duration: 2000 })
+      toast.error(error?.message, { duration: 2000 })
     }
   };
 
@@ -49,7 +49,7 @@ const RiderRadius = () => {
       toast.success(response?.message, { duration: 2000 })
     } catch (error) {
       setButtonLoader(false);
-      toast.success(error?.message, { duration: 2000 })
+      toast.error(error?.message, { duration: 2000 })
     }
   };
 

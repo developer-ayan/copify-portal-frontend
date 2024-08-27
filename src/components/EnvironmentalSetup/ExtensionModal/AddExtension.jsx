@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const AddExtension = ({ show, onClose, onSave }) => {
+const AddExtension = ({ show, onClose, onSave, isLoading }) => {
   const [fileName, setFileName] = useState('');
   const [file, setFile] = useState(null);
   const [description, setDescription] = useState('');
@@ -15,7 +15,7 @@ const AddExtension = ({ show, onClose, onSave }) => {
       if (validExtensions.includes(fileExtension)) {
         setFile(selectedFile);
         setFileName(selectedFile.name);
-        setPreviewUrl(URL.createObjectURL(selectedFile)); 
+        setPreviewUrl(URL.createObjectURL(selectedFile));
       } else {
         alert('Invalid file type. Please upload an image.');
       }
@@ -25,7 +25,6 @@ const AddExtension = ({ show, onClose, onSave }) => {
   const handleSave = () => {
     if (file && description) {
       onSave(file, description);
-      onClose();
     } else {
       alert('Please provide an image and description.');
     }
@@ -43,7 +42,7 @@ const AddExtension = ({ show, onClose, onSave }) => {
           <button onClick={onClose} className="text-gray-400 hover:text-gray-600">&times;</button>
         </div>
 
-     
+
         <div className="mb-2">
           <label
             htmlFor="file"
@@ -87,10 +86,11 @@ const AddExtension = ({ show, onClose, onSave }) => {
         {/* Action Buttons */}
         <div className="flex justify-center space-x-2">
           <button
+            className={`w-6/12 px-3 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75 flex items-center justify-center ${isLoading ? 'opacity-50' : 'opacity-100'}`}
             onClick={handleSave}
-            className="w-6/12 px-3 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75"
+            disabled={isLoading}
           >
-            Save
+            {isLoading ? 'Load' : 'Save'}
           </button>
           <button
             onClick={onClose}
