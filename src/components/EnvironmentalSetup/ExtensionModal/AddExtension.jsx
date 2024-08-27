@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const UploadModal = ({ show, onClose, onSave }) => {
+const AddExtension = ({ show, onClose, onSave }) => {
   const [fileName, setFileName] = useState('');
   const [file, setFile] = useState(null);
   const [description, setDescription] = useState('');
@@ -39,7 +39,7 @@ const UploadModal = ({ show, onClose, onSave }) => {
     <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50">
       <div className="bg-white w-full max-w-md mx-auto rounded-lg shadow-lg p-4">
         <div className="flex justify-between items-center mb-2">
-          <h2 className="text-xl font-semibold text-gray-800">Upload Image</h2>
+          <h2 className="text-xl font-semibold text-gray-800">Add Extension</h2>
           <button onClick={onClose} className="text-gray-400 hover:text-gray-600">&times;</button>
         </div>
 
@@ -104,4 +104,4 @@ const UploadModal = ({ show, onClose, onSave }) => {
   );
 };
 
-export default UploadModal;
+export default AddExtension;

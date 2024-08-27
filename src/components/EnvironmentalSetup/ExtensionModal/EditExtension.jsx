@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 
-const EditModal = ({ show, onClose, onSave, currentBranch, isLoading }) => {
+const EditExtension = ({ show, onClose, onSave, currentBranch, isLoading }) => {
   const [description, setDescription] = useState(currentBranch?.description || '');
   const [file, setFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(currentBranch?.image || '');
@@ -103,4 +103,4 @@ const EditModal = ({ show, onClose, onSave, currentBranch, isLoading }) => {
   );
 };
 
-export default EditModal;
+export default EditExtension;

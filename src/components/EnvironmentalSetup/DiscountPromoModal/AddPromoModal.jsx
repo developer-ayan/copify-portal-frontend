@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const AddSubjectModal = ({ isOpen, closeModal, addDepartment, isLoading }) => {
+const AddPromoModal = ({ isOpen, closeModal, addDepartment, isLoading }) => {
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [promoCode, setPromoCode] = useState('');
@@ -60,4 +60,4 @@ const AddSubjectModal = ({ isOpen, closeModal, addDepartment, isLoading }) => {
   );
 };
 
-export default AddSubjectModal;
+export default AddPromoModal;

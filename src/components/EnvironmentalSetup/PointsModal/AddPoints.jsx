@@ -8,6 +8,13 @@ const AddPointModal = ({ isOpen, closeModal, addDepartment, isLoading }) => {
     addDepartment(points, php);
   };
 
+  const handleNumericInput = (e, setter) => {
+    const value = e.target.value;
+    if (/^\d*$/.test(value)) {
+      setter(value);
+    }
+  };
+
   if (!isOpen) return null;
 
   return (
@@ -16,23 +23,22 @@ const AddPointModal = ({ isOpen, closeModal, addDepartment, isLoading }) => {
         <h3 className="text-xl font-semibold mb-4 text-center">Add Points</h3>
 
         <div className="flex justify-center items-center space-x-4 mb-4">
-  <input
-    type="text"
-    value={points}
-    onChange={(e) => setPoints(e.target.value)}
-    className="w-5/12 px-3 py-2 border rounded-md text-center"
-    placeholder="Points"
-  />
-  <p className="text-lg font-medium">into</p>
-  <input
-    type="text"
-    value={php}
-    onChange={(e) => setPhp(e.target.value)}
-    className="w-5/12 px-3 py-2 border rounded-md text-center"
-    placeholder="PHP"
-  />
-</div>
-
+          <input
+            type="text"
+            value={points}
+            onChange={(e) => handleNumericInput(e, setPoints)}
+            className="w-5/12 px-3 py-2 border rounded-md text-center"
+            placeholder="Points"
+          />
+          <p className="text-lg font-medium">into</p>
+          <input
+            type="text"
+            value={php}
+            onChange={(e) => handleNumericInput(e, setPhp)}
+            className="w-5/12 px-3 py-2 border rounded-md text-center"
+            placeholder="PHP"
+          />
+        </div>
 
         <div className="flex space-x-2 mt-2 justify-center">
           <button

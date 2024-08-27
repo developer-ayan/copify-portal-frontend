@@ -1,7 +1,7 @@
 // Modal.js
 import React from 'react';
 
-const DeleteModal = ({ delete_name, closeModal, confirmModal, isLoading }) => {
+const DeletePagesModal = ({ delete_name, closeModal, confirmModal, isLoading }) => {
   return (
     <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center p-4">
       <div className="bg-white p-6 rounded-lg shadow-md w-full max-w-sm sm:max-w-md">
@@ -26,4 +26,4 @@ const DeleteModal = ({ delete_name, closeModal, confirmModal, isLoading }) => {
   );
 };
 
-export default DeleteModal;
+export default DeletePagesModal;
