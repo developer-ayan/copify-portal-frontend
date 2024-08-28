@@ -14,7 +14,7 @@ const Point = () => {
   const [currentPromo, setCurrentPromo] = useState(null); 
   const [uploads, setUploads] = useState([]);
 
-  const handleAddShop = (points, php) => {
+  const handleAddPoints = (points, php) => { 
     const newPromo = {
       points,
       php,
@@ -94,7 +94,7 @@ const Point = () => {
         <AddPointModal
           isOpen={showAddShopModal}
           closeModal={() => setShowAddShopModal(false)}
-          addDepartment={handleAddShop}  
+          handleAddPoints={handleAddPoints}  
           isLoading={buttonLoader}
         />
       )}

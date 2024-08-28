@@ -46,7 +46,7 @@ const AddRider = ({ show, onClose, onSave, isLoading }) => {
               onClick={handleSave}
               disabled={isLoading}
             >
-              {isLoading ? 'Load' : 'Save'}
+              {isLoading ? 'Load' : 'Add'}
             </button>
             <button
               onClick={onClose}

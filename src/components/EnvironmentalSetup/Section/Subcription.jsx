@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import AddSubscriptionModal from '../SubscriptionModal/AddSubscription';
 import EditSubscriptionModal from '../SubscriptionModal/EditSubcription'; 
-import DeleteSubscriptionModal from '../SubscriptionModal/DeletSubscription'
+import DeleteSubscriptionModal from '../SubscriptionModal/DeletSubscription'; 
 import { AppContext } from '../../../context';
 import toast from 'react-hot-toast';
 import { Loader } from '../../Loaders';
@@ -16,9 +16,8 @@ const Subscription = () => {
   const [currentPromo, setCurrentPromo] = useState(null);
   const [uploads, setUploads] = useState([]);
 
-  const handleAddShop = (plan, php, months) => {
+  const handleAddShop = (php, months) => {
     const newPromo = {
-      plan,
       php,
       months,
       status: "",
@@ -33,10 +32,10 @@ const Subscription = () => {
     setShowEditModal(true);
   };
 
-  const saveEdit = (originalPlan, newPlan, newPhp, newMonths) => {
+  const saveEdit = (newPhp, newMonths) => {
     setUploads(uploads.map(upload =>
-      upload.plan === originalPlan
-        ? { ...upload, plan: newPlan, php: newPhp, months: newMonths }
+      upload === currentPromo
+        ? { ...upload, php: newPhp, months: newMonths }
         : upload
     ));
     setShowEditModal(false);
@@ -44,7 +43,7 @@ const Subscription = () => {
   };
 
   const deleteShop = () => {
-    setUploads(uploads.filter(upload => upload.plan !== currentPromo.plan));
+    setUploads(uploads.filter(upload => upload !== currentPromo));
     setShowDeleteModal(false);
     toast.success('Subscription deleted successfully', { duration: 2000 });
   };
@@ -74,7 +73,6 @@ const Subscription = () => {
           <table className="min-w-full bg-white">
             <thead>
               <tr>
-                <th className="px-4 py-2 border">Plan</th>
                 <th className="px-4 py-2 border">PHP</th>
                 <th className="px-4 py-2 border">Months</th>
                 <th className="px-4 py-2 border">Action</th>
@@ -83,7 +81,6 @@ const Subscription = () => {
             <tbody>
               {uploads.map((upload, index) => (
                 <tr key={index}>
-                  <td className="px-4 py-2 border text-center">{upload.plan}</td>
                   <td className="px-4 py-2 border text-center">{upload.php}</td>
                   <td className="px-4 py-2 border text-center">{upload.months}</td>
                   <td className="px-4 py-2 border flex space-x-2 justify-center">
@@ -107,7 +104,7 @@ const Subscription = () => {
         </div>
       </div>
 
-    
+      
       {showDeleteModal && (
         <DeleteSubscriptionModal
           isLoading={buttonLoader}
@@ -117,7 +114,7 @@ const Subscription = () => {
         />
       )}
 
-      
+
       {showAddShopModal && (
         <AddSubscriptionModal
           isOpen={showAddShopModal}
@@ -127,13 +124,14 @@ const Subscription = () => {
         />
       )}
 
-     
+
       {showEditModal && (
         <EditSubscriptionModal
           isOpen={showEditModal}
           closeModal={() => setShowEditModal(false)}
-          onSave={saveEdit}
-          currentSubscription={currentPromo}
+          updateDepartment={saveEdit}
+          initialPhp={currentPromo?.php}
+          initialMonths={currentPromo?.months}
           isLoading={buttonLoader}
         />
       )}

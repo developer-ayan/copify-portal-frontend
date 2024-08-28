@@ -15,10 +15,13 @@ const EditPromoModal = ({ isOpen, closeModal, onSave, currentPromo, isLoading })
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center p-4">
-      <div className="bg-white p-6 rounded-lg shadow-md w-full max-w-lg">
-        <h3 className="text-xl font-semibold mb-4">Edit Promo Code</h3>
-
+    <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50">
+    <div className="bg-white w-full max-w-md mx-auto">
+      <div className="bg-white rounded-lg shadow-lg p-4 overflow-y-auto max-h-screen">
+        <div className="flex justify-between items-center mb-2">
+        <h3 className="text-xl font-semibold text-gray-800">Edit Promo Code</h3>
+        <button onClick={closeModal} className="text-gray-400 hover:text-gray-600">&times;</button>
+        </div>
         <div className="relative w-full mb-4">
           <input
             type="number"
@@ -67,6 +70,7 @@ const EditPromoModal = ({ isOpen, closeModal, onSave, currentPromo, isLoading })
           >
             Close
           </button>
+        </div>
         </div>
       </div>
     </div>
