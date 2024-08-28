@@ -5,8 +5,8 @@ import { AppContext } from "../context";
 import {
   Page404,
   Login,
-  Jobs,
-  Companies,
+  BranchChat,
+  EnvironmentalSetup,
   Invoices,
   EditProfile,
   ChangePassword,
@@ -15,7 +15,7 @@ import {
   AccessDenied,
   Packages,
   // PaymentMethods,
-  TransactionLogs,
+  Branch,
   AdminChat,
   Dashboard,
   AdminOptions as TeachersDashbord,
@@ -95,9 +95,9 @@ const Router = () => {
           >
             <Route path="/dashboard" element={privateRoutes(Dashboard)} />
             <Route path="/edit-profile" element={privateRoutes(EditProfile)} />
-            <Route path="/subscribers" element={privateRoutes(Companies)} />
+            <Route path="/EnvironmentalSetup" element={privateRoutes(EnvironmentalSetup)} />
             <Route path="/advertising-and-annoucements" element={privateRoutes(Packages)} />
-            <Route path="/jobs" element={privateRoutes(Jobs)} />
+            <Route path="/BranchChat" element={privateRoutes(BranchChat)} />
             {/* <Route
               path="/payment-methods"
               element={privateRoutes(PaymentMethods)}
@@ -105,8 +105,8 @@ const Router = () => {
               <Route path="/education-institute" element={privateRoutes(EducationInstitute)} />
 
             <Route
-              path="/transactions"
-              element={privateRoutes(TransactionLogs)}
+              path="/Branch"
+              element={privateRoutes(Branch)}
             />
              <Route
               path="/AdminChat"

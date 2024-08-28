@@ -83,7 +83,7 @@ export const navLinks = [
   {
     icon: <BsBuildingsFill className="text-base" title="subscribers" />,
     id: 4,
-    path: "/subscribers",
+    path: "/EnvironmentalSetup",
     title: "Environmental setup",
   },
   {
@@ -98,7 +98,12 @@ export const navLinks = [
     path: "/AdminChat",
     title: "Admin chat",
   },
-
+  {
+    icon: <BiSolidPackage className="-ml-0.5 text-xl" title="Advertising and Annoucements" />,
+    id: 5,
+    path: "/BranchChat",
+    title: "Branch Chat",
+  },
   {
     icon: (
       <FaMoneyBillTransfer
@@ -107,7 +112,7 @@ export const navLinks = [
       />
     ),
     id: 7,
-    path: "/transactions",
+    path: "/Branch",
     title: "Branches",
   },
 
