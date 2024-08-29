@@ -3,7 +3,9 @@ import DeleteModal from '../../Modals/DeleteModal';
 import ViewModal from '../../Modals/ViewModal';
 import UploadModal from '../../Modals/AddInstitute';
 import EditInstituteModal from '../../Modals/EducationEdit';
-import SubjectModal from "../../Modals/SubjectModal/SubjectModal"
+import SubjectModal from "../../Modals/SubjectModal/SubjectModal";
+import StudentModal from "../../Modals/Student/StudentModal"; 
+import TeacherModal from "../../Modals/Teacher/TeacherModal"; 
 import { AppContext } from '../../../context';
 import toast from 'react-hot-toast';
 import { call } from '../../../utils/helper';
@@ -19,58 +21,56 @@ const Order = ({ buttonLoaderStatefromParent, searchDataFromChild }) => {
   const [showEditModal, setShowEditModal] = useState(false);
   const [currentDept, setCurrentDept] = useState(null);
   const [showSubjectModal, setShowSubjectModal] = useState(false);
-  const [uploads, setUploads] = useState([
-    // { name: 'School', location: 'Gulshan-e-Iqbal', status: "" },
-    // { name: 'College', location: 'Saddar', status: "" },
-    // { name: 'University', location: 'Jamshed Road', status: "" },
-  ]);
+  const [showStudentModal, setShowStudentModal] = useState(false); 
+  const [showTeacherModal, setShowTeacherModal] = useState(false); // State for Teacher Modal
+  const [uploads, setUploads] = useState([]);
 
   const addUpload = async (name, location) => {
     try {
-      setButtonLoader(true)
-      const formData = new FormData()
-      formData.append('user_id', user?.user_id)
-      formData.append('institute_name', name)
-      formData.append('institute_location', location)
-      console.log('formData', formData)
-      const response = await call('/admin/create_institute', 'POST', formData)
-      await getList()
+      setButtonLoader(true);
+      const formData = new FormData();
+      formData.append('user_id', user?.user_id);
+      formData.append('institute_name', name);
+      formData.append('institute_location', location);
+      console.log('formData', formData);
+      const response = await call('/admin/create_institute', 'POST', formData);
+      await getList();
       setShowUploadModal(false);
       setButtonLoader(false);
-      toast.success(response?.message, { duration: 2000 })
+      toast.success(response?.message, { duration: 2000 });
     } catch (error) {
       setButtonLoader(false);
-      toast.success(error?.message, { duration: 2000 })
+      toast.success(error?.message, { duration: 2000 });
     }
   };
 
   const getList = async (listLoader) => {
     try {
-      listLoader && setScreenLoader(true)
-      const response = await call('/admin/fetch_institute_list', 'POST')
-      setScreenLoader(false)
-      setUploads(response?.data)
+      listLoader && setScreenLoader(true);
+      const response = await call('/admin/fetch_institute_list', 'POST');
+      setScreenLoader(false);
+      setUploads(response?.data);
     } catch (error) {
-      setUploads([])
-      setScreenLoader(false)
-      toast.success(error?.message, { duration: 2000 })
+      setUploads([]);
+      setScreenLoader(false);
+      toast.success(error?.message, { duration: 2000 });
     }
   };
 
   const deleteIntitute = async () => {
     try {
-      setButtonLoader(true)
-      const formData = new FormData()
-      formData.append('institute_id', currentDept?.institute_id)
-      console.log('formData', formData)
-      const response = await call('/admin/delete_institute', 'POST', formData)
-      await getList()
+      setButtonLoader(true);
+      const formData = new FormData();
+      formData.append('institute_id', currentDept?.institute_id);
+      console.log('formData', formData);
+      const response = await call('/admin/delete_institute', 'POST', formData);
+      await getList();
       setButtonLoader(false);
       setShowDeleteModal(false);
-      toast.success(response?.message, { duration: 2000 })
+      toast.success(response?.message, { duration: 2000 });
     } catch (error) {
       setButtonLoader(false);
-      toast.success(error?.message, { duration: 2000 })
+      toast.success(error?.message, { duration: 2000 });
     }
   };
 
@@ -79,45 +79,38 @@ const Order = ({ buttonLoaderStatefromParent, searchDataFromChild }) => {
     setShowEditModal(true);
   };
 
-  // const saveEdit = (originalName, newName, newLocation) => {
-  //   setUploads(uploads.map(upload =>
-  //     upload.name === originalName
-  //       ? { ...upload, name: newName, location: newLocation }
-  //       : upload
-  //   ));
-  //   setShowEditModal(false);
-  // };
-
   const saveEdit = async (originalName, newName, newLocation) => {
     try {
-      setButtonLoader(true)
-      const formData = new FormData()
-      formData.append('institute_id', currentDept?.institute_id)
-      formData.append('institute_name', newName || '')
-      formData.append('institute_location', newLocation || '')
-      console.log('formData', formData)
-      const response = await call('/admin/edit_institute', 'POST', formData)
-      await getList()
+      setButtonLoader(true);
+      const formData = new FormData();
+      formData.append('institute_id', currentDept?.institute_id);
+      formData.append('institute_name', newName || '');
+      formData.append('institute_location', newLocation || '');
+      console.log('formData', formData);
+      const response = await call('/admin/edit_institute', 'POST', formData);
+      await getList();
       setShowUploadModal(false);
       setButtonLoader(false);
-      toast.success(response?.message, { duration: 2000 })
+      toast.success(response?.message, { duration: 2000 });
     } catch (error) {
       setButtonLoader(false);
-      toast.success(error?.message, { duration: 2000 })
+      toast.success(error?.message, { duration: 2000 });
     }
   };
 
   useEffect(() => {
-    getList(true)
-  }, [])
+    getList(true);
+  }, []);
 
   useEffect(() => {
-    setUploads(searchDataFromChild)
-  }, [searchDataFromChild])
+    setUploads(searchDataFromChild);
+  }, [searchDataFromChild]);
 
-  return screenLoader || buttonLoaderStatefromParent ? <div className="w-full flex justify-center items-center min-h-[90vh]">
-    <Loader extraStyles="!static !bg-transparent" />
-  </div> : (
+  return screenLoader || buttonLoaderStatefromParent ? (
+    <div className="w-full flex justify-center items-center min-h-[90vh]">
+      <Loader extraStyles="!static !bg-transparent" />
+    </div>
+  ) : (
     <div className="bg-white rounded-lg shadow-lg p-6 flex flex-col sm:flex-row justify-between mx-2 sm:mx-4 md:mx-8 lg:mx-7">
       <div className="w-full mb-4 md:mb-0">
         <div className="flex justify-between items-center mb-4">
@@ -150,13 +143,25 @@ const Order = ({ buttonLoaderStatefromParent, searchDataFromChild }) => {
                       className="px-3 py-2 bg-blue-500 text-white rounded-md"
                       onClick={() => { setCurrentDept(upload); setShowViewModal(true); }}
                     >
-                      Depatment
+                      Department
                     </button>
                     <button
                       className="px-3 py-2 bg-blue-500 text-white rounded-md"
                       onClick={() => { setCurrentDept(upload); setShowSubjectModal(true); }}
                     >
                       Subject
+                    </button>
+                    <button
+                      className="px-3 py-2 bg-blue-500 text-white rounded-md"
+                      onClick={() => { setCurrentDept(upload); setShowStudentModal(true); }} 
+                    >
+                      Student
+                    </button>
+                    <button
+                      className="px-3 py-2 bg-blue-500 text-white rounded-md"
+                      onClick={() => { setCurrentDept(upload); setShowTeacherModal(true); }} // New Teacher button
+                    >
+                      Teacher
                     </button>
 
                     <button
@@ -213,6 +218,20 @@ const Order = ({ buttonLoaderStatefromParent, searchDataFromChild }) => {
         <SubjectModal
           dept={currentDept}
           closeModal={() => setShowSubjectModal(false)}
+        />
+      )}
+
+      {showStudentModal && ( 
+        <StudentModal
+          dept={currentDept}
+          closeModal={() => setShowStudentModal(false)}
+        />
+      )}
+
+      {showTeacherModal && ( 
+        <TeacherModal
+          dept={currentDept}
+          closeModal={() => setShowTeacherModal(false)}
         />
       )}
     </div>

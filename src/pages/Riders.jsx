@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { base_url } from "../../src/components/";
-import { Loader, Page } from "../../src/components";
+import { base_url } from "../components";
+import { Loader, Page } from "../components";
 import RidersSearch from "../components/DashBoardSection/RiderDashboard/RidersSearch";
 import Order from "../components/DashBoardSection/RiderDashboard/Order"
 import PickUp from "../components/DashBoardSection/RiderDashboard/PickUp"

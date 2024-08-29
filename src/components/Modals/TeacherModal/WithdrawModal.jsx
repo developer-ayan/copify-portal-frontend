@@ -1,10 +1,10 @@
 import React from 'react';
 
-const Modal = ({ isOpen, onClose, onRecharge }) => {
+const WithdrawModal = ({ isOpen, onClose, onWithdraw }) => {
   const [amount, setAmount] = React.useState('');
 
-  const handleRecharge = () => {
-    onRecharge(amount);
+  const handleWithdraw = () => {
+    onWithdraw(amount);
     onClose();
   };
 
@@ -13,11 +13,12 @@ const Modal = ({ isOpen, onClose, onRecharge }) => {
   return (
     <div className="fixed z-10 inset-0 overflow-y-auto flex items-center justify-center">
       <div className="fixed inset-0 bg-gray-500 opacity-75"></div>
-      <div className="bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:max-w-lg sm:w-full sm:p-6">
-        <div className="sm:flex sm:items-center sm:justify-center sm:flex-col">
-          <h1 className="text-lg leading-6 font-medium text-gray-900 text-center">
-            Withdraw
-          </h1>
+      <div className="bg-white px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:max-w-lg sm:w-full sm:p-6">
+      <div className="flex justify-between items-center mb-2">
+            <h2 className="text-xl font-semibold text-gray-800">Withdraw</h2>
+            <button onClick={onClose} className="text-gray-400 hover:text-gray-600">&times;</button>
+          </div>
+          <div className="mb-2">
           <div className="mt-2 w-full text-center">
             <input
               type="number"
@@ -32,7 +33,7 @@ const Modal = ({ isOpen, onClose, onRecharge }) => {
           <button
             type="button"
             className="w-6/12 px-2 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75 flex items-center justify-center"
-            onClick={handleRecharge}
+            onClick={handleWithdraw}
           >
             Submit
           </button>
@@ -49,4 +50,4 @@ const Modal = ({ isOpen, onClose, onRecharge }) => {
   );
 };
 
-export default Modal;
+export default WithdrawModal;

@@ -7,13 +7,13 @@ import {
   Login,
   BranchChat,
   EnvironmentalSetup,
-  Invoices,
+  Orders,
   EditProfile,
   ChangePassword,
   ForgotPassword,
   EmailVerification,
   AccessDenied,
-  Packages,
+  Advertising,
   // PaymentMethods,
   Branch,
   AdminChat,
@@ -21,7 +21,7 @@ import {
   AdminOptions as TeachersDashbord,
   Help as EducationInstitute,
   Terms as ClaimStationDasboard,
-  WorkTypes as RidersDashboard,
+  Riders as RidersDashboard,
 } from "../pages";
 import { base_url } from "../utils/url";
 
@@ -96,7 +96,7 @@ const Router = () => {
             <Route path="/dashboard" element={privateRoutes(Dashboard)} />
             <Route path="/edit-profile" element={privateRoutes(EditProfile)} />
             <Route path="/EnvironmentalSetup" element={privateRoutes(EnvironmentalSetup)} />
-            <Route path="/advertising-and-annoucements" element={privateRoutes(Packages)} />
+            <Route path="/advertising-and-annoucements" element={privateRoutes(Advertising)} />
             <Route path="/BranchChat" element={privateRoutes(BranchChat)} />
             {/* <Route
               path="/payment-methods"
@@ -117,7 +117,7 @@ const Router = () => {
             <Route
               index
               path="/orders"
-              element={privateRoutes(Invoices)}
+              element={privateRoutes(Orders)}
             />
 
             <Route path="/dashboard">

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
-import DeleteModal from './SubjectDeleteModal.jsx';
-import EditModal from '../SubjectModal/EditModal.js';
-import AddSubjectModal from '../SubjectModal/AddSubject.jsx';
+import DeleteModal from "./SubjectDeleteModal.jsx"
+import EditModal from './EditModal.js';
+import AddSubjectModal from './AddSubject.jsx';
 import { Loader } from '../../Loaders';
 import toast from 'react-hot-toast';
 import { call } from '../../../utils/helper.js';
@@ -134,14 +134,17 @@ const SubjectModal = ({ closeModal, dept }) => {
 
   return (
     <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center p-6">
-      <div className="bg-white p-6 rounded-lg shadow-md w-full max-w-lg sm:max-w-xl md:max-w-1xl lg:max-w-2xl">
+      <div className="bg-white p-6 shadow-md w-full max-w-lg sm:max-w-xl md:max-w-1xl lg:max-w-2xl">
         {screenLoader ? (
           <div className="w-full flex justify-center items-center">
             <Loader extraStyles="!static !bg-transparent" />
           </div>
         ) : (
           <div>
-            <h3 className="text-xl font-semibold mb-4">{dept?.Subject_name}</h3>
+            <div className="flex justify-between items-center mb-2">
+            <h3 className="text-xl font-semibold text-gray-800">{dept?.Subject_name}</h3>
+            <button onClick={closeModal} className="text-gray-400 hover:text-gray-600">&times;</button>
+          </div>
             <div className="overflow-x-auto">
               <table className="min-w-full bg-white">
                 <thead>

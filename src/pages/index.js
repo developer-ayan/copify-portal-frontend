@@ -1,12 +1,12 @@
 import BranchChat from "./BranchChat";
 import EnvironmentalSetup from "./EnvironmentalSetup";
-import Invoices from "./Invoices";
+import Orders from "./Orders";
 import GeneralPage from "./GeneralPage";
-import Packages from "./Packages";
+import Advertising from "./Advertising";
 import PaymentMethods from "./PaymentMethods";
 import Branch from "./Branch";
 import Dashboard from "./Dashboard";
-import WorkTypes from "./WorkTypes";
+import Riders from "./Riders";
 import AdminChat from "./AdminChat"
 export * from "./Auth";
 export * from "./User";
@@ -16,11 +16,11 @@ export {
   BranchChat,
   EnvironmentalSetup,
   GeneralPage,
-  Invoices,
-  Packages,
+  Orders,
+  Advertising,
   PaymentMethods,
   Branch,
   Dashboard,
-  WorkTypes,
+  Riders,
   AdminChat,
 };
