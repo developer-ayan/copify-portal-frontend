@@ -15,7 +15,7 @@ const TeacherModal = ({ closeModal }) => {
     <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center p-6">
       <div className="bg-white p-6 shadow-md w-full max-w-lg sm:max-w-xl md:max-w-2xl">
         <div className="flex justify-between items-center mb-2">
-          <h3 className="text-xl font-semibold text-gray-800">Teacher Information</h3>
+          <h3 className="text-xl font-semibold text-gray-800">Teacher</h3>
           <button onClick={closeModal} className="text-gray-400 hover:text-gray-600">&times;</button>
         </div>
         <div className="overflow-x-auto mt-4">
