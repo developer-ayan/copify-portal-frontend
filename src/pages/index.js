@@ -1,26 +1,26 @@
-import Jobs from "./Jobs";
-import Companies from "./Companies";
-import Invoices from "./Invoices";
+import BranchChat from "./BranchChat";
+import EnvironmentalSetup from "./EnvironmentalSetup";
+import Orders from "./Orders";
 import GeneralPage from "./GeneralPage";
-import Packages from "./Packages";
+import Advertising from "./Advertising";
 import PaymentMethods from "./PaymentMethods";
-import TransactionLogs from "./TransactionLogs";
+import Branch from "./Branch";
 import Dashboard from "./Dashboard";
-import WorkTypes from "./WorkTypes";
+import Riders from "./Riders";
 import AdminChat from "./AdminChat"
 export * from "./Auth";
 export * from "./User";
 export * from "./Settings";
 
 export {
-  Jobs,
-  Companies,
+  BranchChat,
+  EnvironmentalSetup,
   GeneralPage,
-  Invoices,
-  Packages,
+  Orders,
+  Advertising,
   PaymentMethods,
-  TransactionLogs,
+  Branch,
   Dashboard,
-  WorkTypes,
+  Riders,
   AdminChat,
 };

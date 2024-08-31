@@ -5,23 +5,23 @@ import { AppContext } from "../context";
 import {
   Page404,
   Login,
-  Jobs,
-  Companies,
-  Invoices,
+  BranchChat,
+  EnvironmentalSetup,
+  Orders,
   EditProfile,
   ChangePassword,
   ForgotPassword,
   EmailVerification,
   AccessDenied,
-  Packages,
+  Advertising,
   // PaymentMethods,
-  TransactionLogs,
+  Branch,
   AdminChat,
   Dashboard,
   AdminOptions as TeachersDashbord,
   Help as EducationInstitute,
   Terms as ClaimStationDasboard,
-  WorkTypes as RidersDashboard,
+  Riders as RidersDashboard,
 } from "../pages";
 import { base_url } from "../utils/url";
 
@@ -95,9 +95,9 @@ const Router = () => {
           >
             <Route path="/dashboard" element={privateRoutes(Dashboard)} />
             <Route path="/edit-profile" element={privateRoutes(EditProfile)} />
-            <Route path="/subscribers" element={privateRoutes(Companies)} />
-            <Route path="/advertising-and-annoucements" element={privateRoutes(Packages)} />
-            <Route path="/jobs" element={privateRoutes(Jobs)} />
+            <Route path="/EnvironmentalSetup" element={privateRoutes(EnvironmentalSetup)} />
+            <Route path="/advertising-and-annoucements" element={privateRoutes(Advertising)} />
+            <Route path="/BranchChat" element={privateRoutes(BranchChat)} />
             {/* <Route
               path="/payment-methods"
               element={privateRoutes(PaymentMethods)}
@@ -105,8 +105,8 @@ const Router = () => {
               <Route path="/education-institute" element={privateRoutes(EducationInstitute)} />
 
             <Route
-              path="/transactions"
-              element={privateRoutes(TransactionLogs)}
+              path="/Branch"
+              element={privateRoutes(Branch)}
             />
              <Route
               path="/AdminChat"
@@ -117,7 +117,7 @@ const Router = () => {
             <Route
               index
               path="/orders"
-              element={privateRoutes(Invoices)}
+              element={privateRoutes(Orders)}
             />
 
             <Route path="/dashboard">

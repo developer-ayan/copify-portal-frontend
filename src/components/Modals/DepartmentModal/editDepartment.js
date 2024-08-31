@@ -13,8 +13,12 @@ const EditDepartmentModal = ({ isOpen, onClose, dept, onSave, isLoading }) => {
 
     return (
         <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center p-4">
-            <div className="bg-white p-6 rounded-lg shadow-md w-full max-w-lg">
-                <h3 className="text-xl font-semibold mb-4">Edit Department</h3>
+        <div className="bg-white p-6  shadow-md w-full max-w-lg">
+        <div className="flex justify-between items-center mb-2">
+        <h3 className="text-xl font-semibol">Edit Department</h3>
+              <button onClick={onClose} className="text-gray-400 hover:text-gray-600">&times;</button>
+            </div>
+               
                 <input
                     type="text"
                     value={newDepartment}

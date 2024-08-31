@@ -36,11 +36,13 @@ const AddExtension = ({ show, onClose, onSave, isLoading }) => {
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50">
-      <div className="bg-white w-full max-w-md mx-auto rounded-lg shadow-lg p-4">
+    <div className="bg-white w-full max-w-md mx-auto">
+      <div className="bg-white rounded-lg shadow-lg p-4 overflow-y-auto max-h-screen">
         <div className="flex justify-between items-center mb-2">
           <h2 className="text-xl font-semibold text-gray-800">Add Extension</h2>
           <button onClick={onClose} className="text-gray-400 hover:text-gray-600">&times;</button>
         </div>
+      
 
 
         <div className="mb-2">
@@ -98,6 +100,7 @@ const AddExtension = ({ show, onClose, onSave, isLoading }) => {
           >
             Cancel
           </button>
+        </div>
         </div>
       </div>
     </div>

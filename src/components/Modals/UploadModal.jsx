@@ -35,7 +35,7 @@ const UploadModal = ({ show, onClose, onSave }) => {
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50">
       <div className="bg-blue-500 w-full max-w-md mx-auto">
-        <div className="bg-white rounded-lg shadow-lg p-4 overflow-y-auto max-h-screen">
+        <div className="bg-white shadow-lg p-4 overflow-y-auto max-h-screen">
           <div className="flex justify-between items-center mb-2">
             <h2 className="text-xl font-semibold text-gray-800">Upload Document</h2>
             <button onClick={onClose} className="text-gray-400 hover:text-gray-600">&times;</button>
