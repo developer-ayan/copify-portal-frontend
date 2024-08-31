@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 function ChatWindow({ user, updateUserMessage }) {
   const [messages, setMessages] = useState([
@@ -7,6 +7,7 @@ function ChatWindow({ user, updateUserMessage }) {
   ]);
 
   const [newMessage, setNewMessage] = useState('');
+  const messagesEndRef = useRef(null);
 
   const sendMessage = () => {
     if (newMessage.trim() !== "") {
@@ -18,14 +19,22 @@ function ChatWindow({ user, updateUserMessage }) {
     }
   };
 
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
+
   return (
-    <div className="flex-1 flex flex-col bg-white">
+    <div className="flex-1 flex flex-col bg-white" style={{ height: '100vh' }}>
       <div className="p-2 border-b border-gray-300">
         <h2 className="text-md font-semibold">{user.name}</h2>
         <p className="text-sm text-gray-500">last seen</p>
       </div>
 
-      <div className="flex-1 p-4 overflow-y-auto">
+      <div className="flex-1 p-4 overflow-y-auto" style={{ flexGrow: 1 }}>
         {messages.map((message, index) => (
           <div key={index} className={`mb-4 ${message.fromMe ? 'text-right' : ''}`}>
             <div className={`inline-block p-3 rounded-md shadow-md ${message.fromMe ? 'bg-blue-100' : 'bg-gray-100'}`}>
@@ -33,6 +42,7 @@ function ChatWindow({ user, updateUserMessage }) {
             </div>
           </div>
         ))}
+        <div ref={messagesEndRef} />
       </div>
 
       <div className="p-4 border-t border-gray-300 flex items-center">
