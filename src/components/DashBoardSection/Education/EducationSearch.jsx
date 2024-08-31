@@ -18,7 +18,7 @@ const Search = ({ selectedOption, setSelectedOption, searchMethod , isLoading })
 
   return (
     <div className="bg-white p-5 rounded-lg shadow-md mb-8">
-      <h2 className="text-2xl font-semibold mb-4 ">Educational Institute</h2>
+      <h2 className="text-2xl font-semibold text-center mb-4 ">Educational Institute</h2>
 
       <div className="flex flex-wrap items-center mb-4">
         <label className="w-full sm:w-1/4 md:w-auto font-medium ml-0 sm:ml-4 mb-2 sm:mb-0 mr-2">Search Name:</label>

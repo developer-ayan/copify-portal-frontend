@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import DonutChart from '../NavOptions/DonutChart';
 
 const orders = [
@@ -57,11 +58,18 @@ const orders = [
 
 const Search = () => {
   const [selectedOrder, setSelectedOrder] = useState(null);
+  const navigate = useNavigate(); 
 
   const handleRadioChange = (id) => {
     setSelectedOrder(id);
   };
- 
+
+  const handleActionClick = (action) => {
+    console.log('Action clicked:', action); 
+       {
+      navigate('/dashboard/claim-station');
+    }
+  };
 
   return (
     <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -95,22 +103,22 @@ const Search = () => {
                             <td className="px-4 py-2 border">{order.color}</td>
                             <td className="px-4 py-2 border">{order.pages}</td>
                             <td className="px-4 py-2 border">{order.copies}</td>
-                            
                           </tr>
                           <tr className="border-t border-gray-200">
-                        <td colSpan="7" className="px-4 py-2 border text-left">
-                          <div className="flex justify-start items-center">
-                            {order.actions.map((action, idx) => (
-                              <button
-                                key={idx}
-                                className="bg-blue-500 text-white text-xs font-semibold mr-2 mb-2 px-2 py-2 rounded"
-                              >
-                                {action}
-                              </button>
-                            ))}
-                          </div>
-                        </td>
-                      </tr>
+                            <td colSpan="7" className="px-4 py-2 border text-left">
+                              <div className="flex justify-start items-center">
+                                {order.actions.map((action, idx) => (
+                                  <button
+                                    key={idx}
+                                    className="bg-blue-500 text-white text-xs font-semibold mr-2 mb-2 px-2 py-2 rounded"
+                                    onClick={() => handleActionClick(action)} 
+                                  >
+                                    {action}
+                                  </button>
+                                ))}
+                              </div>
+                            </td>
+                          </tr>
                         </React.Fragment>
                       ))}
                     </tbody>

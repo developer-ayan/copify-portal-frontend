@@ -23,7 +23,7 @@ const DonutChart = () => {
   };
 
   const options = {
-    cutout: '70%', // Creates the donut shape
+    cutout: '70%', 
     responsive: true,
     maintainAspectRatio: true,
     plugins: {

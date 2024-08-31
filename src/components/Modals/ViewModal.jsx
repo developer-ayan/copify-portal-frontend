@@ -141,6 +141,8 @@ const ViewInstitutesModal = ({ closeModal, dept }) => {
     getList(true);
   }, []);
 
+  console.log(' dept?.institute_id'  , dept?.institute_id)
+
   return (
     <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center p-6">
       <div className="bg-white p-6 shadow-md w-full max-w-lg sm:max-w-xl md:max-w-1xl lg:max-w-2xl">
@@ -171,6 +173,13 @@ const ViewInstitutesModal = ({ closeModal, dept }) => {
                     <tr key={index}>
                       <td className="px-4 py-2 border text-center">{department.department_name}</td>
                       <td className="px-4 py-2 border flex flex-col space-y-2 sm:flex-row sm:space-x-2 sm:space-y-0 justify-center">
+                       
+                      <button
+                          className="px-3 py-2 bg-blue-500 text-white rounded-md"
+                          onClick={() => openSemesterModal(department)}
+                        >
+                         Semester
+                        </button>
                         <button
                           className="px-3 py-2 bg-blue-500 text-white rounded-md"
                           onClick={() => handleEditOpen(department)}
@@ -183,12 +192,7 @@ const ViewInstitutesModal = ({ closeModal, dept }) => {
                         >
                           Delete
                         </button>
-                        <button
-                          className="px-3 py-2 bg-green-500 text-white rounded-md"
-                          onClick={() => openSemesterModal(department)}
-                        >
-                          Manage Semesters
-                        </button>
+                     
                       </td>
                     </tr>
                   ))}
