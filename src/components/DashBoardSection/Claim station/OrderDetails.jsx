@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import DonutChart from '../../NavOptions/DonutChart';
+import StudentModal from "./ClaimModal"; 
 
 const OrderDetails = () => {
   const [formData, setFormData] = useState({
@@ -15,9 +16,19 @@ const OrderDetails = () => {
     paymentStatus: 'COD',
   });
 
+  const [isModalOpen, setIsModalOpen] = useState(false); 
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({ ...prevData, [name]: value }));
+  };
+
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
   };
 
   return (
@@ -150,7 +161,12 @@ const OrderDetails = () => {
                 <p className="text-center">COD</p>
               </div>
             </div>
-            <button className="bg-blue-500 text-white px-4 py-2 rounded mt-4">Claim Now</button>
+            <button
+              className="bg-blue-500 text-white px-4 py-2 rounded mt-4"
+              onClick={openModal}
+            >
+              Claim Now
+            </button>
           </div>
           <div className="flex-1 flex flex-col">
             <h2 className="text-center text-lg font-semibold mb-4 mt-4">User Received Analysis</h2>
@@ -158,6 +174,7 @@ const OrderDetails = () => {
           </div>
         </div>
       </div>
+      {isModalOpen && <StudentModal closeModal={closeModal} />} 
     </div>
   );
 };

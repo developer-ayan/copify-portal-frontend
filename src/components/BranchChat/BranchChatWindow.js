@@ -11,11 +11,14 @@ function BranchChatWindow({ user, updateUserMessage }) {
 
   const sendMessage = () => {
     if (newMessage.trim() !== "") {
+      console.log("Sending message:", newMessage);  
       const updatedMessages = [...messages, { text: newMessage, fromMe: true }];
       setMessages(updatedMessages);
 
       updateUserMessage(user.id, newMessage);
       setNewMessage('');
+    } else {
+      console.log("No message to send");  
     }
   };
 
@@ -26,6 +29,14 @@ function BranchChatWindow({ user, updateUserMessage }) {
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
+
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      console.log("Enter key pressed");  
+      sendMessage();
+    }
+  };
 
   return (
     <div className="flex-1 flex flex-col bg-white" style={{ height: '100vh' }}>
@@ -52,6 +63,7 @@ function BranchChatWindow({ user, updateUserMessage }) {
           placeholder="Type a message..." 
           value={newMessage}
           onChange={(e) => setNewMessage(e.target.value)}
+          onKeyDown={handleKeyDown}
         />
         <button 
           onClick={sendMessage} 
