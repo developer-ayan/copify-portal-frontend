@@ -16,6 +16,8 @@ const Extension = () => {
   const [showEditModal, setShowEditModal] = useState(false);
   const [currentDept, setCurrentDept] = useState(null);
   const [uploads, setUploads] = useState([]);
+  const [isTableExpanded, setIsTableExpanded] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   
   const handleAddShop = (image, description) => {
     const newShop = {
@@ -54,8 +56,14 @@ const Extension = () => {
 
   useEffect(() => {
     setScreenLoader(false);
-  }, []);
+  }, [])
 
+
+  const toggleDropdown = () => {
+    setIsDropdownOpen(!isDropdownOpen); 
+    setIsTableExpanded(!isTableExpanded);
+  
+  }
   return screenLoader ? (
     <div className="w-full flex justify-center items-center min-h-[90vh]">
       <Loader extraStyles="!static !bg-transparent" />
@@ -72,6 +80,18 @@ const Extension = () => {
             + Add Extension
           </button>
         </div>
+        <div
+  className="flex justify-between items-center cursor-pointer mb-4"
+  onClick={toggleDropdown}
+>
+  <span
+    className={`transform transition-transform duration-200 ml-auto ${
+      isDropdownOpen ? 'rotate-180' : 'rotate-0'
+    }`}
+  >
+    ▼
+  </span>
+</div>
 
         <div className="overflow-x-auto">
           <table className="min-w-full bg-white border-collapse">
@@ -84,7 +104,7 @@ const Extension = () => {
             </thead>
             <tbody>
               {uploads.map((upload, index) => (
-                <tr key={index}>
+                <tr key={index}className={`${isTableExpanded ? '' : 'hidden'} mt-4 overflow-x-auto`}>
                 <td className="px-4 py-2 border text-center">
   <div className="flex justify-center items-center h-full">
     <img

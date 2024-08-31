@@ -16,7 +16,8 @@ const DiscountPromoCode = () => {
   const [showEditModal, setShowEditModal] = useState(false);
   const [currentDept, setCurrentDept] = useState(null);
   const [uploads, setUploads] = useState([]);
-
+  const [isTableExpanded, setIsTableExpanded] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const handleAddShop = async (startDate, endDate, promoCode, discount) => {
     try {
@@ -99,7 +100,11 @@ const DiscountPromoCode = () => {
   useEffect(() => {
     getList(true)
   }, [])
-
+  const toggleDropdown = () => {
+    setIsDropdownOpen(!isDropdownOpen); 
+    setIsTableExpanded(!isTableExpanded);
+  
+  }
   return (
     <div className="bg-white rounded-lg shadow-lg p-6 flex flex-col sm:flex-row justify-between mx-2 mt-7 sm:mx-4 md:mx-8 lg:mx-7">
       {screenLoader ? (
@@ -117,7 +122,18 @@ const DiscountPromoCode = () => {
               + Discount Promo code
             </button>
           </div>
-
+          <div
+  className="flex justify-between items-center cursor-pointer mb-4"
+  onClick={toggleDropdown}
+>
+  <span
+    className={`transform transition-transform duration-200 ml-auto ${
+      isDropdownOpen ? 'rotate-180' : 'rotate-0'
+    }`}
+  >
+    ▼
+  </span>
+</div>
           <div className="overflow-x-auto">
             <table className="min-w-full bg-white">
               <thead>
@@ -131,7 +147,7 @@ const DiscountPromoCode = () => {
               </thead>
               <tbody>
                 {uploads.map((upload, index) => (
-                  <tr key={index}>
+                  <tr key={index}className={`${isTableExpanded ? '' : 'hidden'} mt-4 overflow-x-auto`}>
                     <td className="px-4 py-2 border text-center">{upload.discount}%</td>
                     <td className="px-4 py-2 border text-center">{formatDate(upload.start_date)}</td>
                     <td className="px-4 py-2 border text-center">{formatDate(upload.end_date)}</td>

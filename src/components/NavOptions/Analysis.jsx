@@ -12,7 +12,7 @@ const Analysis = () => {
 
   return (
     <div className="container">
-      <div className="bg-white p-4 rounded shadow">
+      <div className="bg-white p-4 rounded-lg shadow-md">
         <h1 className="text-2xl font-bold text-center mb-8">Advertising and Announcement</h1>
         <div className="flex flex-col lg:flex-row gap-5">
           <div className="flex-1">

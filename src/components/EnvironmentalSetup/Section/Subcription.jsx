@@ -15,7 +15,8 @@ const Subscription = () => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [currentPromo, setCurrentPromo] = useState(null);
   const [uploads, setUploads] = useState([]);
-
+  const [isTableExpanded, setIsTableExpanded] = useState(false); 
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false); 
   const handleAddShop = (php, months) => {
     const newPromo = {
       php,
@@ -52,6 +53,12 @@ const Subscription = () => {
     setScreenLoader(false);
   }, []);
 
+  
+  const toggleDropdown = () => {
+    setIsDropdownOpen(!isDropdownOpen); 
+    setIsTableExpanded(!isTableExpanded); 
+  };
+
   return screenLoader ? (
     <div className="w-full flex justify-center items-center min-h-[90vh]">
       <Loader extraStyles="!static !bg-transparent" />
@@ -69,7 +76,22 @@ const Subscription = () => {
           </button>
         </div>
 
-        <div className="overflow-x-auto">
+      
+        <div
+  className="flex justify-between items-center cursor-pointer mb-4"
+  onClick={toggleDropdown}
+>
+  <span
+    className={`transform transition-transform duration-200 ml-auto ${
+      isDropdownOpen ? 'rotate-180' : 'rotate-0'
+    }`}
+  >
+    ▼
+  </span>
+</div>
+
+       
+        <div >
           <table className="min-w-full bg-white">
             <thead>
               <tr>
@@ -80,7 +102,7 @@ const Subscription = () => {
             </thead>
             <tbody>
               {uploads.map((upload, index) => (
-                <tr key={index}>
+                <tr key={index} className={`${isTableExpanded ? '' : 'hidden'} mt-4 overflow-x-auto`}>
                   <td className="px-4 py-2 border text-center">{upload.php}</td>
                   <td className="px-4 py-2 border text-center">{upload.months}</td>
                   <td className="px-4 py-2 border flex space-x-2 justify-center">
@@ -104,7 +126,6 @@ const Subscription = () => {
         </div>
       </div>
 
-      
       {showDeleteModal && (
         <DeleteSubscriptionModal
           isLoading={buttonLoader}
@@ -114,7 +135,6 @@ const Subscription = () => {
         />
       )}
 
-
       {showAddShopModal && (
         <AddSubscriptionModal
           isOpen={showAddShopModal}
@@ -123,7 +143,6 @@ const Subscription = () => {
           isLoading={buttonLoader}
         />
       )}
-
 
       {showEditModal && (
         <EditSubscriptionModal
