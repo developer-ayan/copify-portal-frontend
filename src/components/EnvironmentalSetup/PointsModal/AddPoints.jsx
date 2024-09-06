@@ -51,7 +51,7 @@ const AddPointModal = ({ isOpen, closeModal, handleAddPoints, isLoading }) => {
               onClick={handleAdd}
               disabled={isLoading}
             >
-              {isLoading ? 'Loading...' : 'Add'}
+              {isLoading ? 'Load' : 'Add'}
             </button>
             <button
               className="w-6/12 px-3 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-opacity-75"

@@ -24,7 +24,7 @@ const Education = () => {
     } catch (error) {
       setUploads([])
       setButtonLoader(false);
-      toast.success(error?.message, { duration: 2000 })
+      toast.error(error?.message, { duration: 2000 })
     }
   };
   

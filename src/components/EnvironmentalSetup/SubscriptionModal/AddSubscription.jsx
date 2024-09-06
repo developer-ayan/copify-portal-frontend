@@ -1,13 +1,11 @@
 import React, { useState } from 'react';
 
 const AddSubscriptionModal = ({ isOpen, closeModal, addDepartment, isLoading }) => {
- 
+
   const [php, setPhp] = useState('');
   const [months, setMonths] = useState('');
   const handleAdd = () => {
-    if (php && months) {
-      addDepartment(php, months); 
-    }
+    addDepartment(php, months);
   };
 
   if (!isOpen) return null;
@@ -21,20 +19,6 @@ const AddSubscriptionModal = ({ isOpen, closeModal, addDepartment, isLoading }) 
             <button onClick={closeModal} className="text-gray-400 hover:text-gray-600">&times;</button>
           </div>
           <div className="mb-2">
-            
-           
-
-          
-            <input
-              type="text"
-              value={php}
-              onChange={(e) => setPhp(e.target.value)}
-              className="w-full px-3 py-2 border rounded-md mb-4"
-              placeholder="PHP"
-              required
-            />
-
-           
             <select
               value={months}
               onChange={(e) => setMonths(e.target.value)}
@@ -50,13 +34,22 @@ const AddSubscriptionModal = ({ isOpen, closeModal, addDepartment, isLoading }) 
               <option value="12">12 Months</option>
             </select>
 
+            <input
+              type="number"
+              value={php}
+              onChange={(e) => setPhp(e.target.value)}
+              className="w-full px-3 py-2 border rounded-md mb-4"
+              placeholder="PHP"
+              required
+            />
+
             <div className="flex space-x-2 mt-2">
               <button
                 className={`w-6/12 px-3 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75 flex items-center justify-center ${isLoading ? 'opacity-50' : 'opacity-100'}`}
                 onClick={handleAdd}
                 disabled={isLoading}
               >
-                {isLoading ? 'Loading...' : 'Add'}
+                {isLoading ? 'Load' : 'Add'}
               </button>
               <button
                 className="w-6/12 px-3 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-opacity-75"

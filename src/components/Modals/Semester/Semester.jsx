@@ -1,10 +1,11 @@
 import React, { useContext, useEffect, useState } from 'react';
 import DeleteModal from './DeleteSemester';
 import AddSemesterModal from './AddSemester';
-import EditSemesterModal from    './EditSemester';
+import EditSemesterModal from './EditSemester';
 import { Loader } from '../../Loaders';
 import toast from 'react-hot-toast';
 import { AppContext } from '../../../context';
+import { call } from '../../../utils/helper';
 
 const Semester = ({ closeModal, dept }) => {
   const { user } = useContext(AppContext);
@@ -28,7 +29,7 @@ const Semester = ({ closeModal, dept }) => {
 
   const handleEditOpen = (semester) => {
     setCurrentSemester(semester);
-    setShowEditModal(true); 
+    setShowEditModal(true);
     setButtonLoader(false);
   };
 
@@ -43,10 +44,20 @@ const Semester = ({ closeModal, dept }) => {
     setCurrentSemester(null);
   };
 
-  const deleteSemester = () => {
-    setSemesters(semesters.filter((semester) => semester !== currentSemester));
-    closeDeleteModal();
-    toast.success('Semester deleted successfully', { duration: 2000 });
+  const deleteSemester = async () => {
+    try {
+      setButtonLoader(true)
+      const formData = new FormData()
+      formData.append('semester_id', currentSemester?.semester_id)
+      const response = await call('/admin/delete_semester', 'POST', formData)
+      await getList()
+      closeDeleteModal();
+      setButtonLoader(false);
+      toast.success(response?.message, { duration: 2000 })
+    } catch (error) {
+      setButtonLoader(false);
+      toast.error(error?.message, { duration: 2000 })
+    }
   };
 
   const openAddModal = () => {
@@ -58,25 +69,65 @@ const Semester = ({ closeModal, dept }) => {
     setShowAddModal(false);
   };
 
-  const addSemester = (newSemesterName) => {
-    setSemesters([...semesters, { semester_name: newSemesterName }]);
-    closeAddModal();
-    toast.success('Semester added successfully', { duration: 2000 });
+  const addSemester = async (newSemesterName) => {
+    try {
+      setButtonLoader(true)
+      const formData = new FormData()
+      formData.append('user_id', user?.user_id)
+      formData.append('semester_name', newSemesterName)
+      formData.append('department_id', dept?.department_id)
+      console.log('formData', formData)
+      const response = await call('/admin/create_semester', 'POST', formData)
+      await getList()
+      setButtonLoader(false);
+      closeAddModal();
+      toast.success(response?.message, { duration: 2000 })
+    } catch (error) {
+      setButtonLoader(false);
+      toast.error(error?.message, { duration: 2000 })
+    }
   };
 
-  const editSemester = (updatedSemesterName) => {
-    setSemesters(
-      semesters.map((semester) =>
-        semester === currentSemester ? { ...semester, semester_name: updatedSemesterName } : semester
-      )
-    );
-    closeEditModal();
-    toast.success('Semester updated successfully', { duration: 2000 });
+  const editSemester = async (updatedSemesterName) => {
+    try {
+      setButtonLoader(true)
+      const formData = new FormData()
+      formData.append('semester_id', currentSemester?.semester_id)
+      formData.append('semester_name', updatedSemesterName)
+      const response = await call('/admin/edit_semester', 'POST', formData)
+      await getList()
+      closeEditModal();
+      setButtonLoader(false);
+      toast.success(response?.message, { duration: 2000 })
+    } catch (error) {
+      setButtonLoader(false);
+      toast.error(error?.message, { duration: 2000 })
+    }
+  };
+
+
+  const getList = async (listLoader) => {
+    try {
+      listLoader && setScreenLoader(true)
+      const formData = new FormData()
+      formData.append('department_id', dept?.department_id)
+      const response = await call('/admin/fetch_semester_list', 'POST', formData)
+      console.log('response', response)
+      setScreenLoader(false)
+      setSemesters(response?.data)
+    } catch (error) {
+      setSemesters([])
+      setScreenLoader(false)
+      toast.error(error?.message, { duration: 2000 })
+    }
   };
 
   useEffect(() => {
-    setScreenLoader(false);
-  }, []);
+    getList(true)
+  }, [])
+
+
+  console.log('semesters', dept)
 
   return (
     <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center p-6">

@@ -39,7 +39,7 @@ const EditSemesterModal = ({ isOpen, closeModal, editSemester, isLoading, curren
             onClick={handleSave}
             disabled={isLoading}
           >
-            {isLoading ? 'Saving...' : 'Save'}
+            {isLoading ? 'Load' : 'Save'}
           </button>
           <button
             className="w-6/12 px-3 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-opacity-75"

@@ -93,7 +93,15 @@ const Router = () => {
             path="/"
             element={user ? <Layout /> : <Navigate to="/login" replace />}
           >
-            <Route path="/dashboard" element={privateRoutes(Dashboard)} />
+            {user?.role_id == 1 ?
+              <Route path="/dashboard" element={privateRoutes(Dashboard)} />
+              :
+              <Route
+                index
+                path="/orders"
+                element={privateRoutes(Orders)}
+              />
+            }
             <Route path="/edit-profile" element={privateRoutes(EditProfile)} />
             <Route path="/EnvironmentalSetup" element={privateRoutes(EnvironmentalSetup)} />
             <Route path="/advertising-and-annoucements" element={privateRoutes(Advertising)} />
@@ -102,13 +110,13 @@ const Router = () => {
               path="/payment-methods"
               element={privateRoutes(PaymentMethods)}
             /> */}
-              <Route path="/education-institute" element={privateRoutes(EducationInstitute)} />
+            <Route path="/education-institute" element={privateRoutes(EducationInstitute)} />
 
             <Route
               path="/Branch"
               element={privateRoutes(Branch)}
             />
-             <Route
+            <Route
               path="/AdminChat"
               element={privateRoutes(AdminChat)}
             />

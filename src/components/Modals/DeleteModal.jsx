@@ -1,7 +1,7 @@
 
 import React from 'react';
 
-const DeleteModal = ({ delete_name, closeModal, confirmModal, isLoading }) => {
+const DeleteModal = ({ delete_name, closeModal, confirmModal, isLoading, customMessage }) => {
   return (
     <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center p-4">
       <div className="bg-white p-6 shadow-md w-full max-w-sm sm:max-w-md">
@@ -11,7 +11,7 @@ const DeleteModal = ({ delete_name, closeModal, confirmModal, isLoading }) => {
           </div>
           <h3 className="text-xl font-semibold mb-2">Confirm</h3>
         </div>
-        <p className="text-center mb-6">Are you sure you want to delete {delete_name}?</p>
+        <p className="text-center mb-6"> {customMessage ? customMessage : `Are you sure you want to delete ${delete_name}?`}</p>
         <div className="flex justify-center space-x-4">
           <button className="bg-gray-300 text-black px-4 py-2 rounded" onClick={closeModal}>Cancel</button>
           <button

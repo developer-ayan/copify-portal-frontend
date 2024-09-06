@@ -17,7 +17,7 @@ const DeleteSubcriptionModal = ({ delete_name, closeModal, confirmModal, isLoadi
             className={`bg-red-500 text-white px-4 py-2 rounded ${isLoading ? 'opacity-50' : 'opacity-100'}`}
             onClick={confirmModal}
           >
-            {isLoading ? 'Loading...' : 'Confirm'}
+            {isLoading ? 'Load' : 'Confirm'}
           </button>
         </div>
       </div>

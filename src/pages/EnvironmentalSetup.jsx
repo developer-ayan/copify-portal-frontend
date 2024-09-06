@@ -27,7 +27,7 @@ const Education = () => {
           <Pages/>
           <DeliveryCharges />
           <DiscountPromo/>
-          <Extension/>
+          {/* <Extension/> */}
           <Point/>
           <Subcription/>
           </main>

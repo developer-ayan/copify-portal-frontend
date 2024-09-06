@@ -70,7 +70,7 @@ const SubjectModal = ({ closeModal, dept }) => {
       toast.success(response?.message, { duration: 2000 })
     } catch (error) {
       setButtonLoader(false);
-      toast.success(error?.message, { duration: 2000 })
+      toast.error(error?.message, { duration: 2000 })
     }
   };
 
@@ -90,7 +90,7 @@ const SubjectModal = ({ closeModal, dept }) => {
       toast.success(response?.message, { duration: 2000 })
     } catch (error) {
       setButtonLoader(false);
-      toast.success(error?.message, { duration: 2000 })
+      toast.error(error?.message, { duration: 2000 })
     }
   };
 
@@ -107,7 +107,7 @@ const SubjectModal = ({ closeModal, dept }) => {
       toast.success(response?.message, { duration: 2000 })
     } catch (error) {
       setButtonLoader(false);
-      toast.success(error?.message, { duration: 2000 })
+      toast.error(error?.message, { duration: 2000 })
     }
   };
 
@@ -122,7 +122,7 @@ const SubjectModal = ({ closeModal, dept }) => {
     } catch (error) {
       setScreenLoader(false)
       setSubjects([])
-      toast.success(error?.message, { duration: 2000 })
+      toast.error(error?.message, { duration: 2000 })
     }
   };
 

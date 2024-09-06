@@ -40,7 +40,7 @@ const Order = ({ buttonLoaderStatefromParent, searchDataFromChild }) => {
       toast.success(response?.message, { duration: 2000 });
     } catch (error) {
       setButtonLoader(false);
-      toast.success(error?.message, { duration: 2000 });
+      toast.error(error?.message, { duration: 2000 });
     }
   };
 
@@ -53,7 +53,7 @@ const Order = ({ buttonLoaderStatefromParent, searchDataFromChild }) => {
     } catch (error) {
       setUploads([]);
       setScreenLoader(false);
-      toast.success(error?.message, { duration: 2000 });
+      toast.error(error?.message, { duration: 2000 });
     }
   };
 
@@ -70,7 +70,7 @@ const Order = ({ buttonLoaderStatefromParent, searchDataFromChild }) => {
       toast.success(response?.message, { duration: 2000 });
     } catch (error) {
       setButtonLoader(false);
-      toast.success(error?.message, { duration: 2000 });
+      toast.error(error?.message, { duration: 2000 });
     }
   };
 
@@ -94,7 +94,7 @@ const Order = ({ buttonLoaderStatefromParent, searchDataFromChild }) => {
       toast.success(response?.message, { duration: 2000 });
     } catch (error) {
       setButtonLoader(false);
-      toast.success(error?.message, { duration: 2000 });
+      toast.error(error?.message, { duration: 2000 });
     }
   };
 
@@ -155,13 +155,13 @@ const Order = ({ buttonLoaderStatefromParent, searchDataFromChild }) => {
                       className="px-3 py-2 bg-blue-500 text-white rounded-md"
                       onClick={() => { setCurrentDept(upload); setShowStudentModal(true); }} 
                     >
-                      Student
+                      Students
                     </button>
                     <button
                       className="px-3 py-2 bg-blue-500 text-white rounded-md"
                       onClick={() => { setCurrentDept(upload); setShowTeacherModal(true); }} // New Teacher button
                     >
-                      Teacher
+                      Teachers
                     </button>
 
                     <button
