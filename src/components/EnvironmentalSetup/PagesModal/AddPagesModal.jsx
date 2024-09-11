@@ -2,15 +2,15 @@ import React, { useState } from 'react';
 
 const AddPagesModal = ({ show, onClose, onSave, isLoading }) => {
   const [pagesName, setPagesName] = useState('');
+  const [colorFulPrice, setColorFulPrice] = useState('');
+  const [blackAndWhitePrice, setBlackAndWhitePrice] = useState('');
 
   const handleSave = () => {
-    if (pagesName) {
-      onSave(pagesName); 
-    }
+    onSave(pagesName, colorFulPrice, blackAndWhitePrice);
   };
 
   const handleInputChange = (e) => {
-    const value = e.target.value.replace(/[0-9]/g, ''); 
+    const value = e.target.value.replace(/[0-9]/g, '');
     setPagesName(value);
   };
 
@@ -29,10 +29,31 @@ const AddPagesModal = ({ show, onClose, onSave, isLoading }) => {
           <div className="mb-2">
             <input
               id="text-input"
+              type="text"
               value={pagesName}
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               placeholder='Paper size'
-              onChange={handleInputChange}
+              onChange={(e) => setPagesName(e.target.value)}
+            />
+          </div>
+          <div className="mb-2">
+            <input
+              id="text-input"
+              type="number"
+              value={colorFulPrice}
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              placeholder='colorful per page price'
+              onChange={(e) => setColorFulPrice(e.target.value)}
+            />
+          </div>
+          <div className="mb-2">
+            <input
+              id="text-input"
+              type="number"
+              value={blackAndWhitePrice}
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              placeholder='Black and white per page price'
+              onChange={(e) => setBlackAndWhitePrice(e.target.value)}
             />
           </div>
 

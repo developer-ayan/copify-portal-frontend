@@ -124,5 +124,15 @@ export const colors = {
   success: "border-green-600 bg-green-100 text-green-600",
 };
 
+export const fileColorDropdown = [
+  {
+    id : 1,
+    value : "Colorful"
+  },
+  {
+    id : 2,
+    value : "Black & white"
+  },
+]
 
 export const paginationEntries = ["All", 50, 100, 200, 500, 1000];

@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { base_url } from "../../components"
 import { Loader, Page } from "../../components";
 import TeacherSerach from "../../components/DashBoardSection/TeacherDashboard/TeacherSerach";
@@ -6,11 +6,19 @@ import TeacherSubject from "../../components/DashBoardSection/TeacherDashboard/T
 import TeacherSubscribe from "../../components/DashBoardSection/TeacherDashboard/TeacherSubscribe";
 import TeacherUpload from "../../components/DashBoardSection/TeacherDashboard/TeacherUpload";
 import TeacherFiles from "../../components/DashBoardSection/TeacherDashboard/TeacherFiles";
+import SearchData from "../../components/SearchData/SearchData";
 
 const AdminOptions = () => {
   const [analytics, setAnalytics] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [selectedOption, setSelectedOption] = useState(1);
+
+  const [searchLoader, setSearchLoader] = useState(false);
+  const [showSearchData, setShowSearchData] = useState(false);
+  const [searchData, setSearchData] = useState([])
+  const [searchName, setSearchName] = useState('');
+  const [item, setItem] = useState({});
+
 
   // const fetchAnalytics = async () => {
   //   setIsLoading(true);
@@ -35,6 +43,18 @@ const AdminOptions = () => {
   //   fetchAnalytics();
   // }, []);
 
+  const clearStates = (item, name) => {
+    setSearchLoader(false)
+    setShowSearchData(false)
+    setSearchData(false)
+    setItem(item)
+    setSearchName(name)
+  }
+
+  const isEmpty = Object?.keys(item)?.length === 0;
+
+  console.log('item', item)
+
   return (
     <Page
       title="Collegio de Kidapawan Branch"
@@ -53,11 +73,29 @@ const AdminOptions = () => {
               <TeacherSerach
                 selectedOption={selectedOption}
                 setSelectedOption={setSelectedOption}
+                setSearchData={setSearchData}
+                searchData={searchData}
+                setSearchLoader={setSearchLoader}
+                searchLoader={searchLoader}
+                setShowSearchData={setShowSearchData}
+                showSearchData={showSearchData}
+                setSearchName={setSearchName}
+                searchName={searchName}
+                clearStates={clearStates}
+                item={item}
+                setItem={setItem}
               />
-              {selectedOption === 1 && <TeacherSubject />}
-              {selectedOption === 2 && <TeacherSubscribe />}
-              {selectedOption === 3 && <TeacherFiles />}
-              {selectedOption === 4 && <TeacherUpload />}
+              {isEmpty ?
+                <></> :
+                <>
+                  {selectedOption === 1 && <TeacherSubject item={item} />}
+                  {selectedOption === 2 && <TeacherSubscribe item={item} />}
+                  {selectedOption === 3 && <TeacherFiles item={item} />}
+                  {selectedOption === 4 && <TeacherUpload item={item} />}
+                </>
+              }
+
+
             </main>
           )}
         </div>

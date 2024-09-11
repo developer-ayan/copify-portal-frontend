@@ -21,12 +21,14 @@ const Pages = () => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
 
 
-  const handleAddDelivery = async (newDelivery) => {
+  const handleAddDelivery = async (newDelivery, newColorFulPrice, newBlackAndWhitePrice) => {
     try {
       setButtonLoader(true)
       const formData = new FormData()
       formData.append('user_id', user?.user_id)
       formData.append('paper_size', newDelivery)
+      formData.append('colorful_paper_price', newColorFulPrice)
+      formData.append('black_and_white_paper_size_price', newBlackAndWhitePrice)
       const response = await call('/admin/create_paper_size', 'POST', formData)
       await getList()
       setShowDelivery(false);
@@ -38,11 +40,13 @@ const Pages = () => {
     }
   };
 
-  const saveEdit = async (oldName, newName) => {
+  const saveEdit = async (oldName, newName, colorful_price, black_and_white_price) => {
     try {
       setButtonLoader(true)
       const formData = new FormData()
       formData.append('paper_size', newName)
+      formData.append('colorful_paper_price', colorful_price)
+      formData.append('black_and_white_paper_size_price', black_and_white_price)
       formData.append('paper_size_id', currentDept?.paper_size_id)
       const response = await call('/admin/edit_paper_size', 'POST', formData)
       await getList()
@@ -114,14 +118,18 @@ const Pages = () => {
           <table className="min-w-full bg-white">
             <thead>
               <tr>
-                <th className="px-4 py-2 border w-1/2">Paper Size</th>
-                <th className="px-4 py-2 border w-1/2">Action</th>
+                <th className="px-4 py-2 border w-1/4">Paper Size</th>
+                <th className="px-4 py-2 border w-1/4">Colorful price</th>
+                <th className="px-4 py-2 border w-1/4">Black & white prcie</th>
+                <th className="px-4 py-2 border w-1/4">Action</th>
               </tr>
             </thead>
             <tbody>
               {uploads.map((upload, index) => (
                 <tr key={index}>
                   <td className="px-4 py-2 border text-center">{upload.paper_size}</td>
+                  <td className="px-4 py-2 border text-center">{upload.colorful_paper_price}</td>
+                  <td className="px-4 py-2 border text-center">{upload.black_and_white_paper_size_price}</td>
                   <td className="px-4 py-2 border flex space-x-2 justify-center">
                     <button
                       className="px-3 py-2 bg-blue-500 text-white rounded-md"

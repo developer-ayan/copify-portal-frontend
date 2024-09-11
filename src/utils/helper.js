@@ -127,6 +127,17 @@ const formatDateState = (dateString) => {
     return moment(dateString).format('YYYY-MM-DD');
 };
 
+const defaultSelect = (arr, param) => {
+    const filter = arr?.length > 0 ? arr[0][param] : ""
+    return filter
+}
+
+const getValueById = (arr, id , param) => {
+    const getValue = arr.filter((item, index) => item[param] == id)?.[0]?.value || "";
+    return getValue;
+};
+
+
 /* Exports
 ============================================================================= */
-export { call, _concatArray, _updateObject, _deleteObject, _getObject, formatDate, formatDateState };
+export { call, _concatArray, _updateObject, _deleteObject, _getObject, formatDate, formatDateState, defaultSelect, getValueById };

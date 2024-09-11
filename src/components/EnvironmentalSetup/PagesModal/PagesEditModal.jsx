@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 
 const PagesEditModal = ({ show, onClose, onSave, dept, isLoading }) => {
   const [name, setName] = useState(dept?.paper_size);
+  const [colorFulPrice, setColorFulPrice] = useState(dept?.colorful_paper_price);
+  const [blackAndWhitePrice, setBlackAndWhitePrice] = useState(dept?.black_and_white_paper_size_price);
 
 
   const handleInputChange = (e) => {
@@ -10,7 +12,7 @@ const PagesEditModal = ({ show, onClose, onSave, dept, isLoading }) => {
   };
 
   const handleSave = () => {
-    onSave(dept?.paper_size, name); 
+    onSave(dept?.paper_size, name, colorFulPrice, blackAndWhitePrice);
   };
 
   if (!show) return null;
@@ -26,14 +28,34 @@ const PagesEditModal = ({ show, onClose, onSave, dept, isLoading }) => {
           <div className="mb-2">
             <input
               id="text-input"
-              type="text" 
+              type="text"
               value={name}
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               placeholder='Paper size'
-              onChange={handleInputChange}
+              onChange={(e) => setName(e.target.value)}
             />
           </div>
-         
+          <div className="mb-2">
+            <input
+              id="text-input"
+              type="number"
+              value={colorFulPrice}
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              placeholder='colorful per page price'
+              onChange={(e) => setColorFulPrice(e.target.value)}
+            />
+          </div>
+          <div className="mb-2">
+            <input
+              id="text-input"
+              type="number"
+              value={blackAndWhitePrice}
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              placeholder='Black and white per page price'
+              onChange={(e) => setBlackAndWhitePrice(e.target.value)}
+            />
+          </div>
+
           <div className="flex justify-center space-x-2">
             <button
               className={`w-6/12 px-3 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75 flex items-center justify-center ${isLoading ? 'opacity-50' : 'opacity-100'}`}

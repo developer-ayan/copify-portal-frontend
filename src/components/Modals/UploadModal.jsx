@@ -1,17 +1,61 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import toast from 'react-hot-toast';
+import { call } from '../../utils/helper';
+import { fileColorDropdown } from '../../constants/data';
+import { PDFDocument } from 'pdf-lib';
 
-const UploadModal = ({ show, onClose, onSave }) => {
+const UploadModal = ({ show, onClose, onSave, currentDept, publishLater, isLoading }) => {
   const [fileName, setFileName] = useState('');
   const [file, setFile] = useState(null);
-  const [documentType, setDocumentType] = useState('');
+  const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
-  const [number, setNumber] = useState('');
-  const handleFileChange = (e) => {
+  const [pageNumber, setPageNumber] = useState('');
+  const [paperSize, setPaperSize] = useState('');
+  const [paperSizeList, setPaperSizeList] = useState([]);
+  const [color, setColor] = useState('');
+  const [totalPrice, setTotalPrice] = useState('');
+  const [date, setDate] = useState('');
+  const [time, setTime] = useState('');
+
+
+  const clearStates = () => {
+    setFileName('')
+    setFile(null)
+    setTitle('')
+    setDescription('')
+    setPageNumber('')
+    setPaperSize('')
+    setPaperSizeList([])
+    setColor('')
+    setTotalPrice('')
+    setDate('')
+    setTime('')
+  }
+
+  const handleFileChange = async (e) => {
     const selectedFile = e.target.files[0];
-    const validExtensions = ['.doc', '.docx', '.pdf', '.txt', '.ppt'];
+    console.log('selectedFile', selectedFile)
+    const validExtensions = ['doc', 'docx', 'pdf', 'txt', 'ppt']; // Remove the dot
     const fileExtension = selectedFile.name.split('.').pop().toLowerCase();
 
-    if (validExtensions.includes(`.${fileExtension}`)) {
+    if (validExtensions.includes(fileExtension)) {
+      if (fileExtension === 'pdf') { // Use === for comparison
+        try {
+          const fileBuffer = await selectedFile.arrayBuffer();
+          console.log('fileBuffer', fileBuffer)
+          const pdfDoc = await PDFDocument.load(fileBuffer);
+          const numPages = pdfDoc.getPageCount();
+          console.log('numPages:', numPages); // Log the number of pages
+          setPageNumber(numPages); // Set the number of pages
+          setFile(selectedFile);
+          setFileName(selectedFile.name);
+        } catch (error) {
+          console.error('Error reading PDF file:', error);
+          alert('Error reading PDF file. Please try again.');
+        }
+      }
+
+      // Set the file and fileName regardless of the extension
       setFile(selectedFile);
       setFileName(selectedFile.name);
     } else {
@@ -19,17 +63,38 @@ const UploadModal = ({ show, onClose, onSave }) => {
     }
   };
 
-  const handleSave = () => {
-    if (file && documentType && description) {
-      onSave(documentType, fileName, file, description);
-      onClose();
-    } else {
-      alert('Please select a file, a document type, and provide a description.');
+  const getPaperSizes = async () => {
+    try {
+      const response = await call('/admin/fetch_paper_size_list', 'POST');
+      setPaperSizeList(response?.data);
+    } catch (error) {
+      setPaperSizeList([]);
+      toast.error(error?.message, { duration: 2000 });
     }
+  };
+
+  useEffect(() => {
+    if (show) {
+      getPaperSizes();
+      clearStates()
+    }
+  }, [show]); // Fetch paper sizes when the modal is shown
+
+  const handleSave = () => {
+    onSave(fileName, file, title, description, pageNumber, paperSize, color, colorReflectPrice(), date, time);
   };
 
   if (!show) {
     return null;
+  }
+
+  const colorReflectPrice = () => {
+    const getPrice = paperSizeList?.filter((item, index) => item.paper_size_id == paperSize)?.[0]
+    console.log('getPrice', getPrice)
+    const colorPrice = color == 1 ? getPrice?.colorful_paper_price : getPrice?.black_and_white_paper_size_price
+    console.log('colorPrice', colorPrice)
+    const sum = pageNumber * colorPrice
+    return sum
   }
 
   return (
@@ -66,19 +131,15 @@ const UploadModal = ({ show, onClose, onSave }) => {
               />
             </label>
           </div>
+
           <div className="mb-2">
-            <select
-              id="documentType"
+            <input
+              id="title"
               className="block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-              value={documentType}
-              onChange={(e) => setDocumentType(e.target.value)}
-            >
-              <option value="">Select document type</option>
-              <option value="English">English</option>
-              <option value="Maths">Maths</option>
-              <option value="Science">Science</option>
-              <option value="Others">Others</option>
-            </select>
+              placeholder="Title"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+            />
           </div>
           <div className="mb-2">
             <input
@@ -90,50 +151,85 @@ const UploadModal = ({ show, onClose, onSave }) => {
             />
           </div>
           <div className="mb-2">
-            <input type="number" 
-            id="number-input" 
-            aria-describedby="helper-text-explanation"
-             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" 
-             placeholder="1" required />
+            <input
+              id="pagenumber"
+              className="block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+              placeholder="Page Number"
+              type='number'
+              value={pageNumber}
+              onChange={(e) => setPageNumber(e.target.value)}
+            />
           </div>
           <div className="mb-2">
             <select
-              id="pageSize"
+              id="paperSize"
               className="block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-              value={documentType}
-              onChange={(e) => setDocumentType(e.target.value)}
+              value={paperSize}
+              onChange={(e) => setPaperSize(e.target.value)}
             >
-              <option value="">Page size</option>
-              <option value="10">10</option>
-              <option value="15">15</option>
-              <option value="Others">Others</option>
+              <option value="">Paper Size</option>
+              {paperSizeList.map((item, index) => (
+                <option key={index} value={item.paper_size_id}>
+                  {item.paper_size}
+                </option>
+              ))}
             </select>
           </div>
           <div className="mb-2">
             <select
-              id="colorStatus"
+              id="colorcode"
               className="block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-              value={documentType}
-              onChange={(e) => setDocumentType(e.target.value)}
+              value={color}
+              onChange={(e) => setColor(e.target.value)}
             >
-              <option value="">Color Status</option>
-              <option value="black">Black</option>
-              <option value="white">White</option>
-              <option value="color">Color</option>
-              <option value="Others">Others</option>
+              <option value="">Color status</option>
+              {fileColorDropdown.map((item, index) => (
+                <option key={index} value={item.id}>
+                  {item.value}
+                </option>
+              ))}
             </select>
           </div>
           <div className="mb-2">
-          <input type="Total price" 
-            id="number-input" 
-            aria-describedby="helper-text-explanation"
-             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" 
-             placeholder="Total price" required />
+            <input
+              id="totalprice"
+              className="block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+              placeholder="Total price"
+              type='number'
+              value={colorReflectPrice()}
+              readOnly
+              onChange={(e) => setTotalPrice(e.target.value)}
+            />
           </div>
+          {publishLater ?
+            <>
+              <div className="mb-2">
+                <input
+                  type="date"
+                  value={date}
+                  onChange={(e) => setDate(e.target.value)}
+                  className="block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                  placeholder="Publish date"
+                />
+              </div>
+              <div className="mb-2">
+                <input
+                  type="time"
+                  value={time}
+                  onChange={(e) => setTime(e.target.value)}
+                  className="block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                  placeholder="Publish time"
+                />
+              </div>
+            </> : <></>
+          }
+
+
           <div className="flex justify-center space-x-2">
             <button
               onClick={handleSave}
-              className="w-6/12 px-3 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75"
+              className={`w-6/12 px-3 ${isLoading ? 'opacity-50' : 'opacity-100'} py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75`}
+              disabled={isLoading}
             >
               Save
             </button>
