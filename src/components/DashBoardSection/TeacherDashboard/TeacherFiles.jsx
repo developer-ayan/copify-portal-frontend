@@ -79,7 +79,7 @@ const TeacherFiles = () => {
           </div>
         </div>
         <div className="md:w-1/3 w-full">
-          <WalletDashboard />
+          <WalletDashboard  />
         </div>
       </div>
       <UploadModal

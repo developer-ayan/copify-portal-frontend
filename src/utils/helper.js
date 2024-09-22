@@ -132,12 +132,17 @@ const defaultSelect = (arr, param) => {
     return filter
 }
 
-const getValueById = (arr, id , param) => {
+const getValueById = (arr, id, param) => {
     const getValue = arr.filter((item, index) => item[param] == id)?.[0]?.value || "";
     return getValue;
 };
 
+const toFixedMethod = (number) => {
+    const num = isNaN(number) ? "0.00" : parseFloat(number).toFixed(2)
+    return num.toString()
+}
+
 
 /* Exports
 ============================================================================= */
-export { call, _concatArray, _updateObject, _deleteObject, _getObject, formatDate, formatDateState, defaultSelect, getValueById };
+export { call, _concatArray, _updateObject, _deleteObject, _getObject, formatDate, formatDateState, defaultSelect, getValueById, toFixedMethod };

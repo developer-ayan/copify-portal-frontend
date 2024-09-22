@@ -183,12 +183,12 @@ const ViewInstitutesModal = ({ closeModal, dept }) => {
                         >
                           Delete
                         </button>
-                        <button
+                        {/* <button
                           className="px-3 py-2 bg-green-500 text-white rounded-md"
                           onClick={() => openSemesterModal(department)}
                         >
                           Manage Semesters
-                        </button>
+                        </button> */}
                       </td>
                     </tr>
                   ))}

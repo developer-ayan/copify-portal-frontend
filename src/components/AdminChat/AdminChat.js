@@ -13,7 +13,7 @@ function ChatWindow({ user, setUsers }) {
       const updatedMessages = [...messages, { text: newMessage, fromMe: true }];
       setMessages(updatedMessages);
 
-    
+
       setUsers(prevUsers =>
         prevUsers.map(u =>
           u.id === user.id ? { ...u, lastMessage: `You: ${newMessage}` } : u
@@ -23,11 +23,11 @@ function ChatWindow({ user, setUsers }) {
       setNewMessage('');
     }
     const handleKeyDown = (e) => {
-        if (e.key === 'Enter') {
-          e.preventDefault();
-          sendMessage();
-        }
-      };
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        sendMessage();
+      }
+    };
   };
 
   return (
@@ -38,26 +38,26 @@ function ChatWindow({ user, setUsers }) {
       </div>
 
       <div className="flex-1 p-4 overflow-y-auto">
-  {messages.map((message, index) => (
-    <div key={index} className={`mb-4 ${message.fromMe ? 'text-right' : ''}`}>
-      <div className="inline-block p-3 rounded-md shadow-lg custom-shadow">
-        {message.text}
+        {messages.map((message, index) => (
+          <div key={index} className={`mb-4 ${message.fromMe ? 'text-right' : ''}`}>
+            <div className="inline-block p-3 rounded-md shadow-lg custom-shadow">
+              {message.text}
+            </div>
+          </div>
+        ))}
       </div>
-    </div>
-  ))}
-</div>
 
       <div className="p-4 border-t border-gray-300 flex items-center">
-        <input 
-          type="text" 
-          className="flex-1 p-2 border rounded-lg mr-2" 
-          placeholder="Type a message..." 
+        <input
+          type="text"
+          className="flex-1 p-2 border rounded-lg mr-2"
+          placeholder="Type a message..."
           value={newMessage}
           onChange={(e) => setNewMessage(e.target.value)}
           onKeyDown={handleKeyDown}
         />
-        <button 
-          onClick={sendMessage} 
+        <button
+          onClick={sendMessage}
           className="bg-blue-500 text-white px-4 py-2 rounded-lg"
 
         >

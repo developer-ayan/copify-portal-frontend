@@ -196,7 +196,7 @@ const TeacherSubject = ({ item }) => {
             </div>
           </div>
           <div className="md:w-1/3 w-full">
-            <WalletDashboard />
+            <WalletDashboard item={item} />
           </div>
         </div>
       }
