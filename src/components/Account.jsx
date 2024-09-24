@@ -27,16 +27,16 @@ const Account = ({ toggle, setToggle }) => {
   };
 
   const arr = [
-    {
-      title: "Change Password",
-      icon: <MdLock className="text-base text-blue-500" />,
-      clickHandler: () => navigate("/change-password"),
-    },
-    {
-      title: "Edit Profile",
-      icon: <RiEdit2Fill className="text-base text-blue-500" />,
-      clickHandler: () => navigate("/edit-profile"),
-    },
+    // {
+    //   title: "Change Password",
+    //   icon: <MdLock className="text-base text-blue-500" />,
+    //   clickHandler: () => navigate("/change-password"),
+    // },
+    // {
+    //   title: "Edit Profile",
+    //   icon: <RiEdit2Fill className="text-base text-blue-500" />,
+    //   clickHandler: () => navigate("/edit-profile"),
+    // },
     {
       title: "Log out",
       icon: <MdLogout className="text-base text-red-600" />,

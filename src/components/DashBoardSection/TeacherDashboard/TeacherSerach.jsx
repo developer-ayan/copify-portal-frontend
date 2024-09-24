@@ -153,9 +153,6 @@ export default SearchSection;
 const radioButtons = [
   { value: "Calender Activity", id: 1 },
   { value: "Subscribe Students", id: 2 },
-  { value: "Order Files Qty", id: 3 },
+  // { value: "Order Files Qty", id: 3 },
   { value: "Personal Upload", id: 4 }
-
-
-
 ]

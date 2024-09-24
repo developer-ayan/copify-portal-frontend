@@ -4,10 +4,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUsers } from '@fortawesome/free-solid-svg-icons';
 import UploadModal from "../../../components/Modals/UploadModal";
 
-const TeacherFiles = () => {
+const TeacherFiles = ({ item }) => {
 
   const [showUploadModal, setShowUploadModal] = useState(false);
-  
+
   const addUpload = (name, file, type, description) => {
     const newUpload = { name, date: new Date().toLocaleString(), type, description, status: 'Receive' };
     setUploads([...uploads, newUpload]);
@@ -44,8 +44,8 @@ const TeacherFiles = () => {
               />
             </div>
             <button className="px-4 py-2 bg-blue-500 text-white rounded-md mt-8 sm:mt-3 sm:ml-"
-             onClick={() => setShowUploadModal(true)}
-             >
+              onClick={() => setShowUploadModal(true)}
+            >
               + Add Upload File
             </button>
           </div>
@@ -53,7 +53,7 @@ const TeacherFiles = () => {
             <table className="min-w-full bg-white">
               <thead>
                 <tr>
-                  <th className="px-4 py-2 border">Particular File Name</th>
+                  <th className="px-4 py-2 border">File Name</th>
                   <th className="px-4 py-2 border">Date Published</th>
                   <th className="px-4 py-2 border">Qty</th>
                   <th className="px-4 py-2 border">Ordered</th>
@@ -79,7 +79,7 @@ const TeacherFiles = () => {
           </div>
         </div>
         <div className="md:w-1/3 w-full">
-          <WalletDashboard  />
+          <WalletDashboard item={item} />
         </div>
       </div>
       <UploadModal

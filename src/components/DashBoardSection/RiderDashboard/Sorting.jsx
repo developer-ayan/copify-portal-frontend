@@ -5,7 +5,7 @@ import UploadModal from "../../../components/Modals/UploadModal";
 
 const Order = () => {
   const [showUploadModal, setShowUploadModal] = useState(false);
-  
+
   const addUpload = (name, file, type, description) => {
     const newUpload = { name, date: new Date().toLocaleString(), type, description, status: 'Receive' };
     setUploads([...uploads, newUpload]);
@@ -34,13 +34,13 @@ const Order = () => {
             />
             <label className="block font-semibold ml-4 mb-2 sm:mb-0"
             > Order Qty </label>
-              <input
+            <input
               type="text"
               className="w-full sm:w-1/4 md:w-1/3 p-2 border  rounded mb-2 sm:mb-0"
               value=""
               readOnly
             />
-          
+
           </div>
           <div className="overflow-x-auto">
             <table className="min-w-full bg-white">
@@ -52,19 +52,19 @@ const Order = () => {
                 </tr>
               </thead>
               <tbody>
-              {uploads.map((upload, index) => (
-    <tr key={index}>
-      <td className="px-4 py-2 border">
-        <h4>Ready to PickUp</h4>
-        <input
-          type="radio"
-          id={`upload-${index}`}
-          name="upload"
-          value={upload.name}
-          className="mr-2"
-        />
-        <label htmlFor={`upload-${index}`}>{upload.name}</label>
-      </td>
+                {uploads.map((upload, index) => (
+                  <tr key={index}>
+                    <td className="px-4 py-2 border">
+                      <h4>Ready to PickUp</h4>
+                      <input
+                        type="radio"
+                        id={`upload-${index}`}
+                        name="upload"
+                        value={upload.name}
+                        className="mr-2"
+                      />
+                      <label htmlFor={`upload-${index}`}>{upload.name}</label>
+                    </td>
                     <td className="px-4 py-2 border text-center">{upload.date}</td>
                     <td className="px-4 py-2 border flex justify-center">
                       <button className="px-4 py-2 bg-blue-500 text-white rounded-md">{upload.status}</button>
@@ -76,7 +76,8 @@ const Order = () => {
           </div>
         </div>
         <div className="md:w-1/3 w-full">
-          <WalletDashboard />
+          {/* tempareay remove  */}
+          {/* <WalletDashboard /> */}
         </div>
       </div>
       <UploadModal

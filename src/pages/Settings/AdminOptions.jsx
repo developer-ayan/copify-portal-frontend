@@ -90,7 +90,7 @@ const AdminOptions = () => {
                 <>
                   {selectedOption === 1 && <TeacherSubject item={item} />}
                   {selectedOption === 2 && <TeacherSubscribe item={item} />}
-                  {selectedOption === 3 && <TeacherFiles item={item} />}
+                  {/* {selectedOption === 3 && <TeacherFiles item={item} />} */}
                   {selectedOption === 4 && <TeacherUpload item={item} />}
                 </>
               }

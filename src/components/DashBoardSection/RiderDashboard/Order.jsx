@@ -4,7 +4,7 @@ import UploadModal from "../../../components/Modals/UploadModal";
 
 const Order = () => {
   const [showUploadModal, setShowUploadModal] = useState(false);
-  
+
   const addUpload = (name, file, type, description) => {
     const newUpload = { name, date: new Date().toLocaleString(), type, description, status: 'Receive' };
     setUploads([...uploads, newUpload]);
@@ -27,11 +27,11 @@ const Order = () => {
             <div className="flex items-center mb-2 sm:mb-0">
               <label className="block font-semibold mr-4">Select Code/Name:</label>
               <input
-          type="text"
-          className="w-full sm:w-1/2 md:w-1/1 p-2 border border-gray-300 rounded mb-2 sm:mb-0"
-       
-          
-        />
+                type="text"
+                className="w-full sm:w-1/2 md:w-1/1 p-2 border border-gray-300 rounded mb-2 sm:mb-0"
+
+
+              />
             </div>
             <div className="flex items-center ml-0 sm:ml-4 mb-2 sm:mb-0">
               <label className="block font-semibold mr-4">Order Qty:</label>
@@ -79,7 +79,8 @@ const Order = () => {
           </div>
         </div>
         <div className="lg:w-1/3 w-full">
-          <WalletDashboard />
+          {/* temparry remove  */}
+          {/* <WalletDashboard /> */}
         </div>
       </div>
       <UploadModal

@@ -172,7 +172,7 @@ const TeacherUpload = ({ item }) => {
               <table className="min-w-full bg-white">
                 <thead>
                   <tr>
-                    <th className="px-4 py-2 border">Particular File Name</th>
+                    <th className="px-4 py-2 border">File Name</th>
                     <th className="px-4 py-2 border">Date Published</th>
                     <th className="px-4 py-2 border">Status</th>
                   </tr>
@@ -198,7 +198,7 @@ const TeacherUpload = ({ item }) => {
             </div>
           </div>
           <div className="md:w-1/3 w-full">
-            <WalletDashboard />
+            <WalletDashboard item={item} />
           </div>
         </div>
       }

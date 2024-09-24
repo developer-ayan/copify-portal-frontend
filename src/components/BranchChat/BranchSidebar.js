@@ -15,7 +15,7 @@ function BranchSidebar({ users, onUserSelect }) {
           >
             <div>
               <p className="text-sm font-semibold">{user.name}</p>
-              <p className="text-xs text-gray-500">{user.lastMessage || 'No message yet'}</p>
+              <p className="text-xs text-gray-500">{user.last_message || 'No message yet'}</p>
             </div>
           </li>
         ))}

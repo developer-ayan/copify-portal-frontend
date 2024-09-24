@@ -14,7 +14,7 @@ const WalletDashboard = ({ item }) => {
   const [isWithdrawModalOpen, setIsWithdrawModalOpen] = useState(false);
   const [isTransferModalOpen, setIsTransferModalOpen] = useState(false);
   const [isTransactionModalOpen, setIsTransactionModalOpen] = useState(false);
-  const [balance, setBalance] = useState(815);
+  const [balance, setBalance] = useState('');
   const [transactionList, setTransactionList] = useState([]);
 
   const handleRecharge = async (amount) => {
@@ -39,59 +39,65 @@ const WalletDashboard = ({ item }) => {
 
   const handleTransfer = async (opposite_user_id, amount) => {
     console.log('opposite_user_id, amount', opposite_user_id, amount)
-    try {
-      setWalletHandler(true)
-      const formData = new FormData();
-      formData.append('user_id', (item?.user_id).toString());
-      formData.append('opposite_user_id', opposite_user_id);
-      formData.append('amount', amount);
-      formData.append('is_admin', true);
-      formData.append('transfer', true);
-      const response = await call('/app/edit_wallet_topup', 'POST', formData)
-      await getWallet()
-      setWalletHandler(false)
-      setIsTransferModalOpen(false)
-      toast.success(response?.message, { duration: 2000 });
-    } catch (error) {
-      toast.error(error?.message, { duration: 2000 });
-      setWalletHandler(false)
+    if (item?.user_id) {
+      try {
+        setWalletHandler(true)
+        const formData = new FormData();
+        formData.append('user_id', (item?.user_id).toString());
+        formData.append('opposite_user_id', opposite_user_id);
+        formData.append('amount', amount);
+        formData.append('is_admin', true);
+        formData.append('transfer', true);
+        const response = await call('/app/edit_wallet_topup', 'POST', formData)
+        await getWallet()
+        setWalletHandler(false)
+        setIsTransferModalOpen(false)
+        toast.success(response?.message, { duration: 2000 });
+      } catch (error) {
+        toast.error(error?.message, { duration: 2000 });
+        setWalletHandler(false)
+      }
     }
   };
 
   const handleWithdraw = async (amount) => {
-    try {
-      setWalletHandler(true)
-      const formData = new FormData();
-      formData.append('user_id', (item?.user_id).toString());
-      formData.append('amount', amount);
-      formData.append('is_admin', true);
-      formData.append('withdraw', true);
-      const response = await call('/app/edit_wallet_topup', 'POST', formData)
-      await getWallet()
-      setWalletHandler(false)
-      setIsWithdrawModalOpen(false)
-      toast.success(response?.message, { duration: 2000 });
-    } catch (error) {
-      toast.error(error?.message, { duration: 2000 });
-      setWalletHandler(false)
+    if (item?.user_id) {
+      try {
+        setWalletHandler(true)
+        const formData = new FormData();
+        formData.append('user_id', (item?.user_id).toString());
+        formData.append('amount', amount);
+        formData.append('is_admin', true);
+        formData.append('withdraw', true);
+        const response = await call('/app/edit_wallet_topup', 'POST', formData)
+        await getWallet()
+        setWalletHandler(false)
+        setIsWithdrawModalOpen(false)
+        toast.success(response?.message, { duration: 2000 });
+      } catch (error) {
+        toast.error(error?.message, { duration: 2000 });
+        setWalletHandler(false)
+      }
     }
   };
 
   const getWallet = async (listLoader) => {
-    try {
-      listLoader && setLoader(true)
-      const formData = new FormData();
-      formData.append('user_id', (item?.user_id).toString());
-      const response = await call('/app/fetch_transaction_list', 'POST', formData)
-      console.log('response', response?.data[0]?.amount)
-      setBalance(toFixedMethod(response?.data[0]?.amount))
-      setTransactionList(response?.data?.[0]?.transactions || [])
-      listLoader && setLoader(false)
-    } catch (error) {
-      setBalance(toFixedMethod(0))
-      setTransactionList([])
-      listLoader && setLoader(false)
-      toast.error(error?.message, { duration: 2000 });
+    if (item?.user_id) {
+      try {
+        listLoader && setLoader(true)
+        const formData = new FormData();
+        formData.append('user_id', (item?.user_id).toString());
+        const response = await call('/app/fetch_transaction_list', 'POST', formData)
+        console.log('response', response?.data[0]?.amount)
+        setBalance(toFixedMethod(response?.data[0]?.amount))
+        setTransactionList(response?.data?.[0]?.transactions || [])
+        listLoader && setLoader(false)
+      } catch (error) {
+        setBalance(toFixedMethod(0))
+        setTransactionList([])
+        listLoader && setLoader(false)
+        toast.error(error?.message, { duration: 2000 });
+      }
     }
   };
 
@@ -192,8 +198,8 @@ const WalletDashboard = ({ item }) => {
         data={transactionList}
         isOpen={isTransactionModalOpen}
         onClose={() => setIsTransactionModalOpen(false)}
-        // onPress={handleTransfer}
-        // loader={walletHandler}
+      // onPress={handleTransfer}
+      // loader={walletHandler}
       />
     </div>
   );
