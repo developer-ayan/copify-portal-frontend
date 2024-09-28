@@ -8,9 +8,15 @@ import PersonalUpload from "../components/DashBoardSection/StudentDashboard/Pers
 
 
 const Dashboard = () => {
-  const [analytics, setAnalytics] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [selectedOption, setSelectedOption] = useState(1); 
+  const [selectedOption, setSelectedOption] = useState(1);
+
+  const [searchLoader, setSearchLoader] = useState(false);
+  const [showSearchData, setShowSearchData] = useState(false);
+  const [searchData, setSearchData] = useState([])
+  const [searchName, setSearchName] = useState('');
+  const [item, setItem] = useState({});
+
 
   // const fetchAnalytics = async () => {
   //   setIsLoading(true);
@@ -35,6 +41,16 @@ const Dashboard = () => {
   //   fetchAnalytics();
   // }, []);
 
+  const clearStates = (item, name) => {
+    setSearchLoader(false)
+    setShowSearchData(false)
+    setSearchData(false)
+    setItem(item)
+    setSearchName(name)
+  }
+
+  const isEmpty = Object?.keys(item)?.length === 0;
+
   return (
     <Page
       title="Collegio de Kidapawan Branch"
@@ -53,11 +69,28 @@ const Dashboard = () => {
               <SearchSection
                 selectedOption={selectedOption}
                 setSelectedOption={setSelectedOption}
+                setSearchData={setSearchData}
+                searchData={searchData}
+                setSearchLoader={setSearchLoader}
+                searchLoader={searchLoader}
+                setShowSearchData={setShowSearchData}
+                showSearchData={showSearchData}
+                setSearchName={setSearchName}
+                searchName={searchName}
+                clearStates={clearStates}
+                item={item}
+                setItem={setItem}
               />
-              
-              {selectedOption === 1 && <SubscribeSubject />}
-              {selectedOption === 2 && <OrderFiles />}
-              {selectedOption === 3 && <PersonalUpload />}
+              {isEmpty ?
+                <></> :
+                <>
+                  {selectedOption === 1 && <SubscribeSubject item={item} />}
+                  {selectedOption === 2 && <OrderFiles item={item} />}
+                  {selectedOption === 3 && <PersonalUpload item={item} />}
+                </>
+              }
+
+
             </main>
           )}
         </div>

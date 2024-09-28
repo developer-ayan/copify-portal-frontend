@@ -145,12 +145,12 @@ const Order = ({ buttonLoaderStatefromParent, searchDataFromChild }) => {
                     >
                       Department
                     </button>
-                    <button
+                    {/* <button
                       className="px-3 py-2 bg-blue-500 text-white rounded-md"
                       onClick={() => { setCurrentDept(upload); setShowSubjectModal(true); }}
                     >
                       Subject
-                    </button>
+                    </button> */}
                     <button
                       className="px-3 py-2 bg-blue-500 text-white rounded-md"
                       onClick={() => { setCurrentDept(upload); setShowStudentModal(true); }} 
