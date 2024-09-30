@@ -4,7 +4,7 @@ import CopifyShop from "../components/Branches/CopifyBranches"
 
 
 const shop = () => {
- 
+
 
   return (
     <Page
@@ -16,7 +16,7 @@ const shop = () => {
       <div className="flex flex-col md:flex-row">
         <div className="flex-1">
           <main className="p-8">
-       <CopifyShop/>
+            <CopifyShop />
 
           </main>
         </div>

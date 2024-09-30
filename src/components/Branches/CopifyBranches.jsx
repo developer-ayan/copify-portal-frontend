@@ -6,6 +6,7 @@ import ShopEditModal from '../Branches/BranchesModal/BranchesEditModal';
 import { AppContext } from '../../context';
 import toast from 'react-hot-toast';
 import { Loader } from '../Loaders';
+import { call } from '../../utils/helper';
 
 const Branches = () => {
   const { user } = useContext(AppContext);
@@ -16,8 +17,8 @@ const Branches = () => {
   const [showEditModal, setShowEditModal] = useState(false);
   const [currentDept, setCurrentDept] = useState(null);
   const [uploads, setUploads] = useState([]);
-  const [showPassword, setShowPassword] = useState({}); 
-  
+  const [showPassword, setShowPassword] = useState({});
+
   const togglePasswordVisibility = (index) => {
     setShowPassword((prevState) => ({
       ...prevState,
@@ -25,23 +26,41 @@ const Branches = () => {
     }));
   };
 
-  const handleAddShop = (name, email, location, password) => {
-    const newShop = {
-      name,
-      email,
-      location,
-      password,
-      status: "",
-    };
-    setUploads([...uploads, newShop]);
-    setShowAddShopModal(false);
-    toast.success('Institute added successfully', { duration: 2000 });
+  const handleAddShop = async (name, email, branch_address, password) => {
+    try {
+      setButtonLoader(true)
+      const formData = new FormData();
+      formData.append('email', email);
+      formData.append('name', name);
+      formData.append('password', password);
+      formData.append('branch_address', branch_address);
+      formData.append('role_id', "2");
+      const response = await call('/admin/create_branch', 'POST', formData);
+      await getBranches()
+      setButtonLoader(false)
+      setShowAddShopModal(false)
+      toast.success(response?.message, { duration: 2000 });
+    } catch (error) {
+      setButtonLoader(false)
+      toast.error(error?.message, { duration: 2000 });
+    }
   };
 
-  const deleteShop = () => {
-    setUploads(uploads.filter(upload => upload.email !== currentDept?.email));
-    setShowDeleteModal(false);
-    toast.success('Institute deleted successfully', { duration: 2000 });
+
+  const deleteShop = async () => {
+    try {
+      setButtonLoader(true)
+      const formData = new FormData();
+      formData.append('user_id', currentDept?.user_id);
+      const response = await call('/admin/delete_user', 'POST', formData);
+      await getBranches()
+      setButtonLoader(false)
+      setShowDeleteModal(false)
+      toast.success(response?.message, { duration: 2000 });
+    } catch (error) {
+      setButtonLoader(false)
+      toast.error(error?.message, { duration: 2000 });
+    }
   };
 
   const handleEdit = (shop) => {
@@ -49,19 +68,55 @@ const Branches = () => {
     setShowEditModal(true);
   };
 
-  const saveEdit = (originalEmail, newName, newEmail, newLocation, newPassword) => {
-    setUploads(uploads.map(upload =>
-      upload.email === originalEmail
-        ? { ...upload, name: newName, email: newEmail, location: newLocation, password: newPassword }
-        : upload
-    ));
-    setShowEditModal(false);
-    toast.success('Institute updated successfully', { duration: 2000 });
+  const saveEdit = async (originalEmail, newName, newEmail, newLocation, newPassword) => {
+    try {
+      setButtonLoader(true)
+      const formData = new FormData();
+      formData.append('user_id', currentDept?.user_id);
+      formData.append('email', newEmail);
+      formData.append('name', newName);
+      formData.append('password', newPassword);
+      formData.append('branch_address', newLocation);
+      formData.append('role_id', "2");
+      const response = await call('/admin/edit_branch', 'POST', formData);
+      await getBranches()
+      setButtonLoader(false)
+      setShowEditModal(false)
+      toast.success(response?.message, { duration: 2000 });
+    } catch (error) {
+      setButtonLoader(false)
+      toast.error(error?.message, { duration: 2000 });
+    }
+  };
+
+  // useEffect(() => {
+  //   setScreenLoader(false);
+  // }, []);
+
+  const getBranches = async (loading) => {
+    try {
+      loading && setScreenLoader(true);
+      const formData = new FormData();
+      const response = await call('/admin/fetch_branch_list', 'POST', formData);
+      setUploads(response?.data);
+      loading && setScreenLoader(false);
+    } catch (error) {
+      setUploads([]);
+      toast.error(error?.message, { duration: 2000 });
+      loading && setScreenLoader(false);
+    }
+  };
+
+  const fetchAPIs = async () => {
+    await getBranches(true)
+
   };
 
   useEffect(() => {
-    setScreenLoader(false);
-  }, []);
+    fetchAPIs()
+  }, [])
+
+  console.log('branches ', uploads)
 
   return screenLoader ? (
     <div className="w-full flex justify-center items-center min-h-[90vh]">
@@ -86,7 +141,7 @@ const Branches = () => {
               <tr>
                 <th className="px-4 py-2 border">Name</th>
                 <th className="px-4 py-2 border">Email</th>
-                <th className="px-4 py-2 border">Password</th>
+                {/* <th className="px-4 py-2 border">Password</th> */}
                 <th className="px-4 py-2 border">Location</th>
                 <th className="px-4 py-2 border">Action</th>
               </tr>
@@ -96,7 +151,7 @@ const Branches = () => {
                 <tr key={index}>
                   <td className="px-4 py-2 border text-center">{upload.name}</td>
                   <td className="px-4 py-2 border text-center">{upload.email}</td>
-                  <td className="px-4 py-2 border text-center">
+                  {/* <td className="px-4 py-2 border text-center">
                     <div className="flex justify-center items-center">
                       <span>
                         {showPassword[index]
@@ -110,8 +165,8 @@ const Branches = () => {
                         {showPassword[index] ? <FaEyeSlash /> : <FaEye />}
                       </button>
                     </div>
-                  </td>
-                  <td className="px-4 py-2 border text-center">{upload.location}</td>
+                  </td> */}
+                  <td className="px-4 py-2 border text-center">{upload.branch_address}</td>
                   <td className="px-4 py-2 border flex space-x-2 justify-center">
                     <button
                       className="px-3 py-2 bg-blue-500 text-white rounded-md"
@@ -137,17 +192,17 @@ const Branches = () => {
         <AddShopModal
           show={showAddShopModal}
           onClose={() => setShowAddShopModal(false)}
-          onSave={handleAddShop}  
+          onSave={handleAddShop}
           isLoading={buttonLoader}
         />
       )}
 
       {showDeleteModal && (
-        <ShopDeleteModal 
-          isLoading={buttonLoader} 
-          delete_name={currentDept?.email} 
-          confirmModal={deleteShop} 
-          closeModal={() => setShowDeleteModal(false)} 
+        <ShopDeleteModal
+          isLoading={buttonLoader}
+          delete_name={currentDept?.email}
+          confirmModal={deleteShop}
+          closeModal={() => setShowDeleteModal(false)}
         />
       )}
 

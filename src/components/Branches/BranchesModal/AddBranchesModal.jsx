@@ -9,7 +9,6 @@ const AddShopModal = ({ show, onClose, onSave, isLoading }) => {
   const handleSave = () => {
     if (name && email && location && password) {
       onSave(name, email, location, password);  // Pass name along with other fields
-      onClose();
     } else {
       alert('Please provide name, email, location, and password.');
     }
@@ -77,7 +76,7 @@ const AddShopModal = ({ show, onClose, onSave, isLoading }) => {
               onClick={handleSave}
               disabled={isLoading}
             >
-              {isLoading ? 'Loading...' : 'Save'}
+              {isLoading ? 'Load' : 'Save'}
             </button>
             <button
               onClick={onClose}

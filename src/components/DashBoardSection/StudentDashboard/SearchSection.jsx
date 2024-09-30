@@ -59,12 +59,6 @@ const SearchSection = ({ selectedOption, setSelectedOption, searchData, setSearc
             </button>
           )}
         </div>
-        <button
-          className="w-full sm:w-auto ml-0 sm:ml-2 p-2 bg-blue-500 text-white rounded mb-2 sm:mb-0"
-          onClick={handleSearch}
-        >
-          Search
-        </button>
 
         {!isEmpty ?
           <>

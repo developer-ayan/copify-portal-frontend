@@ -3,12 +3,11 @@ import React, { useState } from 'react';
 const ShopEditModal = ({ show, onClose, onSave, currentInstitute, isLoading }) => {
   const [name, setName] = useState(currentInstitute?.name || '');  
   const [email, setEmail] = useState(currentInstitute?.email || '');
-  const [location, setLocation] = useState(currentInstitute?.location || '');
-  const [password, setPassword] = useState(currentInstitute?.password || '');
+  const [location, setLocation] = useState(currentInstitute?.branch_address || '');
+  const [password, setPassword] = useState('');
 
   const handleSave = () => {
     onSave(currentInstitute.email, name, email, location, password);  
-    onClose();
   };
 
   if (!show) {
@@ -35,7 +34,7 @@ const ShopEditModal = ({ show, onClose, onSave, currentInstitute, isLoading }) =
             />
           </div>
 
-          <div className="mb-2">
+          {/* <div className="mb-2">
             <input
               id="email"
               type="email"
@@ -44,7 +43,7 @@ const ShopEditModal = ({ show, onClose, onSave, currentInstitute, isLoading }) =
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
-          </div>
+          </div> */}
          
           <div className="mb-2">
             <input

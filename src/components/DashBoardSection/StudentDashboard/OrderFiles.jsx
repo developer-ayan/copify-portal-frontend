@@ -1,9 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import SubOptionRadio from './SubOptionsRadio';
+import { call } from '../../../utils/helper';
+import toast from 'react-hot-toast';
+import { Loader } from '../../Loaders';
 
-const OrderFiles = () => {
+const OrderFiles = ({ item }) => {
   const [selectedSubject, setSelectedSubject] = useState('');
   const [selectedIds, setSelectedIds] = useState([]);
+  const [loader, setLoader] = useState(false);
   const [data, setData] = useState([])
 
   const orderFiles = [
@@ -38,88 +42,75 @@ const OrderFiles = () => {
     }
   ]
 
-  const handleChange = (_id) => {
-    console.log('_id', _id)
-    if (selectedIds.includes(_id)) {
-      const copyArr = [...selectedIds]
-      const removeId = copyArr.filter((item, index) => item != _id)
-      setSelectedIds(removeId)
-    } else {
-      const copyArr = [...selectedIds]
-      copyArr.push(_id)
 
-      setSelectedIds(copyArr)
+  const getOrders = async () => {
+    try {
+      const formData = new FormData();
+      formData.append('user_id', Number(item?.user_id));
+      const response = await call('/admin/fetch_place_orders', 'POST', formData);
+      console.log('response?.data', response?.data)
+      setData(response?.data);
+    } catch (error) {
+      setData([]);
+      toast.error(error?.message, { duration: 2000 });
     }
-    // setSelectedSubject(fileId);
   };
 
-  const handleUnsubscribe = (subject) => {
-    console.log(`Unsubscribe from ${subject}`);
+  const fetchAPIs = async () => {
+    setLoader(true);
+    await getOrders()
+    setLoader(false);
   };
 
   useEffect(() => {
-    setData(static_data)
-  }, [selectedIds])
+    fetchAPIs()
+  }, [item])
 
-  console.log('copyArr', selectedIds)
 
   return (
-    <div className="bg-white p-5 rounded-lg text-center shadow-md">
-      <h2 className="text-2xl font-semibold mb-4 text-left">Order Files</h2>
+    <div className="bg-white p-5 rounded-lg shadow-md">
+    <h2 className="text-2xl font-semibold mb-4 text-left">Order Files</h2>
+    {loader ? (
+      <Loader />
+    ) : (
       <div className="overflow-x-auto">
-        <table className="min-w-full bg-white">
+        <table className="min-w-full bg-white border border-gray-200">
           <thead>
-            <tr>
-              <th className="py-2 px-4 border-b text-left">Subject</th>
+            <tr className="bg-gray-100">
+              <th className="py-2 px-4 border-b text-left text-gray-600">Subject</th>
             </tr>
           </thead>
           <tbody>
-            {data.map((item, index) => {
-              return (
-                <tr>
-                  <td className="px-4 py-2 border">
-                    <div className="flex items-center">
-                      <input
-                        type="radio"
-                        id={`subscribe-${item.id}`}
-                        name="subscribe"
-                        value={item.value}
-                        checked={selectedIds.includes(item.id) ? true : false}
-                        onClick={() => handleChange(item.id)}
-                        className="mr-2"
-                      />
-                      <label htmlFor={`subscribe-${item.id}`} className="mr-4">{item.value}</label>
-                    </div>
-                    {selectedIds.includes(item.id) ? item.child_data?.map((item, index) => {
-                      return (
-                        <div className="flex items-center justify-between">
-                          <div>
-                            <input
-                              type="radio"
-                              id={`sub-option-1-${item.id}`}
-                              name={`sub-option-${item.id}`}
-                              className="mr-2"
-                              onClick={() => console.log('testying')}
-                            />
-                            <label htmlFor={`sub-option-1-${item.id}`} className="mr-4">{item.value}</label>
-                          </div>
-                          <button
-                            className="bg-blue-500 text-white px-4 py-2 rounded my-2"
-                          >
-                            Receive
-                          </button>
+            {data?.map((e, index) => (
+              <React.Fragment key={index}>
+                {e?.subject_files?.map((item, index) => (
+                  <tr key={index} className="hover:bg-gray-50 transition duration-150">
+                    <td className="px-4 py-2 border-b border-gray-200">
+                      <div className="flex items-center">
+                        <label htmlFor={`subscribe-${item.id}`} className="mr-4 font-medium text-gray-800">
+                          {item.subject_name}
+                        </label>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <label htmlFor={`sub-option-1-${item.id}`} className="mr-4 text-gray-500">
+                            {`${item.description}, ${item?.page_number} pages, ${e?.qty || '1'} copy`}
+                          </label>
                         </div>
-                      )
-                    }) : <></>}
-                   
-                  </td>
-                </tr>
-              )
-            })}
+                        <button className="bg-blue-500 text-white px-4 py-2 rounded shadow hover:bg-blue-600 transition duration-150">
+                          {e.order_status}
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </React.Fragment>
+            ))}
           </tbody>
         </table>
       </div>
-    </div>
+    )}
+  </div>
   );
 };
 
