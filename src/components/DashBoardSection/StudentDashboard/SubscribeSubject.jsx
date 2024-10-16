@@ -1,14 +1,14 @@
-import React, { useEffect, useState } from 'react';
-import Modal from '../../Modals/Modal';
-import WalletDashboard from '../TeacherDashboard/WalletDashboard';
-import { call } from '../../../utils/helper';
-import { Loader } from '../../Loaders';
-import toast from 'react-hot-toast';
-import DeleteModal from '../../Modals/DeleteModal';
-import NotFound from '../../Error/NotFound';
+import React, { useEffect, useState } from "react";
+import Modal from "../../Modals/Modal";
+import WalletDashboard from "../TeacherDashboard/WalletDashboard";
+import { call } from "../../../utils/helper";
+import { Loader } from "../../Loaders";
+import toast from "react-hot-toast";
+import DeleteModal from "../../Modals/DeleteModal";
+import NotFound from "../../Error/NotFound";
 
-const SubscribeSection = ({ item }) => {
-  const [selectedSubject, setSelectedSubject] = useState('');
+const SubscribeSection = ({ item, disable }) => {
+  const [selectedSubject, setSelectedSubject] = useState("");
   const [buttonLoader, setButtonLoader] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
   const [loader, setLoader] = useState(false);
@@ -32,10 +32,14 @@ const SubscribeSection = ({ item }) => {
     try {
       setButtonLoader(true);
       const formData = new FormData();
-      formData.append('user_id', unsubscribeSubject?.user_id);
-      formData.append('teacher_id', unsubscribeSubject?.teacher_id);
-      formData.append('subject_id', unsubscribeSubject?.subject_id);
-      const response = await call('/app/create_subscribe_subject_for_student', 'POST', formData);
+      formData.append("user_id", unsubscribeSubject?.user_id);
+      formData.append("teacher_id", unsubscribeSubject?.teacher_id);
+      formData.append("subject_id", unsubscribeSubject?.subject_id);
+      const response = await call(
+        "/app/create_subscribe_subject_for_student",
+        "POST",
+        formData
+      );
       await getSubscribers();
       setButtonLoader(false);
       setShowAlert(false);
@@ -49,8 +53,12 @@ const SubscribeSection = ({ item }) => {
   const getSubscribers = async () => {
     try {
       const formData = new FormData();
-      formData.append('user_id', Number(item?.user_id));
-      const response = await call('/admin/fetch_subscribe_subject_for_student', 'POST', formData);
+      formData.append("user_id", Number(item?.user_id));
+      const response = await call(
+        "/admin/fetch_subscribe_subject_for_student",
+        "POST",
+        formData
+      );
       setSubscribe(response?.data);
     } catch (error) {
       setSubscribe([]);
@@ -60,15 +68,13 @@ const SubscribeSection = ({ item }) => {
 
   const fetchAPIs = async () => {
     setLoader(true);
-    await Promise.all([
-      getSubscribers(),
-    ]);
+    await Promise.all([getSubscribers()]);
     setLoader(false);
   };
 
   useEffect(() => {
     fetchAPIs();
-  }, [item]);
+  }, []);
 
   return (
     <div className="bg-white rounded-lg shadow-lg p-6 flex flex-col md:flex-row justify-between">
@@ -76,7 +82,9 @@ const SubscribeSection = ({ item }) => {
         <Loader />
       ) : (
         <div className="md:w-2/3 w-full mb-4 md:mb-0">
-          <h2 className="text-2xl font-semibold mb-4 text-left">Subscribe Subject</h2>
+          <h2 className="text-2xl font-semibold mb-4 text-left">
+            Subscribe Subject
+          </h2>
           <div className="overflow-x-auto">
             <table className="min-w-full bg-white">
               <thead>
@@ -93,7 +101,12 @@ const SubscribeSection = ({ item }) => {
                     <tr key={index}>
                       <td className="px-4 py-2 border">
                         <div className="flex items-center justify-center">
-                          <label htmlFor={`subscribe-${index}`} className="mr-4">{item.subject_name}</label>
+                          <label
+                            htmlFor={`subscribe-${index}`}
+                            className="mr-4"
+                          >
+                            {item.subject_name}
+                          </label>
                         </div>
                       </td>
                       <td className="py-2 px-4 border-b text-center">
@@ -114,7 +127,7 @@ const SubscribeSection = ({ item }) => {
       )}
 
       <div className="md:w-1/3 w-full">
-        <WalletDashboard item={item} />
+        <WalletDashboard disable={disable} item={item} />
       </div>
 
       {showAlert && (

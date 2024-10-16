@@ -44,6 +44,20 @@ const Account = ({ toggle, setToggle }) => {
     },
   ];
 
+  const displayRole = () => {
+    if (user.role_id == "1") {
+      return "Super Admin";
+    } else if (user.role_id == "2") {
+      return "Branch";
+    } else if (user.role_id == "3") {
+      return "Student";
+    } else if (user.role_id == "4") {
+      return "Teacher";
+    } else {
+      return "Unknown";
+    }
+  };
+
   return (
     <div className="relative rounded-md min-w-max" id="account-menu">
       <div
@@ -56,8 +70,7 @@ const Account = ({ toggle, setToggle }) => {
             src={image_base_url + user.profile_image}
             alt="profile"
           />
-        ) : 
-        (
+        ) : (
           <div className="w-[35px] h-[35px] flex items-center justify-center bg-gray-200 mx-1 mr-0 rounded-full">
             <FaUser className="text-gray-400/70" />
           </div>
@@ -65,7 +78,7 @@ const Account = ({ toggle, setToggle }) => {
         <p className="flex flex-col text-xs font-medium capitalize whitespace-nowrap">
           {user.name}
           <span className="text-[10px] font-normal capitalize">
-            {user.role?.replaceAll("_", " ") || "Super Admin"}
+            {displayRole()}
           </span>
         </p>
         <FaChevronDown className={`text-sm ${toggle ? "rotate-180" : ""}`} />

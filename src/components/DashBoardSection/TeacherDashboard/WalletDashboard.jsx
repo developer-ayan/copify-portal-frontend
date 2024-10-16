@@ -1,61 +1,61 @@
-import React, { useEffect, useState } from 'react';
-import RechargeModal from '../../Modals/TeacherModal/RechargeModal';
-import WithdrawModal from '../../Modals/TeacherModal/WithdrawModal';
-import TransferModal from '../../Modals/TeacherModal/TransferModal';
-import TransactionModal from '../../Modals/TeacherModal/TransectionModal';
-import { call, toFixedMethod } from '../../../utils/helper';
-import toast from 'react-hot-toast';
-import { Loader } from '../../Loaders';
+import React, { useEffect, useState } from "react";
+import RechargeModal from "../../Modals/TeacherModal/RechargeModal";
+import WithdrawModal from "../../Modals/TeacherModal/WithdrawModal";
+import TransferModal from "../../Modals/TeacherModal/TransferModal";
+import TransactionModal from "../../Modals/TeacherModal/TransectionModal";
+import { call, toFixedMethod } from "../../../utils/helper";
+import toast from "react-hot-toast";
+import { Loader } from "../../Loaders";
 
-const WalletDashboard = ({ item }) => {
+const WalletDashboard = ({ item, disable }) => {
   const [loader, setLoader] = useState(false);
   const [walletHandler, setWalletHandler] = useState(false);
   const [isRechargeModalOpen, setIsRechargeModalOpen] = useState(false);
   const [isWithdrawModalOpen, setIsWithdrawModalOpen] = useState(false);
   const [isTransferModalOpen, setIsTransferModalOpen] = useState(false);
   const [isTransactionModalOpen, setIsTransactionModalOpen] = useState(false);
-  const [balance, setBalance] = useState('');
+  const [balance, setBalance] = useState("");
   const [transactionList, setTransactionList] = useState([]);
 
   const handleRecharge = async (amount) => {
     try {
-      setWalletHandler(true)
+      setWalletHandler(true);
       const formData = new FormData();
-      formData.append('user_id', (item?.user_id).toString());
-      formData.append('amount', amount);
-      formData.append('is_admin', true);
-      formData.append('recharge', true);
-      const response = await call('/app/edit_wallet_topup', 'POST', formData)
-      console.log('response ========================>', response)
-      await getWallet()
-      setWalletHandler(false)
-      setIsRechargeModalOpen(false)
+      formData.append("user_id", (item?.user_id).toString());
+      formData.append("amount", amount);
+      formData.append("is_admin", true);
+      formData.append("recharge", true);
+      const response = await call("/app/edit_wallet_topup", "POST", formData);
+      console.log("response ========================>", response);
+      await getWallet();
+      setWalletHandler(false);
+      setIsRechargeModalOpen(false);
       toast.success(response?.message, { duration: 2000 });
     } catch (error) {
       toast.error(error?.message, { duration: 2000 });
-      setWalletHandler(false)
+      setWalletHandler(false);
     }
   };
 
   const handleTransfer = async (opposite_user_id, amount) => {
-    console.log('opposite_user_id, amount', opposite_user_id, amount)
+    console.log("opposite_user_id, amount", opposite_user_id, amount);
     if (item?.user_id) {
       try {
-        setWalletHandler(true)
+        setWalletHandler(true);
         const formData = new FormData();
-        formData.append('user_id', (item?.user_id).toString());
-        formData.append('opposite_user_id', opposite_user_id);
-        formData.append('amount', amount);
-        formData.append('is_admin', true);
-        formData.append('transfer', true);
-        const response = await call('/app/edit_wallet_topup', 'POST', formData)
-        await getWallet()
-        setWalletHandler(false)
-        setIsTransferModalOpen(false)
+        formData.append("user_id", (item?.user_id).toString());
+        formData.append("opposite_user_id", opposite_user_id);
+        formData.append("amount", amount);
+        formData.append("is_admin", true);
+        formData.append("transfer", true);
+        const response = await call("/app/edit_wallet_topup", "POST", formData);
+        await getWallet();
+        setWalletHandler(false);
+        setIsTransferModalOpen(false);
         toast.success(response?.message, { duration: 2000 });
       } catch (error) {
         toast.error(error?.message, { duration: 2000 });
-        setWalletHandler(false)
+        setWalletHandler(false);
       }
     }
   };
@@ -63,20 +63,20 @@ const WalletDashboard = ({ item }) => {
   const handleWithdraw = async (amount) => {
     if (item?.user_id) {
       try {
-        setWalletHandler(true)
+        setWalletHandler(true);
         const formData = new FormData();
-        formData.append('user_id', (item?.user_id).toString());
-        formData.append('amount', amount);
-        formData.append('is_admin', true);
-        formData.append('withdraw', true);
-        const response = await call('/app/edit_wallet_topup', 'POST', formData)
-        await getWallet()
-        setWalletHandler(false)
-        setIsWithdrawModalOpen(false)
+        formData.append("user_id", (item?.user_id).toString());
+        formData.append("amount", amount);
+        formData.append("is_admin", true);
+        formData.append("withdraw", true);
+        const response = await call("/app/edit_wallet_topup", "POST", formData);
+        await getWallet();
+        setWalletHandler(false);
+        setIsWithdrawModalOpen(false);
         toast.success(response?.message, { duration: 2000 });
       } catch (error) {
         toast.error(error?.message, { duration: 2000 });
-        setWalletHandler(false)
+        setWalletHandler(false);
       }
     }
   };
@@ -84,35 +84,37 @@ const WalletDashboard = ({ item }) => {
   const getWallet = async (listLoader) => {
     if (item?.user_id) {
       try {
-        listLoader && setLoader(true)
+        listLoader && setLoader(true);
         const formData = new FormData();
-        formData.append('user_id', (item?.user_id).toString());
-        const response = await call('/app/fetch_transaction_list', 'POST', formData)
-        console.log('response', response?.data[0]?.amount)
-        setBalance(toFixedMethod(response?.data[0]?.amount))
-        setTransactionList(response?.data?.[0]?.transactions || [])
-        listLoader && setLoader(false)
+        formData.append("user_id", (item?.user_id).toString());
+        const response = await call(
+          "/app/fetch_transaction_list",
+          "POST",
+          formData
+        );
+        console.log("response", response?.data[0]?.amount);
+        setBalance(toFixedMethod(response?.data[0]?.amount));
+        setTransactionList(response?.data?.[0]?.transactions || []);
+        listLoader && setLoader(false);
       } catch (error) {
-        setBalance(toFixedMethod(0))
-        setTransactionList([])
-        listLoader && setLoader(false)
+        setBalance(toFixedMethod(0));
+        setTransactionList([]);
+        listLoader && setLoader(false);
         toast.error(error?.message, { duration: 2000 });
       }
     }
   };
 
-
   useEffect(() => {
-    getWallet(true)
-  }, [item])
-
+    getWallet(true);
+  }, [item]);
 
   return (
     <div className="bg-white rounded p-6 mt-6 w-full sm:w-64">
       <h2 className="text-xl font-semibold mb-4">Wallet Dashboard</h2>
-      {loader ?
-        <Loader extraStyles="!static !bg-transparent" /> :
-
+      {loader ? (
+        <Loader extraStyles="!static !bg-transparent" />
+      ) : (
         <>
           <div className="mb-2 flex items-center">
             <label className="block font-semibold mr-2">Balance:</label>
@@ -132,14 +134,18 @@ const WalletDashboard = ({ item }) => {
           readOnly
         />
       </div> */}
-          <div className="mb-2 flex items-center">
-            <button
-              className="px-2 py-2 bg-blue-500 text-white rounded-md"
-              onClick={() => setIsRechargeModalOpen(true)}
-            >
-              Recharge
-            </button>
-          </div>
+          {!disable ? (
+            <div className="mb-2 flex items-center">
+              <button
+                className="px-2 py-2 bg-blue-500 text-white rounded-md"
+                onClick={() => setIsRechargeModalOpen(true)}
+              >
+                Recharge
+              </button>
+            </div>
+          ) : (
+            <></>
+          )}
           <div className="mb-2 flex items-center">
             <button
               className="px-4 py-2 bg-blue-500 text-white rounded-md"
@@ -148,14 +154,19 @@ const WalletDashboard = ({ item }) => {
               Transfer
             </button>
           </div>
-          <div className="mb-2 flex items-center">
-            <button
-              className="px-3 py-2 bg-blue-500 text-white rounded-md"
-              onClick={() => setIsWithdrawModalOpen(true)}
-            >
-              Withdraw
-            </button>
-          </div>
+          {!disable ? (
+            <div className="mb-2 flex items-center">
+              <button
+                className="px-3 py-2 bg-blue-500 text-white rounded-md"
+                onClick={() => setIsWithdrawModalOpen(true)}
+              >
+                Withdraw
+              </button>
+            </div>
+          ) : (
+            <></>
+          )}
+
           <div className="mb-2 flex items-center">
             <button
               className="px-3 py-2 bg-blue-500 text-white rounded-md"
@@ -165,8 +176,7 @@ const WalletDashboard = ({ item }) => {
             </button>
           </div>
         </>
-      }
-
+      )}
 
       <RechargeModal
         item={item}
@@ -198,8 +208,8 @@ const WalletDashboard = ({ item }) => {
         data={transactionList}
         isOpen={isTransactionModalOpen}
         onClose={() => setIsTransactionModalOpen(false)}
-      // onPress={handleTransfer}
-      // loader={walletHandler}
+        // onPress={handleTransfer}
+        // loader={walletHandler}
       />
     </div>
   );

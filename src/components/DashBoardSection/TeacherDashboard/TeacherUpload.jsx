@@ -1,135 +1,151 @@
-import React, { useEffect, useState } from 'react';
-import WalletDashboard from './WalletDashboard';
+import React, { useEffect, useState } from "react";
+import WalletDashboard from "./WalletDashboard";
 import UploadModal from "../../../components/Modals/UploadModal";
-import { call, defaultSelect, formatDate } from '../../../utils/helper';
-import toast from 'react-hot-toast';
-import { Loader } from '../../Loaders';
-import DeleteModal from '../../Modals/DeleteModal';
-import NotFound from '../../Error/NotFound';
+import { call, defaultSelect, formatDate } from "../../../utils/helper";
+import toast from "react-hot-toast";
+import { Loader } from "../../Loaders";
+import DeleteModal from "../../Modals/DeleteModal";
+import NotFound from "../../Error/NotFound";
 
-const TeacherUpload = ({ item }) => {
-
+const TeacherUpload = ({ item, disable }) => {
   const [showUploadModal, setShowUploadModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [loader, setLoader] = useState(false);
   const [fileLoader, setFileLoader] = useState(false);
   const [buttonLoader, setButtonLoader] = useState(false);
-  const [subject, setSubject] = useState('');
+  const [subject, setSubject] = useState("");
   const [currentDept, setCurrentDept] = useState({});
   const [subjectList, setSubjectList] = useState([]);
 
-  const addUpload = async (fileName, file, title, description, pageNumber, paperSize, color, price, date, time) => {
+  const addUpload = async (
+    fileName,
+    file,
+    title,
+    description,
+    pageNumber,
+    paperSize,
+    color,
+    price,
+    date,
+    time
+  ) => {
     try {
-      setButtonLoader(true)
+      setButtonLoader(true);
       const formData = new FormData();
-      formData.append('user_id', Number(item?.user_id));
-      formData.append('subject_id', subject);
-      formData.append('file_upload', file);
-      formData.append('title', title);
-      formData.append('description', description);
-      formData.append('page_number', pageNumber);
-      formData.append('paper_size_id', paperSize);
-      formData.append('color_code_id', color);
-      formData.append('total_price', price);
-      formData.append('publish_or_save', '3');
-      formData.append('date', date);
-      formData.append('time', time);
-      const response = await call('/app/create_subject_file', 'POST', formData);
-      await getFiles()
-      setButtonLoader(false)
-      setShowUploadModal(false)
+      formData.append("user_id", Number(item?.user_id));
+      formData.append("subject_id", subject);
+      formData.append("file_upload", file);
+      formData.append("title", title);
+      formData.append("description", description);
+      formData.append("page_number", pageNumber);
+      formData.append("paper_size_id", paperSize);
+      formData.append("color_code_id", color);
+      formData.append("total_price", price);
+      formData.append("publish_or_save", "3");
+      formData.append("date", date);
+      formData.append("time", time);
+      const response = await call("/app/create_subject_file", "POST", formData);
+      await getFiles();
+      setButtonLoader(false);
+      setShowUploadModal(false);
       toast.success(response?.message, { duration: 2000 });
     } catch (error) {
-      setSubjectList([])
-      setButtonLoader(false)
+      setSubjectList([]);
+      setButtonLoader(false);
       toast.error(error?.message, { duration: 2000 });
     }
-
   };
 
-
   const [uploads, setUploads] = useState([
-    { name: 'Module 3', date: 'Date & Time', status: 'Cancel' },
-    { name: 'Activity 2', date: 'Date & Time', status: 'Cancel' },
-    { name: 'Assignment 5', date: 'Date & Time', status: 'Cancel' },
+    { name: "Module 3", date: "Date & Time", status: "Cancel" },
+    { name: "Activity 2", date: "Date & Time", status: "Cancel" },
+    { name: "Assignment 5", date: "Date & Time", status: "Cancel" },
   ]);
 
   const getSubject = async (value) => {
     try {
       const formData = new FormData();
-      formData.append('user_id', Number(item?.user_id));
-      const response = await call('/admin/fetch_teacher_subject_list', 'POST', formData);
-      setSubject(defaultSelect(response?.data, 'id'))
-      setSubjectList(response?.data)
+      formData.append("user_id", Number(item?.user_id));
+      const response = await call(
+        "/admin/fetch_teacher_subject_list",
+        "POST",
+        formData
+      );
+      setSubject(defaultSelect(response?.data, "id"));
+      setSubjectList(response?.data);
     } catch (error) {
-      setSubjectList([])
+      setSubjectList([]);
       toast.error(error?.message, { duration: 2000 });
     }
   };
 
   const getFiles = async (value) => {
-    console.log('subject', subject)
+    console.log("subject", subject);
     try {
-      setFileLoader(true)
+      setFileLoader(true);
       const formData = new FormData();
-      formData.append('subject_id', Number(subject));
-      formData.append('files_type', "3");
-      const response = await call('/admin/fetch_teacher_subject_file_list', 'POST', formData)
-      setUploads(response?.data)
-      setFileLoader(false)
+      formData.append("subject_id", Number(subject));
+      formData.append("files_type", "3");
+      const response = await call(
+        "/admin/fetch_teacher_subject_file_list",
+        "POST",
+        formData
+      );
+      setUploads(response?.data);
+      setFileLoader(false);
     } catch (error) {
-      setUploads([])
-      setFileLoader(false)
+      setUploads([]);
+      setFileLoader(false);
       toast.error(error?.message, { duration: 2000 });
     }
   };
 
   const fetchAPIs = async () => {
-    setLoader(true)
-    await Promise.all([
-      getSubject(),
-      getFiles(subject)
-    ])
-    setLoader(false)
-  }
+    setLoader(true);
+    await Promise.all([getSubject(), getFiles(subject)]);
+    setLoader(false);
+  };
 
   const _handleDelete = async (dept) => {
     try {
-      setButtonLoader(true)
+      setButtonLoader(true);
       const formData = new FormData();
-      formData.append('subject_file_id', Number(currentDept?.subject_file_id));
-      const response = await call('/admin/delete_teacher_subject_file_list', 'POST', formData)
-      await getFiles()
-      setShowDeleteModal(false)
-      setButtonLoader(false)
+      formData.append("subject_file_id", Number(currentDept?.subject_file_id));
+      const response = await call(
+        "/admin/delete_teacher_subject_file_list",
+        "POST",
+        formData
+      );
+      await getFiles();
+      setShowDeleteModal(false);
+      setButtonLoader(false);
       toast.success(response?.message, { duration: 2000 });
     } catch (error) {
-      setUploads([])
-      setFileLoader(false)
-      setButtonLoader(false)
+      setUploads([]);
+      setFileLoader(false);
+      setButtonLoader(false);
       toast.error(error?.message, { duration: 2000 });
     }
   };
 
   const _openDeleteModal = (dept) => {
-    setCurrentDept(dept)
-    setShowDeleteModal(true)
+    setCurrentDept(dept);
+    setShowDeleteModal(true);
   };
 
+  useEffect(() => {
+    fetchAPIs();
+  }, [item]);
 
   useEffect(() => {
-    fetchAPIs()
-  }, [item])
-
-  useEffect(() => {
-    getFiles()
-  }, [subject])
+    getFiles();
+  }, [subject]);
 
   return (
     <div className="min-h-screen p-4 ">
-      {loader ?
+      {loader ? (
         <Loader />
-        :
+      ) : (
         <div className="bg-white rounded-lg shadow-lg p-6 flex flex-col md:flex-row justify-between">
           <div className="md:w-2/3 w-full mb-4 md:mb-0">
             <div className="flex justify-between items-center mb-4">
@@ -137,7 +153,9 @@ const TeacherUpload = ({ item }) => {
             </div>
             <div className="mb-4 flex flex-col sm:flex-row sm:flex-wrap items-start sm:items-center">
               <div className="flex flex-col sm:flex-row items-start sm:items-center sm:w-1/2 w-full mb-2 sm:mb-0">
-                <label className="block font-semibold mr-4 mb-2 sm:mb-0">Select Subject Page:</label>
+                <label className="block font-semibold mr-4 mb-2 sm:mb-0">
+                  Select Subject Page:
+                </label>
                 <select
                   value={subject}
                   onChange={(e) => {
@@ -147,24 +165,25 @@ const TeacherUpload = ({ item }) => {
                 >
                   <option value="" disabled>
                     Select subject
-
                   </option>
                   {subjectList?.map((item, index) => {
-                    return (
-                      <option value={item.id}>{item.value}</option>
-                    )
+                    return <option value={item.id}>{item.value}</option>;
                   })}
                 </select>
               </div>
               <div className="flex flex-col sm:flex-row items-start sm:items-center sm:w-1/2 w-full mb-2 sm:mb-0">
-                <label className="block font-semibold mr-4 mb-2 sm:mb-0">Published Qty:</label>
+                <label className="block font-semibold mr-4 mb-2 sm:mb-0">
+                  Published Qty:
+                </label>
                 <input
                   type="text"
                   className="w-full sm:w-1/2 md:w-1/3 p-2 border border-gray-300 rounded mb-2 sm:mb-0"
                 />
               </div>
-              <button className="px-4 py-2 bg-blue-500 text-white rounded-md mt-8 sm:mt-3 sm:ml-"
-                onClick={() => setShowUploadModal(true)}>
+              <button
+                className="px-4 py-2 bg-blue-500 text-white rounded-md mt-8 sm:mt-3 sm:ml-"
+                onClick={() => setShowUploadModal(true)}
+              >
                 + Add Upload File
               </button>
             </div>
@@ -179,16 +198,28 @@ const TeacherUpload = ({ item }) => {
                 </thead>
                 <tbody>
                   {uploads.length === 0 ? (
-                    <NotFound text={'Files not found'} />
+                    <NotFound text={"Files not found"} />
                   ) : (
                     uploads.map((upload, index) => (
                       <tr key={index}>
                         <td
-                          onClick={() => window.location.href = upload.file_upload}
-                          className="px-4 py-2 border text-center">{upload.title + ' - ' + upload.description}</td>
-                        <td className="px-4 py-2 border text-center">{formatDate(upload.created_at)}</td>
+                          onClick={() =>
+                            (window.location.href = upload.file_upload)
+                          }
+                          className="px-4 py-2 border text-center"
+                        >
+                          {upload.title + " - " + upload.description}
+                        </td>
                         <td className="px-4 py-2 border text-center">
-                          <button onClick={() => _openDeleteModal(upload)} className="px-4 py-2 bg-blue-500 text-white rounded-md">Cancel</button>
+                          {formatDate(upload.created_at)}
+                        </td>
+                        <td className="px-4 py-2 border text-center">
+                          <button
+                            onClick={() => _openDeleteModal(upload)}
+                            className="px-4 py-2 bg-blue-500 text-white rounded-md"
+                          >
+                            Cancel
+                          </button>
                         </td>
                       </tr>
                     ))
@@ -198,10 +229,10 @@ const TeacherUpload = ({ item }) => {
             </div>
           </div>
           <div className="md:w-1/3 w-full">
-            <WalletDashboard item={item} />
+            <WalletDashboard disable={disable} item={item} />
           </div>
         </div>
-      }
+      )}
 
       {showDeleteModal && (
         <DeleteModal

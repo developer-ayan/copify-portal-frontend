@@ -36,24 +36,22 @@ const Login = () => {
     setPassword((prev) => ({ ...prev, isVisible: !prev.isVisible }));
 
   const handleSubmit = async (e) => {
-    setToggleBtn(true)
+    setToggleBtn(true);
     e.preventDefault();
     try {
-      const formData = new FormData()
-      formData.append('email', email)
-      formData.append('password', password.value)
-      console.log('formData', formData)
-      const response = await call('/admin/login', 'POST', formData)
-      localStorage.setItem("user_detail", JSON.stringify(response?.data))
-      setUser(response.data)
-      toast.success(response?.message, { duration: 2000 })
-      setToggleBtn(false)
+      const formData = new FormData();
+      formData.append("email", email);
+      formData.append("password", password.value);
+      console.log("formData", formData);
+      const response = await call("/admin/login", "POST", formData);
+      localStorage.setItem("user_detail", JSON.stringify(response?.data));
+      setUser(response.data);
+      toast.success(response?.message, { duration: 2000 });
+      setToggleBtn(false);
     } catch (error) {
-      toast.error(error?.message, { duration: 2000 }
-      );
-      setToggleBtn(false)
+      toast.error(error?.message, { duration: 2000 });
+      setToggleBtn(false);
     }
-
   };
 
   return (
@@ -64,7 +62,7 @@ const Login = () => {
       <main className="w-full max-w-sm mx-4">
         <section className="w-full px-6 pt-6 bg-white border rounded-lg shadow-2xl pb-9">
           <h1 className="mb-6 text-xl font-bold leading-tight text-center text-blue-600">
-            LEE <br /> Administrator
+            Copify <br /> Administrator
           </h1>
 
           <form onSubmit={handleSubmit}>

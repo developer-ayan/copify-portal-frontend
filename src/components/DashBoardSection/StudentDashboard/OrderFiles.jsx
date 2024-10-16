@@ -4,7 +4,7 @@ import { call } from '../../../utils/helper';
 import toast from 'react-hot-toast';
 import { Loader } from '../../Loaders';
 
-const OrderFiles = ({ item }) => {
+const OrderFiles = ({ item , disable }) => {
   const [selectedSubject, setSelectedSubject] = useState('');
   const [selectedIds, setSelectedIds] = useState([]);
   const [loader, setLoader] = useState(false);

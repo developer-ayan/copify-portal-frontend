@@ -24,6 +24,7 @@ import {
   Riders as RidersDashboard,
 } from "../pages";
 import { base_url } from "../utils/url";
+import RiderStatusCheck from "../pages/RiderStatusCheck";
 
 // Router component handles the routing of the application
 const Router = () => {
@@ -93,48 +94,55 @@ const Router = () => {
             path="/"
             element={user ? <Layout /> : <Navigate to="/login" replace />}
           >
-            {user?.role_id == 1 ?
+            {user?.role_id == 1 ? (
               <Route path="/dashboard" element={privateRoutes(Dashboard)} />
-              :
-              <Route
-                index
-                path="/orders"
-                element={privateRoutes(Orders)}
-              />
-            }
+            ) : (
+              <Route index path="/orders" element={privateRoutes(Orders)} />
+            )}
             <Route path="/edit-profile" element={privateRoutes(EditProfile)} />
-            <Route path="/EnvironmentalSetup" element={privateRoutes(EnvironmentalSetup)} />
-            <Route path="/advertising-and-annoucements" element={privateRoutes(Advertising)} />
+            <Route
+              path="/EnvironmentalSetup"
+              element={privateRoutes(EnvironmentalSetup)}
+            />
+            <Route
+              path="/advertising-and-annoucements"
+              element={privateRoutes(Advertising)}
+            />
             <Route path="/BranchChat" element={privateRoutes(BranchChat)} />
+            <Route
+              path="/RiderActivity"
+              element={privateRoutes(RiderStatusCheck)}
+            />
+            <Route path="/Chat" element={privateRoutes(BranchChat)} />
             {/* <Route
               path="/payment-methods"
               element={privateRoutes(PaymentMethods)}
             /> */}
-            <Route path="/education-institute" element={privateRoutes(EducationInstitute)} />
-
             <Route
-              path="/Branch"
-              element={privateRoutes(Branch)}
-            />
-            <Route
-              path="/AdminChat"
-              element={privateRoutes(AdminChat)}
+              path="/education-institute"
+              element={privateRoutes(EducationInstitute)}
             />
 
+            <Route path="/Branch" element={privateRoutes(Branch)} />
+            <Route path="/AdminChat" element={privateRoutes(AdminChat)} />
 
-            <Route
-              index
-              path="/orders"
-              element={privateRoutes(Orders)}
-            />
+            <Route index path="/orders" element={privateRoutes(Orders)} />
 
             <Route path="/dashboard">
               <Route
                 index
-                element={privateRoutes(Dashboard)}
+                element={privateRoutes(
+                  user?.role_id == "4" ? TeachersDashbord : Dashboard
+                )}
               />
-              <Route path="/dashboard/teachers" element={privateRoutes(TeachersDashbord)} />
-              <Route path="/dashboard/riders" element={privateRoutes(RidersDashboard)} />
+              <Route
+                path="/dashboard/teachers"
+                element={privateRoutes(TeachersDashbord)}
+              />
+              <Route
+                path="/dashboard/riders"
+                element={privateRoutes(RidersDashboard)}
+              />
               <Route
                 path="/dashboard/claim-station"
                 element={privateRoutes(ClaimStationDasboard)}

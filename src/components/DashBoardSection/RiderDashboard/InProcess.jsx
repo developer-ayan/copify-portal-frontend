@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import WalletDashboard from "../TeacherDashboard/WalletDashboard";
-import UploadModal from "../../../components/Modals/UploadModal";
+import UploadModal from "../../Modals/UploadModal";
 import { call } from "../../../utils/helper";
 import toast from "react-hot-toast";
 import { Loader } from "../../Loaders";
@@ -16,7 +16,7 @@ const Order = ({ item, disable }) => {
       formData.append("user_id", Number(item?.user_id));
       const response = await call("/app/rider_dashboard", "POST", formData);
       const filterArray = response?.data.filter(
-        (item, index) => item.order_status == "printing"
+        (item, index) => item.order_status == "in process"
       );
       setUploads(filterArray);
     } catch (error) {
@@ -43,7 +43,7 @@ const Order = ({ item, disable }) => {
         ) : (
           <div className="md:w-2/3 w-full mb-4 md:mb-0">
             <h2 className="text-2xl font-semibold mb-4 text-left">
-              Printing orders
+              Ready to deliver orders
             </h2>
             <div className="overflow-x-auto">
               <table className="min-w-full bg-white">

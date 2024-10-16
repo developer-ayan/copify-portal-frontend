@@ -1,92 +1,99 @@
-import React, { useState } from 'react';
-import WalletDashboard from '../TeacherDashboard/WalletDashboard';
+import React, { useEffect, useState } from "react";
+import WalletDashboard from "../TeacherDashboard/WalletDashboard";
 import UploadModal from "../../../components/Modals/UploadModal";
+import { call } from "../../../utils/helper";
+import toast from "react-hot-toast";
+import { Loader } from "../../Loaders";
+import NotFound from "../../Error/NotFound";
 
-const Order = () => {
-  const [showUploadModal, setShowUploadModal] = useState(false);
+const Order = ({ item, disable }) => {
+  const [loader, setLoader] = useState(false);
+  const [uploads, setUploads] = useState([]);
 
-  const addUpload = (name, file, type, description) => {
-    const newUpload = { name, date: new Date().toLocaleString(), type, description, status: 'Receive' };
-    setUploads([...uploads, newUpload]);
+  const getOrders = async () => {
+    try {
+      const formData = new FormData();
+      formData.append("user_id", Number(item?.user_id));
+      const response = await call("/app/rider_dashboard", "POST", formData);
+      const filterArray = response?.data.filter((item , index) => item.order_status == "pending") 
+      setUploads(filterArray);
+    } catch (error) {
+      setUploads([]);
+      toast.error(error?.message, { duration: 2000 });
+    }
   };
 
-  const [uploads, setUploads] = useState([
-    { name: 'CDK000457', date: 'Date & Time', status: 'F05', heading: 'Ready to Pick up' },
+  const fetchAPIs = async () => {
+    setLoader(true);
+    await Promise.all([getOrders()]);
+    setLoader(false);
+  };
 
-  ]);
+  useEffect(() => {
+    fetchAPIs();
+  }, []);
 
   return (
-    <div className="min-h-screen">
-      <div className="bg-white rounded-lg shadow-lg p-6 flex flex-col lg:flex-row justify-between">
-        <div className="lg:w-2/3 w-full mb-4 lg:mb-0">
-          <div className="flex justify-between items-center mb-4">
-            <h2 className="text-2xl font-bold">Order Delivery Dashboard</h2>
-          </div>
-          <div className="mb-4 flex flex-col sm:flex-row items-center sm:items-start">
-            <div className="flex items-center mb-2 sm:mb-0">
-              <label className="block font-semibold mr-4">Select Code/Name:</label>
-              <input
-                type="text"
-                className="w-full sm:w-1/2 md:w-1/1 p-2 border border-gray-300 rounded mb-2 sm:mb-0"
-
-
-              />
-            </div>
-            <div className="flex items-center ml-0 sm:ml-4 mb-2 sm:mb-0">
-              <label className="block font-semibold mr-4">Order Qty:</label>
-              <input
-                type="text"
-                className="w-full sm:w-1/4 md:w-1/3 p-2 border border-gray-300 rounded"
-                value=""
-                readOnly
-              />
-            </div>
-          </div>
-          <div className="overflow-x-auto">
-            <table className="min-w-full bg-white">
-              <thead>
-                <tr>
-                  <th className="px-4 py-2 border">Particular File Name</th>
-                  <th className="px-4 py-2 border">Ready To Deliver</th>
-                  <th className="px-4 py-2 border">Folder Name</th>
-                </tr>
-              </thead>
-              <tbody>
-                {uploads.map((upload, index) => (
-                  <tr key={index}>
-                    <td className="px-4 py-2 border">
-                      <h4 className="font-bold">{upload.heading}</h4>
-                      <div className="flex items-center">
-                        <input
-                          type="radio"
-                          id={`upload-${index}`}
-                          name="upload"
-                          value={upload.name}
-                          className="mr-2"
-                        />
-                        <label htmlFor={`upload-${index}`}>{upload.name}</label>
-                      </div>
-                    </td>
-                    <td className="px-4 py-2 border text-center">{upload.date}</td>
-                    <td className="px-4 py-3 border flex justify-center">
-                      <button className="px-4 py-2 bg-blue-500 text-white rounded-md">{upload.status}</button>
-                    </td>
+    <div>
+      <div className="bg-white rounded-lg shadow-lg p-6 flex flex-col md:flex-row justify-between">
+        {loader ? (
+          <Loader />
+        ) : (
+          <div className="md:w-2/3 w-full mb-4 md:mb-0">
+            <h2 className="text-2xl font-semibold mb-4 text-left">
+              Pending orders
+            </h2>
+            <div className="overflow-x-auto">
+              <table className="min-w-full bg-white">
+                <thead>
+                  <tr>
+                    <th className="px-4 py-2 border">Customer claim code</th>
+                    <th className="px-4 py-2 border">Order claim code</th>
+                    <th className="px-4 py-2 border">Order status</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {uploads.length == 0 ? (
+                    <NotFound text={"Orders not found"} />
+                  ) : (
+                    uploads.map((upload, index) => (
+                      <tr key={index}>
+                        <td className="px-4 py-2 border">
+                          {/* <h4 className="font-bold">{upload.heading}</h4> */}
+                          <div className="flex items-center">
+                            <input
+                              type="radio"
+                              id={`upload-${index}`}
+                              name="upload"
+                              value={upload.name}
+                              className="mr-2"
+                            />
+                            <label htmlFor={`upload-${index}`}>
+                              {upload.claim_code}
+                            </label>
+                          </div>
+                        </td>
+                        <td className="px-4 py-2 border text-center">
+                          {upload.generate_order_id}
+                        </td>
+                        <td className="px-4 py-3 border flex justify-center">
+                          <button className="px-4 py-2 bg-blue-500 text-white rounded-md">
+                            {upload.order_status}
+                          </button>
+                        </td>
+                      </tr>
+                    ))
+                  )}
+                </tbody>
+              </table>
+            </div>
           </div>
-        </div>
+        )}
+
         <div className="lg:w-1/3 w-full">
-          {/* temparry remove  */}
-          {/* <WalletDashboard /> */}
+          <WalletDashboard item={item} disable={disable} />
         </div>
       </div>
-      <UploadModal
-        show={showUploadModal}
-        onClose={() => setShowUploadModal(false)}
-        onSave={addUpload}
-      />
     </div>
   );
 };
