@@ -1,7 +1,11 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import DonutChart from '../../NavOptions/DonutChart';
+import { Loader } from '../../Loaders';
+import { call, toFixedMethod } from '../../../utils/helper';
+import toast from 'react-hot-toast';
+import NotFound from '../../Error/NotFound';
 
-const OrderDetails = () => {
+const OrderDetails = ({ item }) => {
   const [formData, setFormData] = useState({
     claimCode: 'CDK000001',
     numberOfOrders: '1',
@@ -14,150 +18,133 @@ const OrderDetails = () => {
     folderNumber: '05',
     paymentStatus: 'COD',
   });
+  const [loader, setLoader] = useState(false);
+  const [uploads, setUploads] = useState([])
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
 
+
+  const getOrders = async () => {
+    try {
+      const formData = new FormData();
+      formData.append("user_id", Number(item?.user_id));
+      const response = await call("/app/fetch_All_orders", "POST", formData);
+      setUploads(response?.data);
+    } catch (error) {
+      setUploads([]);
+      toast.error(error?.message, { duration: 2000 });
+    }
+  };
+
+  const fetchAPIs = async () => {
+    setLoader(true);
+    await getOrders()
+    setLoader(false);
+  };
+
+  useEffect(() => {
+    fetchAPIs()
+  }, [item])
+  
+
+  const total_order_price = uploads.reduce((acc, order) => {
+    const orderTotal = order.subjectFiles.reduce((sum, file) => sum + parseFloat(file.total_price), 0); // Sum total_price for subjectFiles
+    return acc + orderTotal; // Add to accumulator
+  }, 0); // Initial accumulator value is 0
+
+  const total_delivery_charges = uploads.reduce((acc, order) => {
+    return acc + parseFloat(order.rider_charges || 0); // Ensure rider_charges is parsed as a number, and handle cases where it's missing
+  }, 0); // Start with an initial value of 0
+  const total_price = uploads.reduce((acc, order) => {
+    return acc + parseFloat(order.total_price || 0); // Ensure rider_charges is parsed as a number, and handle cases where it's missing
+  }, 0); // Start with an initial value of 0
+
+  const priorityCount = uploads.filter(order => order.priority === true).length * 10
+
+  const overAllTotal = parseFloat(toFixedMethod(total_order_price)) + parseFloat(toFixedMethod(total_delivery_charges)) + parseFloat(toFixedMethod(total_price)) + parseFloat(toFixedMethod(priorityCount))
+
+  console.log("total_order_price", total_price)
+
+
+
   return (
     <div className="container border mx-auto px-8">
-      <div className="bg-white p-4 rounded shadow">
-        <h1 className="text-2xl font-bold text-center mb-8">Claim Station Dashboard</h1>
-        <div className="flex flex-col lg:flex-row gap-5">
-          <div className="flex-[2]">
-            <div className="mb-4">
-              <h2 className="text-xl font-bold mb-4">Enter the claim code:</h2>
-              <div className="flex items-center">
-                <input
-                  type="text"
-                  name="claimCode"
-                  value={formData.claimCode}
-                  onChange={handleInputChange}
-                  className="w-1/2 p-2 border rounded"
-                  placeholder="CDK000001"
-                />
-                <button className="bg-blue-500 text-white px-4 py-2 rounded ml-4">CLEAR</button>
-              </div>
-            </div>
-            <div className="space-y-4 mt-4">
-              <h3 className="text-lg font-semibold">Overall Unclaimed Orders Details:</h3>
-            </div>
-            <div>
-              <h3 className="text-lg font-semibold mb-2 mt-2">No. Pages</h3>
-              {[
-                { label: 'Number of Orders', name: 'numberOfOrders' },
-                { label: 'Total Pages Unpaid', name: 'totalPagesUnpaid' },
-                { label: 'Total Printing Fee', name: 'totalPrintingFee' },
-              ].map((field, idx) => (
-                <div className="flex items-center text-center" key={idx}>
-                  <label className="block mb-1 w-1/2 text-right">{field.label}:</label>
-                  <input
-                    type="text"
-                    name={field.name}
-                    value={formData[field.name]}
-                    onChange={handleInputChange}
-                    className="w-1/4 ml-4 border text-center"
-                  />
-                </div>
-              ))}
-              <h3 className="text-lg font-semibold mb-2 mt-2">Other Charges:</h3>
-              {[
-                { label: 'Rush Printing', name: 'rushPrinting' },
-                { label: 'Delivery Charge', name: 'deliveryCharge' },
-              ].map((field, idx) => (
-                <div className="flex items-center text-center" key={idx}>
-                  <label className="block mb-1 w-1/2 text-right">{field.label}:</label>
-                  <input
-                    type="text"
-                    name={field.name}
-                    value={formData[field.name]}
-                    onChange={handleInputChange}
-                    className="w-1/4 ml-4 border text-center"
-                  />
-                </div>
-              ))}
-              <div className="mt-4 mb-6">
-                {['totalPayment', 'totalWalletPaid', 'folderNumber', 'paymentStatus'].map((field, idx) => (
-                  <div className="flex items-center" key={idx}>
-                    <label className="block mb-1 w-1/2 capitalize text-lg font-semibold text-right">
-                      {field.replace(/([A-Z])/g, ' $1')}:
-                    </label>
-                    <input
-                      type="text"
-                      name={field}
-                      value={formData[field]}
-                      onChange={handleInputChange}
-                      className="w-1/4 ml-4 border rounded text-center"
-                    />
-                  </div>
+      {loader ? (
+        <Loader />
+      ) : (
+        <div className="bg-white p-4 rounded shadow w-full">
+          <h1 className="text-2xl font-bold text-center mb-8">Claim Station Dashboard</h1>
+          <div className="flex flex-col lg:flex-row gap-5">
+            {uploads?.length > 0 ?
+              <div className="border p-4 flex-[2] font-sans">
+                {/* <h2 className="text-xl font-bold mb-4">First Order Details</h2> */}
+                {uploads.map((order, orderIndex) => (
+                  order.subjectFiles.map((file, fileIndex) => (
+                    <div key={file._id} className="mb-5">
+                      <div className="flex items-start mb-2">
+                        <input type="radio" id={`lesson${fileIndex}`} name="order" className="mt-1 mr-2" />
+                        <div>
+                          <label htmlFor={`lesson${fileIndex}`} className="cursor-pointer">
+                            <p className="text-lg font-semibold">{file.title + " - " + file.description}</p>
+                            <div className="ml-4">
+                              <p>Page Number: {file.page_number} pages</p>
+                              <p>Total Price: Php. {parseFloat(file.total_price).toFixed(2)}</p>
+                            </div>
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                  ))
                 ))}
-              </div>
-            </div>
-          </div>
-          <div className="border p-4 flex-[2] font-sans">
-            <h2 className="text-xl font-bold mb-4">First Order Details</h2>
-            <div className="mb-5">
-              <p className="text-lg font-bold mb-4">Details: Educ 101 - Section A Page</p>
-              <div className="flex items-start mb-2">
-                <input type="radio" id="lesson1" name="order" className="mt-1 mr-2" />
-                <div>
-                  <label htmlFor="lesson1" className="cursor-pointer">
-                    <p className="text-lg font-semibold">Lesson 1: Teaching Technology</p>
-                    <div className="ml-4">
-                      <p>Page Number: 10 pages</p>
-                      <p>Total Price: Php. 20.00</p>
-                    </div>
-                  </label>
+
+                <div className="mb-4">
+                  <div className="flex justify-between">
+                    <p className="text-lg font-semibold">Total Order Price:</p>
+                    <p>Php. {toFixedMethod(total_order_price)}</p>
+                  </div>
+                  <div className="mt-2 mb-2"></div>
+                  <div className="flex justify-between">
+                    <p className="text-lg font-semibold">Priority Printing Charge:</p>
+                    <p>Php. {toFixedMethod(priorityCount)}</p>
+                  </div>
+                  <div className="mt-2 mb-2"></div>
+                  <div className="flex justify-between">
+                    <p className="text-lg font-semibold">Delivery Rider Charge:</p>
+                    <p>Php. {toFixedMethod(total_delivery_charges)}</p>
+                  </div>
+                  <div className="mt-2 mb-2"></div>
+                  <div className="flex justify-between">
+                    <p className="text-lg font-semibold">Overall Total Charge:</p>
+                    <p>Php. {toFixedMethod(overAllTotal)}</p>
+                  </div>
+                  <div className="mt-2 mb-2"></div>
+                  <div className="flex justify-between">
+                    <p className="text-lg font-semibold">Payment Status:</p>
+                    <p className="text-center">ONLINE</p>
+                  </div>
                 </div>
+                {/* <button className="bg-blue-500 text-white px-4 py-2 rounded mt-4">Claim Now</button> */}
               </div>
-              <div className="flex items-start">
-                <input type="radio" id="module1" name="order" className="mt-1 mr-2" />
-                <div>
-                  <label htmlFor="module1" className="cursor-pointer">
-                    <p className="text-lg font-semibold">Module 1: Theory of Teaching</p>
-                    <div className="ml-4">
-                      <p>Page Number: 15 Pages</p>
-                      <p>Total Price: Php. 30.00</p>
-                    </div>
-                  </label>
-                </div>
+
+              :
+              <div className="flex justify-center items-center w-full h-full border mx-auto px-8">
+                <NotFound removeBorder text={"No record found"} />
               </div>
-            </div>
-            <div className="mb-4">
-              <div className="flex justify-between">
-                <p className="text-lg font-semibold">Total Order Price:</p>
-                <p>Php. 50.00</p>
-              </div>
-              <div className="mt-2 mb-2"></div>
-              <div className="flex justify-between">
-                <p className="text-lg font-semibold">Rush Printing Charge:</p>
-                <p>Php. 15.00</p>
-              </div>
-              <div className="mt-2 mb-2"></div>
-              <div className="flex justify-between">
-                <p className="text-lg font-semibold">Delivery Rider Charge:</p>
-                <p>Php. 15.00</p>
-              </div>
-              <div className="mt-2 mb-2"></div>
-              <div className="flex justify-between">
-                <p className="text-lg font-semibold">Overall Total Charge:</p>
-                <p>Php. 80.00</p>
-              </div>
-              <div className="mt-2 mb-2"></div>
-              <div className="flex justify-between">
-                <p className="text-lg font-semibold">Payment Status:</p>
-                <p className="text-center">COD</p>
-              </div>
-            </div>
-            <button className="bg-blue-500 text-white px-4 py-2 rounded mt-4">Claim Now</button>
-          </div>
-          <div className="flex-1 flex flex-col">
-            <h2 className="text-center text-lg font-semibold mb-4 mt-4">User Received Analysis</h2>
-            <DonutChart />
+            }
+            {uploads?.length > 0 ?
+              <div className="flex-1 flex flex-col">
+                <h2 className="text-center text-lg font-semibold mb-4 mt-4">User Received Analysis</h2>
+                <DonutChart />
+              </div> : <></>
+            }
+
           </div>
         </div>
-      </div>
+      )}
+
     </div>
   );
 };

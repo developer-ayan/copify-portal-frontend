@@ -28,10 +28,11 @@ const AddSubscriptionModal = ({ isOpen, closeModal, addDepartment, isLoading }) 
               <option value="" disabled>
                 Select Months
               </option>
-              <option value="1">1 Month</option>
-              <option value="3">3 Months</option>
-              <option value="6">6 Months</option>
-              <option value="12">12 Months</option>
+              {[...Array(100).keys()].map((month) => (
+                <option key={month + 1} value={month + 1}>
+                  {month + 1} Month{month + 1 > 1 ? 's' : ''}
+                </option>
+              ))}
             </select>
 
             <input

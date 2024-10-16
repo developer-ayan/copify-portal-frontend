@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { call } from "../../../utils/helper";
 import toast from "react-hot-toast";
 import SearchData from "../../SearchData/SearchData";
+import { Loader } from "../../Loaders";
 
 const SearchSection = ({
   selectedOption,
@@ -24,9 +25,9 @@ const SearchSection = ({
   const isEmpty = Object?.keys(item)?.length === 0;
   const handleSearch = async (value) => {
     try {
-      setSearchName(value);
+      value != "loader" &&  setSearchName(value);
       setShowSearchData(true);
-      setSearchLoader(true);
+      value == "loader" && setSearchLoader(true);
       const formData = new FormData();
       formData.append("search", searchName);
       const response = await call("/admin/search_teacher", "POST", formData);
@@ -48,10 +49,11 @@ const SearchSection = ({
   useEffect(() => {
     if (!searchName) {
       setShowSearchData(false);
+      handleSearch("loader")
     }
   }, [searchName]);
 
-  return (
+  return searchLoader ? <Loader /> : (
     <div className="bg-white p-5 rounded-lg shadow-md mb-8">
       <h2 className="text-2xl font-semibold mb-4 text-center">
         Teacher Dashboard

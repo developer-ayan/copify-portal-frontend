@@ -1,22 +1,27 @@
 import React, { useState } from 'react';
+import UploadFile from '../../UploadFile/UploadFile';
 
 const AddShopModal = ({ show, onClose, onSave, isLoading }) => {
   const [name, setName] = useState('');  // State for name
   const [email, setEmail] = useState('');
   const [location, setLocation] = useState('');
   const [password, setPassword] = useState('');
+  const [fileName, setFileName] = useState('');
+  const [file, setFile] = useState(null);
 
   const handleSave = () => {
-    if (name && email && location && password) {
-      onSave(name, email, location, password);  // Pass name along with other fields
+    if (name && email && location && password && file) {
+      onSave(name, email, location, password, file);  // Pass name along with other fields
     } else {
-      alert('Please provide name, email, location, and password.');
+      alert('Please provide name, email, location, password and picture');
     }
   };
 
   if (!show) {
     return null;
   }
+
+  console.log("fileName", fileName)
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50">
@@ -26,6 +31,8 @@ const AddShopModal = ({ show, onClose, onSave, isLoading }) => {
             <h2 className="text-xl font-semibold text-gray-800">Add Branch</h2>
             <button onClick={onClose} className="text-gray-400 hover:text-gray-600">&times;</button>
           </div>
+
+          <UploadFile fileName={fileName} setFileName={setFileName} file={file} setFile={setFile} />
 
           <div className="mb-2">
             <input
@@ -48,7 +55,7 @@ const AddShopModal = ({ show, onClose, onSave, isLoading }) => {
               onChange={(e) => setEmail(e.target.value)}
             />
           </div>
-          
+
           <div className="mb-2">
             <input
               id="Password"

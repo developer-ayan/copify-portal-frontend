@@ -1,13 +1,16 @@
 import React, { useState } from 'react';
+import UploadFile from '../../UploadFile/UploadFile';
 
 const ShopEditModal = ({ show, onClose, onSave, currentInstitute, isLoading }) => {
-  const [name, setName] = useState(currentInstitute?.name || '');  
+  const [name, setName] = useState(currentInstitute?.name || '');
   const [email, setEmail] = useState(currentInstitute?.email || '');
   const [location, setLocation] = useState(currentInstitute?.branch_address || '');
   const [password, setPassword] = useState('');
+  const [fileName, setFileName] = useState(currentInstitute?.file_upload);
+  const [file, setFile] = useState(null);
 
   const handleSave = () => {
-    onSave(currentInstitute.email, name, email, location, password);  
+    onSave(currentInstitute.email, name, email, location, password, file);
   };
 
   if (!show) {
@@ -22,7 +25,7 @@ const ShopEditModal = ({ show, onClose, onSave, currentInstitute, isLoading }) =
             <h2 className="text-xl font-semibold text-gray-800">Edit Branch</h2>
             <button onClick={onClose} className="text-gray-400 hover:text-gray-600">&times;</button>
           </div>
-
+          <UploadFile fileName={fileName} setFileName={setFileName} file={file} setFile={setFile} />
           <div className="mb-2">
             <input
               id="name"
@@ -44,7 +47,7 @@ const ShopEditModal = ({ show, onClose, onSave, currentInstitute, isLoading }) =
               onChange={(e) => setEmail(e.target.value)}
             />
           </div> */}
-         
+
           <div className="mb-2">
             <input
               id="password"
