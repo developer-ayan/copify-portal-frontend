@@ -201,15 +201,14 @@ const Search = () => {
                                 <tr className="border-t border-gray-200">
                                   <td colSpan="7" className="px-4 py-2 border text-left">
                                     <div className="flex justify-start items-center">
-                                      {/* Uncomment this section if you need to display action buttons */}
-                                      {/* {order.actions.map((action, idx) => (
-                  <button
-                    key={idx}
-                    className="bg-blue-500 text-white text-xs font-semibold mr-2 mb-2 px-2 py-2 rounded"
-                  >
-                    {action}
-                  </button>
-                ))} */}
+                                      <button
+                                        onClick={() =>
+                                          (window.location.href = item.file_upload)
+                                        }
+                                        className="bg-blue-500 text-white text-xs font-semibold mr-2 mb-2 px-2 py-2 rounded"
+                                      >
+                                        {"View"}
+                                      </button>
                                     </div>
                                   </td>
                                 </tr>
@@ -258,14 +257,14 @@ const Search = () => {
                                   <td colSpan="7" className="px-4 py-2 border text-left">
                                     <div className="flex justify-start items-center">
                                       {/* Uncomment this section if you need to display action buttons */}
-                                      {/* {order.actions.map((action, idx) => (
- <button
-   key={idx}
-   className="bg-blue-500 text-white text-xs font-semibold mr-2 mb-2 px-2 py-2 rounded"
- >
-   {action}
- </button>
-))} */}
+                                      <button
+                                        onClick={() =>
+                                          (window.location.href = item.file_upload)
+                                        }
+                                        className="bg-blue-500 text-white text-xs font-semibold mr-2 mb-2 px-2 py-2 rounded"
+                                      >
+                                        {"View"}
+                                      </button>
                                     </div>
                                   </td>
                                 </tr>
