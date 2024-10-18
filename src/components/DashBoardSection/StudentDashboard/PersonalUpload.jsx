@@ -78,6 +78,7 @@ const PersonalUpload = ({ item, disable }) => {
     try {
       setFileLoader(true);
       const formData = new FormData();
+      formData.append("user_id", Number(item?.user_id));
       formData.append("subject_id", "global_id");
       formData.append("files_type", "2");
       const response = await call(
