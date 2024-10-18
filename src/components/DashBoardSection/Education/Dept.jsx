@@ -4,8 +4,8 @@ import ViewModal from '../../Modals/ViewModal';
 import UploadModal from '../../Modals/AddInstitute';
 import EditInstituteModal from '../../Modals/EducationEdit';
 import SubjectModal from "../../Modals/SubjectModal/SubjectModal";
-import StudentModal from "../../Modals/Student/StudentModal"; 
-import TeacherModal from "../../Modals/Teacher/TeacherModal"; 
+import StudentModal from "../../Modals/Student/StudentModal";
+import TeacherModal from "../../Modals/Teacher/TeacherModal";
 import { AppContext } from '../../../context';
 import toast from 'react-hot-toast';
 import { call } from '../../../utils/helper';
@@ -21,17 +21,18 @@ const Order = ({ buttonLoaderStatefromParent, searchDataFromChild }) => {
   const [showEditModal, setShowEditModal] = useState(false);
   const [currentDept, setCurrentDept] = useState(null);
   const [showSubjectModal, setShowSubjectModal] = useState(false);
-  const [showStudentModal, setShowStudentModal] = useState(false); 
+  const [showStudentModal, setShowStudentModal] = useState(false);
   const [showTeacherModal, setShowTeacherModal] = useState(false); // State for Teacher Modal
   const [uploads, setUploads] = useState([]);
 
-  const addUpload = async (name, location) => {
+  const addUpload = async (name, location, file) => {
     try {
       setButtonLoader(true);
       const formData = new FormData();
       formData.append('user_id', user?.user_id);
       formData.append('institute_name', name);
       formData.append('institute_location', location);
+      formData.append('file_upload', file);
       console.log('formData', formData);
       const response = await call('/admin/create_institute', 'POST', formData);
       await getList();
@@ -79,17 +80,18 @@ const Order = ({ buttonLoaderStatefromParent, searchDataFromChild }) => {
     setShowEditModal(true);
   };
 
-  const saveEdit = async (originalName, newName, newLocation) => {
+  const saveEdit = async (originalName, newName, newLocation, file) => {
     try {
       setButtonLoader(true);
       const formData = new FormData();
       formData.append('institute_id', currentDept?.institute_id);
       formData.append('institute_name', newName || '');
       formData.append('institute_location', newLocation || '');
+      formData.append('file_upload', file);
       console.log('formData', formData);
       const response = await call('/admin/edit_institute', 'POST', formData);
       await getList();
-      setShowUploadModal(false);
+      setShowEditModal(false);
       setButtonLoader(false);
       toast.success(response?.message, { duration: 2000 });
     } catch (error) {
@@ -153,7 +155,7 @@ const Order = ({ buttonLoaderStatefromParent, searchDataFromChild }) => {
                     </button> */}
                     <button
                       className="px-3 py-2 bg-blue-500 text-white rounded-md"
-                      onClick={() => { setCurrentDept(upload); setShowStudentModal(true); }} 
+                      onClick={() => { setCurrentDept(upload); setShowStudentModal(true); }}
                     >
                       Students
                     </button>
@@ -221,14 +223,14 @@ const Order = ({ buttonLoaderStatefromParent, searchDataFromChild }) => {
         />
       )}
 
-      {showStudentModal && ( 
+      {showStudentModal && (
         <StudentModal
           dept={currentDept}
           closeModal={() => setShowStudentModal(false)}
         />
       )}
 
-      {showTeacherModal && ( 
+      {showTeacherModal && (
         <TeacherModal
           dept={currentDept}
           closeModal={() => setShowTeacherModal(false)}

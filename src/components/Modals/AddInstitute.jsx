@@ -1,14 +1,17 @@
 import React, { useState } from 'react';
+import UploadFile from '../UploadFile/UploadFile';
 
 const UploadModal = ({ show, onClose, onSave, isLoading }) => {
   const [instituteName, setInstituteName] = useState('');
   const [location, setLocation] = useState('');
+  const [fileName, setFileName] = useState("");
+  const [file, setFile] = useState(null);
 
   const handleSave = () => {
-    if (instituteName && location) {
-      onSave(instituteName, location);
+    if (instituteName && location , file) {
+      onSave(instituteName, location , file) ;
     } else {
-      alert('Please provide both institute name and location.');
+      alert('Please provide both institute name, location and image');
     }
   };
 
@@ -24,6 +27,7 @@ const UploadModal = ({ show, onClose, onSave, isLoading }) => {
             <h2 className="text-xl font-semibold text-gray-800">Add Institute</h2>
             <button onClick={onClose} className="text-gray-400 hover:text-gray-600">&times;</button>
           </div>
+          <UploadFile fileName={fileName} setFileName={setFileName} file={file} setFile={setFile} />
           <div className="mb-2">
             <input
               id="instituteName"

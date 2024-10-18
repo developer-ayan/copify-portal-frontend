@@ -16,10 +16,10 @@ const ViewInstitutesModal = ({ closeModal, dept }) => {
   const [screenLoader, setScreenLoader] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [showAddModal, setShowAddModal] = useState(false);
-  const [showSemesterModal, setShowSemesterModal] = useState(false); 
+  const [showSemesterModal, setShowSemesterModal] = useState(false);
   const [departmentToDelete, setDepartmentToDelete] = useState(null);
   const [currentDepartment, setCurrentDepartment] = useState(null);
-  const [currentSemesterDepartment, setCurrentSemesterDepartment] = useState(null); 
+  const [currentSemesterDepartment, setCurrentSemesterDepartment] = useState(null);
   const [departments, setDepartments] = useState([]);
 
   const handleSelection = (institute) => {
@@ -150,6 +150,7 @@ const ViewInstitutesModal = ({ closeModal, dept }) => {
           </div>
         ) : (
           <div>
+
             <div className="flex justify-between items-center mb-2">
               <h3 className="text-xl font-semibold text-gray-800">
                 Departments of {dept?.institute_name}
@@ -158,7 +159,7 @@ const ViewInstitutesModal = ({ closeModal, dept }) => {
                 &times;
               </button>
             </div>
-            <div className="overflow-x-auto">
+            <div className="bg-white p-6 shadow-md w-full max-w-lg sm:max-w-xl md:max-w-2xl h-64 overflow-x-auto">
               <table className="min-w-full bg-white">
                 <thead>
                   <tr>

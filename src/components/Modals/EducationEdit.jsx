@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
+import UploadFile from '../UploadFile/UploadFile';
 
 const EditInstituteModal = ({ show, onClose, onSave, currentInstitute, isLoading }) => {
   const [name, setName] = useState(currentInstitute?.institute_name || '');
   const [location, setLocation] = useState(currentInstitute?.institute_location || '');
+  const [fileName, setFileName] = useState(currentInstitute?.file_upload || "");
+  const [file, setFile] = useState(null);
 
   const handleSave = () => {
-    onSave(currentInstitute.institute_name, name, location);
-    onClose();
+    onSave(currentInstitute.institute_name, name, location, file);
   };
 
   return (
@@ -17,6 +19,7 @@ const EditInstituteModal = ({ show, onClose, onSave, currentInstitute, isLoading
             <h2 className="text-xl font-semibold text-gray-800">Edit Institute</h2>
             <button onClick={onClose} className="text-gray-400 hover:text-gray-600">&times;</button>
           </div>
+          <UploadFile fileName={fileName} setFileName={setFileName} file={file} setFile={setFile} />
           <div className="mb-2">
             <input
               id="instituteName"

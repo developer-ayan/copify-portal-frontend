@@ -26,7 +26,8 @@ const Branches = () => {
     }));
   };
 
-  const handleAddShop = async (name, email, branch_address, password) => {
+  const handleAddShop = async (name, email, branch_address, password , file) => {
+    console.log("name, email, branch_address, password , file" , name, email, branch_address, password , file)
     try {
       setButtonLoader(true)
       const formData = new FormData();
@@ -34,6 +35,7 @@ const Branches = () => {
       formData.append('name', name);
       formData.append('password', password);
       formData.append('branch_address', branch_address);
+      formData.append('file_upload', file);
       formData.append('role_id', "2");
       const response = await call('/admin/create_branch', 'POST', formData);
       await getBranches()
@@ -68,7 +70,7 @@ const Branches = () => {
     setShowEditModal(true);
   };
 
-  const saveEdit = async (originalEmail, newName, newEmail, newLocation, newPassword) => {
+  const saveEdit = async (originalEmail, newName, newEmail, newLocation, newPassword , file) => {
     try {
       setButtonLoader(true)
       const formData = new FormData();
@@ -77,6 +79,7 @@ const Branches = () => {
       formData.append('name', newName);
       formData.append('password', newPassword);
       formData.append('branch_address', newLocation);
+      formData.append('file_upload', file);
       formData.append('role_id', "2");
       const response = await call('/admin/edit_branch', 'POST', formData);
       await getBranches()
