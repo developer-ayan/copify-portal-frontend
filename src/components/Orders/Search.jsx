@@ -95,11 +95,10 @@ const Search = () => {
   }, [])
 
 
-  const PriorityOrders = uploads?.filter((item, index) => item.priority)
-  const CampusOrder = uploads?.filter((item, index) => item.order_status != "completed")
-  const CompleteOrder = uploads?.filter((item, index) => item.order_status == "completed")
-
-  console.log("upload", PriorityOrders)
+  // const PriorityOrders = uploads?.filter((item, index) => item.priority)
+  // const CampusOrder = uploads?.filter((item, index) => item.order_status != "completed")
+  // const CompleteOrder = uploads?.filter((item, index) => item.order_status == "completed")
+  console.log("uploads", uploads)
 
   return (
     <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -110,63 +109,70 @@ const Search = () => {
             <div className="flex flex-wrap lg:flex-nowrap">
               <div className="w-full lg:w-2/3 overflow-x-auto mb-8 lg:mb-0">
                 {/* {orders.map((orderType, idx) => ( */}
-                {PriorityOrders.length > 0 ?
+                {uploads.length > 0 ?
                   <div className="mb-8">
-                    <h2 className="text-xl font-bold mb-4">{"Priority orders"}</h2>
-                    <table className="min-w-full bg-white border border-gray-200">
-                      <tbody>
-                        {PriorityOrders?.map((order, index) => (
-                          order.subjectFiles.map((item, itemIndex) => {
-                            // Find the color based on the color_code_id
-                            const arr = fileColorDropdown.find(color => color.id == item.color_code_id);
-                            console.log("arr", arr)
 
-                            return (
-                              <React.Fragment key={`${order.id}-${itemIndex}`}> {/* Unique key for each fragment */}
-                                <tr className="border-gray-200">
-                                  <td className="px-4 py-2 border text-center">
-                                    <div className="flex justify-center items-center">
-                                      <input
-                                        type="radio"
-                                        name="order"
-                                        value={order.id}
-                                        checked={selectedOrder === order.id}
-                                        onChange={() => handleRadioChange(order.id)}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td className="px-4 py-2 border">{order.claim_code}</td>
-                                  <td className="px-4 py-2 border">{order?.user_detail?.name}</td>
-                                  <td className="px-4 py-2 border">{item?.paper_size?.paper_size}</td>
-                                  <td className="px-4 py-2 border">{arr?.value}</td>
-                                  <td className="px-4 py-2 border">{item.page_number + " " + "Pages"}</td>
-                                  <td className="px-4 py-2 border">{(order.qty || "1") + " " + "Copies"}</td>
-                                </tr>
-                                <tr className="border-t border-gray-200">
-                                  <td colSpan="7" className="px-4 py-2 border text-left">
-                                    <div className="flex justify-start items-center">
-                                      {/* Uncomment this section if you need to display action buttons */}
-                                      <button
-                                        onClick={() =>
-                                          (window.location.href = item.file_upload)
-                                        }
-                                        className="bg-blue-500 text-white text-xs font-semibold mr-2 mb-2 px-2 py-2 rounded"
-                                      >
-                                        {"View"}
-                                      </button>
 
-                                    </div>
-                                  </td>
-                                </tr>
-                              </React.Fragment>
-                            );
-                          })
-                        ))}
-                      </tbody>
-                    </table>
+                    {uploads?.map((order, index) => (
+                      <table className="min-w-full bg-white border border-gray-200 mt-2 ">
+                        <h2 className="text-xl font-bold mb-4 pt-3 pl-4">{order?.priority ? "Priority" : `${order?.order_status}`} ( CN {order?.user_detail?.name ? order?.user_detail?.name.toUpperCase() : ""} )</h2>
+                        {order.subjectFiles.map((item, itemIndex) => {
+                          // Find the color based on the color_code_id
+                          const arr = fileColorDropdown.find(color => color.id == item.color_code_id);
+                          console.log("arr", arr)
+
+                          return (
+                            <table className="min-w-full bg-white border border-gray-200">
+
+                              <tbody>
+                                <React.Fragment key={`${order.id}-${itemIndex}`}> {/* Unique key for each fragment */}
+                                  <tr className="border-gray-200">
+                                    {/* <td className="px-4 py-2 border text-center">
+                                      <div className="flex justify-center items-center">
+                                        <input
+                                          type="radio"
+                                          name="order"
+                                          value={order.id}
+                                          checked={selectedOrder === order.id}
+                                          onChange={() => handleRadioChange(order.id)}
+                                        />
+                                      </div>
+                                    </td> */}
+                                    <td className="px-4 py-2 border">{order.claim_code}</td>
+                                    <td className="px-4 py-2 border">{order?.user_detail?.name}</td>
+                                    <td className="px-4 py-2 border">{item?.paper_size?.paper_size}</td>
+                                    <td className="px-4 py-2 border">{arr?.value}</td>
+                                    <td className="px-4 py-2 border">{item.page_number + " " + "Pages"}</td>
+                                    <td className="px-4 py-2 border">{(order.qty || "1") + " " + "Copies"}</td>
+                                    <td className="px-4 py-2 border">{(order.qty || "1") + " " + "Copies"}</td>
+                                    <td className="px-4 border">
+                                      <div className="flex justify-start items-center">
+                                        {/* Uncomment this section if you need to display action buttons */}
+                                        <button
+                                          onClick={() =>
+                                            (window.location.href = item.file_upload)
+                                          }
+                                          className="bg-blue-500 text-white text-xs font-semibold mr-2 mb-2 px-2 py-2 rounded"
+                                        >
+                                          {"View"}
+                                        </button>
+
+                                      </div>
+                                    </td>
+                                  </tr>
+
+                                </React.Fragment>
+                              </tbody>
+                            </table>
+                          );
+                        })}
+                      </table>
+
+                    ))}
+
                   </div> : <></>
                 }
-                {CampusOrder.length > 0 ?
+                {/* {CampusOrder.length > 0 ?
                   <div className="mb-8">
                     <h2 className="text-xl font-bold mb-4">{"Campus Printing Order"}</h2>
                     <table className="min-w-full bg-white border border-gray-200">
@@ -179,7 +185,7 @@ const Search = () => {
 
                             return (
                               <React.Fragment key={`${order.id}-${itemIndex}`}> {/* Unique key for each fragment */}
-                                <tr className="border-gray-200">
+                {/* <tr className="border-gray-200">
                                   <td className="px-4 py-2 border text-center">
                                     <div className="flex justify-center items-center">
                                       <input
@@ -234,7 +240,7 @@ const Search = () => {
 
                             return (
                               <React.Fragment key={`${order.id}-${itemIndex}`}> {/* Unique key for each fragment */}
-                                <tr className="border-gray-200">
+                {/* <tr className="border-gray-200">
                                   <td className="px-4 py-2 border text-center">
                                     <div className="flex justify-center items-center">
                                       <input
@@ -257,7 +263,7 @@ const Search = () => {
                                   <td colSpan="7" className="px-4 py-2 border text-left">
                                     <div className="flex justify-start items-center">
                                       {/* Uncomment this section if you need to display action buttons */}
-                                      <button
+                {/* <button
                                         onClick={() =>
                                           (window.location.href = item.file_upload)
                                         }
@@ -275,7 +281,7 @@ const Search = () => {
                       </tbody>
                     </table>
                   </div> : <></>
-                }
+                } */}
 
                 {/* ))} */}
               </div>
