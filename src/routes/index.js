@@ -25,6 +25,7 @@ import {
 } from "../pages";
 import { base_url } from "../utils/url";
 import RiderStatusCheck from "../pages/RiderStatusCheck";
+import OrderLogs from "../pages/OrderLogs";
 
 // Router component handles the routing of the application
 const Router = () => {
@@ -112,6 +113,10 @@ const Router = () => {
             <Route
               path="/RiderActivity"
               element={privateRoutes(RiderStatusCheck)}
+            />
+            <Route
+              path="/OrderLogs"
+              element={privateRoutes(OrderLogs)}
             />
             <Route path="/Chat" element={privateRoutes(BranchChat)} />
             {/* <Route

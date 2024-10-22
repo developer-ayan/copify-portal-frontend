@@ -83,6 +83,12 @@ export const navLinks = [
     path: "/Branch",
     title: "Branches",
   },
+  {
+    icon: <IoMdBriefcase className="-ml-0.5 text-xl" title="Branches" />,
+    id: 10,
+    path: "/OrderLogs",
+    title: "Order logs",
+  },
 ];
 
 export const studentNavLink = [

@@ -1,15 +1,11 @@
 import React, { useContext, useEffect, useState } from "react";
-import DonutChart from "../NavOptions/DonutChart";
-import {
-  call,
-  formatDate,
-  formatTime,
-  toFixedMethod,
-} from "../../utils/helper";
-import { AppContext } from "../../context";
+import DonutChart from "../components/NavOptions/DonutChart";
+import { call, formatDate, formatTime, toFixedMethod } from "../utils/helper";
+import { AppContext } from "../context";
 import toast from "react-hot-toast";
-import { Loader } from "../Loaders";
-import { fileColorDropdown } from "../../constants/data";
+import { Loader } from "../components";
+import { fileColorDropdown } from "../constants/data";
+import DateRangePicker from "../components/DateRangePicker/DateRangePicker";
 
 const orders = [
   {
@@ -65,7 +61,7 @@ const orders = [
   },
 ];
 
-const Search = () => {
+const OrderLogOrder = () => {
   const { user } = useContext(AppContext);
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [loader, setLoader] = useState(false);
@@ -75,29 +71,28 @@ const Search = () => {
     setSelectedOrder(id);
   };
 
-  const getOrders = async () => {
+  const getOrders = async (start_date, end_date) => {
     try {
+        setLoader(true);
       const formData = new FormData();
       formData.append("branch_id", (user?.user_id).toString());
-      const response = await call("/app/fetch_branch_orders", "POST", formData);
-      setUploads(response?.data);
-    } catch (error) {
-      setUploads([]);
-      toast.error(error?.message, { duration: 2000 });
-    }
-  };
+      formData.append(
+        "start_date",
+        start_date ? new Date(start_date) : "2024-01-01"
+      );
+      formData.append("end_date", end_date ? new Date(end_date) : new Date());
 
-  const EditOrderStatus = async (order_id) => {
-    setLoader(true);
-    try {
-      const formData = new FormData();
-      formData.append("order_id", order_id);
-      formData.append("order_status", "completed");
-      const response = await call("/app/edit_order_status", "POST", formData);
-      fetchAPIs();
+      const response = await call(
+        "/app/fetch_branch_orders_date_range",
+        "POST",
+        formData
+      );
+      setUploads(response?.data);
+      setLoader(false);
     } catch (error) {
       setUploads([]);
       toast.error(error?.message, { duration: 2000 });
+      setLoader(false);
     }
   };
 
@@ -111,6 +106,12 @@ const Search = () => {
     fetchAPIs();
   }, []);
 
+  const totalPriceReduce = uploads.reduce(
+    (sum, file) => parseFloat(sum) + parseFloat(file.total_price),
+    0
+  );
+
+
   // const PriorityOrders = uploads?.filter((item, index) => item.priority)
   // const CampusOrder = uploads?.filter((item, index) => item.order_status != "completed")
   // const CompleteOrder = uploads?.filter((item, index) => item.order_status == "completed")
@@ -122,11 +123,21 @@ const Search = () => {
       ) : (
         <div className="bg-white p-6 rounded shadow mt-9">
           <h2 className="text-2xl font-semibold mb-4 text-center">
-            Branch Operation System
+            Order logs
           </h2>
           <div className="container mx-auto p-4">
-            {/* <div className="flex flex-wrap lg:flex-nowrap"> */}
             {/* <div className="w-full lg:w-2/3 overflow-x-auto mb-8 lg:mb-0"> */}
+            <div>
+              <DateRangePicker
+                onClick={(start_date, end_date) =>
+                  getOrders(start_date, end_date)
+                }
+              />
+              <h2 className="text-xl font-regular mt-5 mb-5">
+                TOTAL EARNING : {toFixedMethod(totalPriceReduce)} PHP
+              </h2>
+            </div>
+
             {/* {orders.map((orderType, idx) => ( */}
             {uploads.length > 0 ? (
               <div className="mb-8">
@@ -191,17 +202,7 @@ const Search = () => {
                                 <td className="px-4 border">
                                   <div className="flex justify-start items-center">
                                     {/* Uncomment this section if you need to display action buttons */}
-                                    {order?.rider_id == "undefined" &&
-                                      order?.order_status != "completed" && (
-                                        <button
-                                          onClick={() =>
-                                            EditOrderStatus(order?.order_id)
-                                          }
-                                          className="bg-blue-500 text-white text-xs font-semibold mr-2 mb-2 px-2 py-2 rounded"
-                                        >
-                                          {"Complete"}
-                                        </button>
-                                      )}
+
                                     <button
                                       onClick={() =>
                                         (window.location.href =
@@ -368,16 +369,16 @@ const Search = () => {
                 } */}
 
             {/* ))} */}
-          </div>
-          {/* <div className="w-full lg:w-1/3 flex justify-center items-center">
+            {/* </div> */}
+            {/* <div className="w-full lg:w-1/3 flex justify-center items-center">
                 <DonutChart />
               </div> */}
-          {/* </div> */}
-          {/* </div> */}
+            {/* </div> */}
+          </div>
         </div>
       )}
     </div>
   );
 };
 
-export default Search;
+export default OrderLogOrder;
