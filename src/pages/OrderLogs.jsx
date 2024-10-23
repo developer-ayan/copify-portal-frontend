@@ -82,7 +82,7 @@ const OrderLogs = () => {
                 {radioButtons.map((item, index) => (
                   <label className="mr-4 mb-2" key={index}>
                     <input
-                      type="radio"
+                    type="radio"
                       name="option"
                       className="mr-2"
                       value={item.value}
