@@ -126,7 +126,7 @@ const Search = () => {
           </h2>
           <div className="container mx-auto p-4">
             {/* <div className="flex flex-wrap lg:flex-nowrap"> */}
-            {/* <div className="w-full lg:w-2/3 overflow-x-auto mb-8 lg:mb-0"> */}
+            {/* <div className="w-full lg:w-2/3 overflow--auto mb-8 lg:mb-0"> */}
             {/* {orders.map((orderType, idx) => ( */}
             {uploads.length > 0 ? (
               <div className="mb-8">
