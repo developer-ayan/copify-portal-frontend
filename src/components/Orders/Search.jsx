@@ -193,15 +193,22 @@ const Search = () => {
                                     {/* Uncomment this section if you need to display action buttons */}
                                     {order?.rider_id == "undefined" &&
                                       order?.order_status != "completed" && (
-                                        <button
-                                          onClick={() =>
-                                            EditOrderStatus(order?.order_id)
-                                          }
-                                          className="bg-blue-500 text-white text-xs font-semibold mr-2 mb-2 px-2 py-2 rounded"
-                                        >
-                                          {"Complete"}
-                                        </button>
+                                        <>
+                                          {order?.order_status != "cancle" ? (
+                                            <></>
+                                          ) : (
+                                            <button
+                                              onClick={() =>
+                                                EditOrderStatus(order?.order_id)
+                                              }
+                                              className="bg-blue-500 text-white text-xs font-semibold mr-2 mb-2 px-2 py-2 rounded"
+                                            >
+                                              {"Complete"}
+                                            </button>
+                                          )}
+                                        </>
                                       )}
+
                                     <button
                                       onClick={() =>
                                         (window.location.href =

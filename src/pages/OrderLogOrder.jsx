@@ -195,17 +195,23 @@ const OrderLogOrder = () => {
                                 <td className="px-4 border">
                                   <div className="flex justify-start items-center">
                                     {/* Uncomment this section if you need to display action buttons */}
-                                    {order?.rider_id != "undefined" &&
+                                    {order?.rider_id == "undefined" &&
                                     order?.order_status != "completed" &&
                                     user?.role_id == "2" ? (
-                                      <button
-                                        onClick={() =>
-                                          EditOrderStatus(order?.order_id)
-                                        }
-                                        className="bg-blue-500 text-white text-xs font-semibold mr-2 mb-2 px-2 py-2 rounded"
-                                      >
-                                        {"Complete"}
-                                      </button>
+                                      <>
+                                        {order?.order_status != "cancle" ? (
+                                          <></>
+                                        ) : (
+                                          <button
+                                            onClick={() =>
+                                              EditOrderStatus(order?.order_id)
+                                            }
+                                            className="bg-blue-500 text-white text-xs font-semibold mr-2 mb-2 px-2 py-2 rounded"
+                                          >
+                                            {"Complete"}
+                                          </button>
+                                        )}
+                                      </>
                                     ) : (
                                       <></>
                                     )}
