@@ -7,75 +7,18 @@ import { Loader } from "../components";
 import { fileColorDropdown } from "../constants/data";
 import DateRangePicker from "../components/DateRangePicker/DateRangePicker";
 
-const orders = [
-  {
-    type: "Priority Orders",
-    data: [
-      {
-        id: "CDK000252",
-        customer: "Sunshy Cruz",
-        size: "A4 Size",
-        color: "Black and White",
-        pages: "10 Pages",
-        copies: "3 Copies",
-        actions: ["Wallet Paid", "Check", "Printing", "View", "Generating"],
-      },
-    ],
-  },
-  {
-    type: "Campus Printing Order",
-    data: [
-      {
-        id: "CDK001253",
-        customer: "Andrea Lopez",
-        size: "Short Size",
-        color: "Black and White",
-        pages: "8 Pages",
-        copies: "1 Copies",
-        actions: ["Wallet Paid", "Check", "Printing", "View", "Generating"],
-      },
-      {
-        id: "CDK000124",
-        customer: "Paulo Lopez",
-        size: "Short Size",
-        color: "Black and White",
-        pages: "25 Pages",
-        copies: "1 Copies",
-        actions: ["CUP", "Check", "Print", "View", "Claim No."],
-      },
-    ],
-  },
-  {
-    type: "Done Printing Orders",
-    data: [
-      {
-        id: "CDK000001",
-        customer: "Andrea Lopez",
-        size: "Short Size",
-        color: "Black and White",
-        pages: "25 Pages",
-        copies: "1 Copies",
-        actions: ["COD/Filed", "Check", "Done Print", "View", "Folder 05"],
-      },
-    ],
-  },
-];
-
 const OrderLogOrder = () => {
   const { user } = useContext(AppContext);
-  const [selectedOrder, setSelectedOrder] = useState(null);
   const [loader, setLoader] = useState(false);
   const [uploads, setUploads] = useState([]);
-
-  const handleRadioChange = (id) => {
-    setSelectedOrder(id);
-  };
+  const [branches, setBranches] = useState([]);
+  const [selectBranch, setSelectBranch] = useState("");
 
   const getOrders = async (start_date, end_date) => {
     try {
-        setLoader(true);
+      setLoader(true);
       const formData = new FormData();
-      formData.append("branch_id", (user?.user_id).toString());
+      formData.append("branch_id", selectBranch || (user?.user_id).toString());
       formData.append(
         "start_date",
         start_date ? new Date(start_date) : "2024-01-01"
@@ -96,21 +39,49 @@ const OrderLogOrder = () => {
     }
   };
 
+  const getBranches = async (start_date, end_date) => {
+    try {
+      const response = await call("/app/fetch_branch_list", "POST");
+      setBranches(response?.data);
+    } catch (error) {
+      setBranches([]);
+      toast.error(error?.message, { duration: 2000 });
+    }
+  };
+
+  const EditOrderStatus = async (order_id, end_date) => {
+    try {
+      setLoader(true);
+      const formData = new FormData();
+      formData.append("order_id", order_id);
+      formData.append("order_status", "completed");
+      const response = await call("/app/edit_order_status", "POST", formData);
+      await getOrders();
+      await getBranches();
+      setLoader(false);
+    } catch (error) {
+      setLoader(false);
+      toast.error(error?.message, { duration: 2000 });
+    }
+  };
+
   const fetchAPIs = async () => {
     setLoader(true);
     await getOrders();
+    await getBranches();
     setLoader(false);
   };
 
   useEffect(() => {
     fetchAPIs();
-  }, []);
+  }, [selectBranch]);
 
   const totalPriceReduce = uploads.reduce(
     (sum, file) => parseFloat(sum) + parseFloat(file.total_price),
     0
   );
 
+  console.log("branches", branches);
 
   // const PriorityOrders = uploads?.filter((item, index) => item.priority)
   // const CampusOrder = uploads?.filter((item, index) => item.order_status != "completed")
@@ -128,11 +99,33 @@ const OrderLogOrder = () => {
           <div className="container mx-auto p-4">
             {/* <div className="w-full lg:w-2/3 overflow-x-auto mb-8 lg:mb-0"> */}
             <div>
-              <DateRangePicker
-                onClick={(start_date, end_date) =>
-                  getOrders(start_date, end_date)
-                }
-              />
+              <div className="flex">
+                <DateRangePicker
+                  onClick={(start_date, end_date) =>
+                    getOrders(start_date, end_date)
+                  }
+                />
+                {user?.role_id == 1 ? (
+                  <select
+                    value={selectBranch}
+                    onChange={(e) => {
+                      setSelectBranch(e.target.value);
+                    }}
+                    className="w-full sm:w-1/4 md:w-1/5 p-2 border border-gray-300 rounded ml-5"
+                  >
+                    <option value="" disabled>
+                      Select Branch
+                    </option>
+                    {branches?.map((item, index) => {
+                      return (
+                        <option value={item.branch_id}>{item.name}</option>
+                      );
+                    })}
+                  </select>
+                ) : (
+                  <></>
+                )}
+              </div>
               <h2 className="text-xl font-regular mt-5 mb-5">
                 TOTAL EARNING : {toFixedMethod(totalPriceReduce)} PHP
               </h2>
@@ -202,6 +195,20 @@ const OrderLogOrder = () => {
                                 <td className="px-4 border">
                                   <div className="flex justify-start items-center">
                                     {/* Uncomment this section if you need to display action buttons */}
+                                    {order?.rider_id != "undefined" &&
+                                    order?.order_status != "completed" &&
+                                    user?.role_id == "2" ? (
+                                      <button
+                                        onClick={() =>
+                                          EditOrderStatus(order?.order_id)
+                                        }
+                                        className="bg-blue-500 text-white text-xs font-semibold mr-2 mb-2 px-2 py-2 rounded"
+                                      >
+                                        {"Complete"}
+                                      </button>
+                                    ) : (
+                                      <></>
+                                    )}
 
                                     <button
                                       onClick={() =>
