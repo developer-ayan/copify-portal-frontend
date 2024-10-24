@@ -194,7 +194,7 @@ const Search = () => {
                                     {order?.rider_id == "undefined" &&
                                       order?.order_status != "completed" && (
                                         <>
-                                          {order?.order_status != "cancle" ? (
+                                          {order?.order_status == "cancle" ? (
                                             <></>
                                           ) : (
                                             <button
