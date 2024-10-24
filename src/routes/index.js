@@ -114,10 +114,7 @@ const Router = () => {
               path="/RiderActivity"
               element={privateRoutes(RiderStatusCheck)}
             />
-            <Route
-              path="/OrderLogs"
-              element={privateRoutes(OrderLogs)}
-            />
+            <Route path="/OrderLogs" element={privateRoutes(OrderLogs)} />
             <Route path="/Chat" element={privateRoutes(BranchChat)} />
             {/* <Route
               path="/payment-methods"
@@ -137,7 +134,11 @@ const Router = () => {
               <Route
                 index
                 element={privateRoutes(
-                  user?.role_id == "4" ? TeachersDashbord : Dashboard
+                  user?.role_id == "4"
+                    ? TeachersDashbord
+                    : user?.role_id == "2"
+                    ? Orders
+                    : Dashboard
                 )}
               />
               <Route
