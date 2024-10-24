@@ -25,7 +25,7 @@ const Order = ({ buttonLoaderStatefromParent, searchDataFromChild }) => {
   const [showTeacherModal, setShowTeacherModal] = useState(false); // State for Teacher Modal
   const [uploads, setUploads] = useState([]);
 
-  const addUpload = async (name, location, file) => {
+  const addUpload = async (name, location, file , code) => {
     try {
       setButtonLoader(true);
       const formData = new FormData();
@@ -33,7 +33,7 @@ const Order = ({ buttonLoaderStatefromParent, searchDataFromChild }) => {
       formData.append('institute_name', name);
       formData.append('institute_location', location);
       formData.append('file_upload', file);
-      console.log('formData', formData);
+      formData.append('institute_code', code);
       const response = await call('/admin/create_institute', 'POST', formData);
       await getList();
       setShowUploadModal(false);
@@ -80,7 +80,7 @@ const Order = ({ buttonLoaderStatefromParent, searchDataFromChild }) => {
     setShowEditModal(true);
   };
 
-  const saveEdit = async (originalName, newName, newLocation, file) => {
+  const saveEdit = async (originalName, newName, newLocation, file , code) => {
     try {
       setButtonLoader(true);
       const formData = new FormData();
@@ -88,6 +88,7 @@ const Order = ({ buttonLoaderStatefromParent, searchDataFromChild }) => {
       formData.append('institute_name', newName || '');
       formData.append('institute_location', newLocation || '');
       formData.append('file_upload', file);
+      formData.append('institute_code', code);
       console.log('formData', formData);
       const response = await call('/admin/edit_institute', 'POST', formData);
       await getList();
