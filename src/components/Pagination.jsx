@@ -13,7 +13,7 @@ function Pagination({ paginatedData, setPaginatedData }) {
 
   // Simulate fetching items from another resources.
   // (This could be items from props; or items loaded in a local state
-  // from an API endpoint with useEffect and useState)
+  // from an API endpoint with useEffect and useState
 
   useEffect(() => {
     const endOffset = itemsPerPageState;
