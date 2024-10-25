@@ -1,10 +1,10 @@
-import React, { useContext, useEffect, useState } from 'react';
-import AddPointModal from '../PointsModal/AddPoints';
-import EditPointModal from '../PointsModal/EditModal';
-import { AppContext } from '../../../context';
-import toast from 'react-hot-toast';
-import { Loader } from '../../Loaders';
-import { call } from '../../../utils/helper';
+import React, { useContext, useEffect, useState } from "react";
+import AddPointModal from "../PointsModal/AddPoints";
+import EditPointModal from "../PointsModal/EditModal";
+import { AppContext } from "../../../context";
+import toast from "react-hot-toast";
+import { Loader } from "../../Loaders";
+import { call } from "../../../utils/helper";
 
 const Point = () => {
   const { user } = useContext(AppContext);
@@ -15,21 +15,26 @@ const Point = () => {
   const [currentPromo, setCurrentPromo] = useState(null);
   const [uploads, setUploads] = useState([]);
 
-  const handleAddPoints = async (points, php) => {
+  const handleAddPoints = async (each_order, php, points) => {
     try {
-      setButtonLoader(true)
-      const formData = new FormData()
-      formData.append('user_id', user?.user_id)
-      formData.append('points', points)
-      formData.append('php', php)
-      const response = await call('/admin/create_point_into_php', 'POST', formData)
-      await getList()
+      setButtonLoader(true);
+      const formData = new FormData();
+      formData.append("user_id", user?.user_id);
+      formData.append("each_order", each_order);
+      formData.append("php", php);
+      formData.append("points", points);
+      const response = await call(
+        "/admin/create_point_into_php",
+        "POST",
+        formData
+      );
+      await getList();
       setShowAddShopModal(false);
       setButtonLoader(false);
-      toast.success(response?.message, { duration: 2000 })
+      toast.success(response?.message, { duration: 2000 });
     } catch (error) {
       setButtonLoader(false);
-      toast.error(error?.message, { duration: 2000 })
+      toast.error(error?.message, { duration: 2000 });
     }
   };
 
@@ -38,41 +43,46 @@ const Point = () => {
     setShowEditModal(true);
   };
 
-  const saveEdit = async (originalPoints, newPoints, newPhp) => {
+  const saveEdit = async (originalPoints, each_order, newPhp, points) => {
     try {
-      setButtonLoader(true)
-      const formData = new FormData()
-      formData.append('point_into_php_id', currentPromo?.point_into_php_id)
-      formData.append('points', newPoints)
-      formData.append('php', newPhp)
-      const response = await call('/admin/edit_point_into_php', 'POST', formData)
-      await getList()
+      setButtonLoader(true);
+      const formData = new FormData();
+      formData.append("point_into_php_id", currentPromo?.point_into_php_id);
+      formData.append("each_order", each_order);
+      formData.append("php", newPhp);
+      formData.append("points", points);
+      const response = await call(
+        "/admin/edit_point_into_php",
+        "POST",
+        formData
+      );
+      await getList();
       setShowEditModal(false);
       setButtonLoader(false);
-      toast.success(response?.message, { duration: 2000 })
+      toast.success(response?.message, { duration: 2000 });
     } catch (error) {
       setButtonLoader(false);
-      toast.error(error?.message, { duration: 2000 })
+      toast.error(error?.message, { duration: 2000 });
     }
   };
 
   const getList = async (listLoader) => {
     try {
-      listLoader && setScreenLoader(true)
-      const response = await call('/admin/fetch_point_into_php_list', 'POST')
-      console.log('response', response)
-      setScreenLoader(false)
-      setUploads(response?.data)
+      listLoader && setScreenLoader(true);
+      const response = await call("/admin/fetch_point_into_php_list", "POST");
+      console.log("response", response);
+      setScreenLoader(false);
+      setUploads(response?.data);
     } catch (error) {
-      setUploads([])
-      setScreenLoader(false)
-      toast.error(error?.message, { duration: 2000 })
+      setUploads([]);
+      setScreenLoader(false);
+      toast.error(error?.message, { duration: 2000 });
     }
   };
 
   useEffect(() => {
-    getList(true)
-  }, [])
+    getList(true);
+  }, []);
 
   return (
     <div className="bg-white rounded-lg shadow-lg p-6 flex flex-col sm:flex-row justify-between mx-2 mt-7 sm:mx-4 md:mx-8 lg:mx-7">
@@ -80,22 +90,27 @@ const Point = () => {
         <div className="w-full flex justify-center items-center">
           <Loader extraStyles="!static !bg-transparent" />
         </div>
-      ) :
+      ) : (
         <div className="w-full mb-4 md:mb-0">
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-2xl font-bold">Points</h2>
-            <button
-              className="px-4 py-2 bg-blue-500 text-white rounded-md"
-              onClick={() => setShowAddShopModal(true)}
-            >
-              + Add Points
-            </button>
+            {uploads.length ? (
+              <></>
+            ) : (
+              <button
+                className="px-4 py-2 bg-blue-500 text-white rounded-md"
+                onClick={() => setShowAddShopModal(true)}
+              >
+                + Add Points
+              </button>
+            )}
           </div>
 
           <div className="overflow-x-auto">
             <table className="min-w-full bg-white">
               <thead>
                 <tr>
+                  <th className="px-4 py-2 border">Each Order</th>
                   <th className="px-4 py-2 border">Points</th>
                   <th className="px-4 py-2 border">PHP</th>
                   <th className="px-4 py-2 border">Action</th>
@@ -104,8 +119,15 @@ const Point = () => {
               <tbody>
                 {uploads.map((upload, index) => (
                   <tr key={index}>
-                    <td className="px-4 py-2 border text-center">{upload.points}</td>
-                    <td className="px-4 py-2 border text-center">{upload.php}</td>
+                    <td className="px-4 py-2 border text-center">
+                      {upload.each_order}
+                    </td>
+                    <td className="px-4 py-2 border text-center">
+                      {upload.points}
+                    </td>
+                    <td className="px-4 py-2 border text-center">
+                      {upload.php}
+                    </td>
                     <td className="px-4 py-2 border flex space-x-2 justify-center">
                       <button
                         className="px-3 py-2 bg-blue-500 text-white rounded-md"
@@ -119,8 +141,8 @@ const Point = () => {
               </tbody>
             </table>
           </div>
-        </div>}
-
+        </div>
+      )}
 
       {showAddShopModal && (
         <AddPointModal
