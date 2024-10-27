@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
+import Select from 'react-select';
 import { call } from '../../../utils/helper';
 
 const TransferModal = ({ isOpen, onClose, onPress, item, user_id, loader }) => {
@@ -8,6 +9,7 @@ const TransferModal = ({ isOpen, onClose, onPress, item, user_id, loader }) => {
 
   const [amount, setAmount] = React.useState('');
   const [users, setUsers] = React.useState([]);
+  const [options, setOptions] = React.useState([]);
   const [loaderr, setLoader] = React.useState(false);
 
   const handleSubmit = async () => {
@@ -50,7 +52,23 @@ const TransferModal = ({ isOpen, onClose, onPress, item, user_id, loader }) => {
     getUsers()
   }, [roleId])
 
+  useEffect(() => {
+    if (users) {
+      const options = users?.map((user) => ({
+        value: user.id,
+        label: user.value,
+      }));
+      setOptions(options)
+    }
+  }, [users])
 
+
+
+
+  // Ensure `selectUser` is set to the full object, not just the ID
+  const selectedOption = options.find(option => option.value === selectUser);
+
+  console.log("selectedOption", selectedOption, selectUser)
 
   if (!isOpen) return null;
 
@@ -72,9 +90,18 @@ const TransferModal = ({ isOpen, onClose, onPress, item, user_id, loader }) => {
             <option value="3">Student</option>
             <option value="4">Teacher</option>
           </select>
-        </div>
-        <div className="mb-4">
 
+
+        </div>
+        <div className="mb-4 z-11">
+          <Select
+            options={options}
+            onChange={(selectedOption) => setSelectUser(selectedOption ? selectedOption.value : null)} // Set to null if deselected
+            placeholder="Search users..."
+            value={selectedOption} // Pass the selected option object
+            isClearable // Enables the clear (deselect) button
+          />
+          {/* 
           <select
             value={selectUser}
             onChange={(e) => setSelectUser(e.target.value)}
@@ -85,7 +112,7 @@ const TransferModal = ({ isOpen, onClose, onPress, item, user_id, loader }) => {
                 <option value={item.id}>{item.value}</option>
               )
             })}
-          </select>
+          </select> */}
         </div>
         <div className="mt-2 w-full text-center">
           <input
