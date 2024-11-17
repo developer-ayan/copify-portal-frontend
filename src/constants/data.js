@@ -49,6 +49,14 @@ export const navLinks = [
     title: "Rider Activity",
   },
   {
+    icon: (
+      <AiFillDollarCircle className="-ml-0.5 text-xl" title="Rider Activity" />
+    ),
+    id: 9,
+    path: "/Subscription",
+    title: "Subsribers",
+  },
+  {
     icon: <BsBuildingsFill className="text-base" title="Environmental Setup" />,
     id: 4,
     path: "/EnvironmentalSetup",
@@ -86,8 +94,8 @@ export const navLinks = [
   {
     icon: <IoMdBriefcase className="-ml-0.5 text-xl" title="Branches" />,
     id: 10,
-    path: "/OrderLogs",
-    title: "Order logs",
+    path: "/OrderSummary",
+    title: "Order Summary",
   },
 ];
 
@@ -180,11 +188,11 @@ export const colors = {
 export const fileColorDropdown = [
   {
     id: 1,
-    value: "Colorful",
+    value: "Coloured Printing"
   },
   {
     id: 2,
-    value: "Black & white",
+    value: "Black & white"
   },
 ];
 
@@ -196,5 +204,14 @@ export const riderAccountStatus = {
   blocked: "blocked",
   apply: "apply",
 };
+
+export const orderStatus = {
+  pending: "pending",
+  in_process: "in process",
+  cancel: "cancel",
+  ready_to_pickup: "ready to pick-up",
+  out_for_delivery: "out for delivery",
+  completed: "completed"
+}
 
 export const paginationEntries = ["All", 50, 100, 200, 500, 1000];

@@ -5,7 +5,7 @@ import { AppContext } from '../../context';
 import NotFound from '../Error/NotFound';
 import { Loader } from '../Loaders';
 
-function ChatWindow({ user, updateUserMessage }) {
+function ChatWindow({ user, updateUserMessage, setChildLoader, childLoader }) {
   const data = useContext(AppContext);
   const [messages, setMessages] = useState([]);
 
@@ -25,6 +25,7 @@ function ChatWindow({ user, updateUserMessage }) {
       // setMessages([])
       setMessages(response?.data)
       setLoading(false)
+      setChildLoader(false)
     } catch (error) {
       setMessages([])
       setLoading(false)
@@ -38,9 +39,17 @@ function ChatWindow({ user, updateUserMessage }) {
     setMessageLoader(false)
   };
 
+
+
   useEffect(() => {
-    getList(true)
-  }, [user])
+    // Define the interval
+    const interval = setInterval(() => {
+      getList();
+    }, 5000); // Runs every 5000 milliseconds (5 seconds)
+
+    // Cleanup function to clear the interval when the component unmounts
+    return () => clearInterval(interval);
+  }, [user]);
 
   console.log('message  =====.', messages, user, user?.user_id_1 == data?.user?.user_id ? user?.user_id_2 : user?.user_id_1)
 
@@ -51,7 +60,7 @@ function ChatWindow({ user, updateUserMessage }) {
         <p className="text-sm text-gray-500">Now you can have a conversation here.</p>
       </div>
 
-      {loading ?
+      {loading || childLoader ?
         <div className="flex-1 p-9 overflow-y-auto">
           <Loader extraStyles="!static !bg-transparent" />
         </div>

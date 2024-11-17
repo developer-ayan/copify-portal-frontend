@@ -64,10 +64,10 @@ const Account = ({ toggle, setToggle }) => {
         className="min-w-max flex items-center bg-gray-50 hover:bg-gray-100 p-1.5 px-2.5 rounded-md space-x-3 cursor-pointer"
         onClick={() => setToggle(!toggle)}
       >
-        {user.profile_image ? (
+        {user.file_upload ? (
           <img
             className="w-[35px] h-[35px] rounded-full text-xs bg-gray-100"
-            src={image_base_url + user.profile_image}
+            src={user.file_upload}
             alt="profile"
           />
         ) : (

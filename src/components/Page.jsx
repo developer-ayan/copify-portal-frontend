@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Account from "./Account";
+import { AppContext } from "../context";
 
 const Page = ({
   title,
@@ -9,12 +10,13 @@ const Page = ({
   enableHeader,
 }) => {
   const [toggle, setToggle] = useState(false);
+  const {user} = useContext(AppContext)
 
   useEffect(() => {
-    document.title = title + " - Lee Administrator";
+    document.title = title + " - Copify Administrator";
 
     return () => {
-      document.title = "Lee Administrator";
+      document.title = "Copify Administrator";
     };
   }, [title]);
 
@@ -46,7 +48,7 @@ const Page = ({
     >
       {enableHeader && (
         <header className={styles.header}>
-          <h1 className={styles.heading}>{title}</h1>
+          <h1 className={styles.heading}>{user?.name}</h1>
           <Account toggle={toggle} setToggle={setToggle} />
         </header>
       )}

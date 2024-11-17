@@ -48,8 +48,8 @@ const Point = () => {
       setButtonLoader(true);
       const formData = new FormData();
       formData.append("point_into_php_id", currentPromo?.point_into_php_id);
-      formData.append("each_order", each_order);
-      formData.append("php", newPhp);
+      formData.append("each_order", each_order || 0);
+      formData.append("php", newPhp || 0);
       formData.append("points", points);
       const response = await call(
         "/admin/edit_point_into_php",
@@ -110,23 +110,17 @@ const Point = () => {
             <table className="min-w-full bg-white">
               <thead>
                 <tr>
-                  <th className="px-4 py-2 border">Each Order</th>
-                  <th className="px-4 py-2 border">Points</th>
                   <th className="px-4 py-2 border">PHP</th>
+                  <th className="px-4 py-2 border">Points</th>
                   <th className="px-4 py-2 border">Action</th>
                 </tr>
               </thead>
               <tbody>
                 {uploads.map((upload, index) => (
                   <tr key={index}>
-                    <td className="px-4 py-2 border text-center">
-                      {upload.each_order}
-                    </td>
+                    <td className="px-4 py-2 border text-center">{"1"}</td>
                     <td className="px-4 py-2 border text-center">
                       {upload.points}
-                    </td>
-                    <td className="px-4 py-2 border text-center">
-                      {upload.php}
                     </td>
                     <td className="px-4 py-2 border flex space-x-2 justify-center">
                       <button

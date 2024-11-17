@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { call } from "../../../utils/helper";
 import toast from "react-hot-toast";
 import SearchData from "../../SearchData/SearchData";
 import { Loader } from "../../Loaders";
+import { AppContext } from "../../../context";
 
 const SearchSection = ({
   disable,
@@ -20,7 +21,9 @@ const SearchSection = ({
   item,
   setItem,
 }) => {
+  const { orderDetail, setOrderDetail } = useContext(AppContext);
   const [walletBalance, setWalletBalance] = useState("");
+  const [claimId, setClaimId] = useState("");
 
   const isEmpty = Object?.keys(item)?.length === 0;
   const handleSearch = async (value) => {
@@ -30,7 +33,11 @@ const SearchSection = ({
       value == "loader" && setSearchLoader(true);
       const formData = new FormData();
       formData.append("search", searchName);
-      const response = await call("/admin/search_student_and_teacher", "POST", formData);
+      const response = await call(
+        "/admin/search_student_and_teacher",
+        "POST",
+        formData
+      );
       console.log("response =>", response?.data);
       setSearchData(response?.data);
       setSearchLoader(false);
@@ -49,19 +56,27 @@ const SearchSection = ({
   useEffect(() => {
     if (!searchName) {
       setShowSearchData(false);
-      handleSearch("loader")
+      handleSearch("loader");
     }
   }, [searchName]);
 
+  useEffect(() => {
+    if (orderDetail?.user_detail) {
+      setShowSearchData(false);
+      setSearchName(orderDetail?.user_detail?.name);
+      setClaimId(orderDetail?.claim_code);
+    }
+  }, [orderDetail]);
 
+  console.log("item?.claim_number", orderDetail?.claim_code);
 
-  console.log("item?.claim_number", item)
-
-  return searchLoader ? <Loader /> : (
+  return searchLoader ? (
+    <Loader />
+  ) : (
     <div className="bg-white p-5 rounded-lg shadow-md mb-8">
-      <h2 className="text-2xl font-semibold mb-4 text-center">
-        Student Dashboard
-      </h2>
+      {/* <h2 className="text-2xl font-semibold mb-4 text-center">
+        Search Orders
+      </h2> */}
 
       <div className="flex flex-wrap items-center mb-4">
         <label className="w-full sm:w-1/4 md:w-auto font-medium ml-0 sm:ml-4 mb-2 sm:mb-0 mr-2">
@@ -102,6 +117,22 @@ const SearchSection = ({
         ) : (
           <></>
         )}
+        {isEmpty && claimId ? (
+          <>
+            <label className="w-full sm:w-1/4 md:w-auto font-medium ml-0 sm:ml-4 mb-2 sm:mb-0 mr-2">
+              Claim Code Number:
+            </label>
+            <input
+              type="text"
+              className="w-full sm:w-auto p-2 border border-gray-300 rounded mb-2 sm:mb-0"
+              placeholder="CDK000001"
+              value={claimId}
+              readOnly
+            />
+          </>
+        ) : (
+          <></>
+        )}
         {/* <div className="flex flex-wrap items-center mb-4"> */}
       </div>
 
@@ -114,8 +145,6 @@ const SearchSection = ({
       ) : (
         <></>
       )}
-
-    
     </div>
   );
 };

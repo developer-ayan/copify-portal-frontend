@@ -4,9 +4,10 @@ export const AppContext = createContext();
 
 export const ContextProvider = ({ children }) => {
   const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")));
-  
+
 
   const [otpData, setOtpData] = useState(null);
+  const [orderDetail, setOrderDetail] = useState({});
   console.log(user);
 
   useEffect(() => {
@@ -18,7 +19,7 @@ export const ContextProvider = ({ children }) => {
   }, [otpData]);
 
   return (
-    <AppContext.Provider value={{ user, setUser, otpData, setOtpData }}>
+    <AppContext.Provider value={{ user, setUser, otpData, setOtpData, orderDetail, setOrderDetail }}>
       {children}
     </AppContext.Provider>
   );

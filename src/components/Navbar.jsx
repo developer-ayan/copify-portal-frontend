@@ -5,6 +5,7 @@ import { VscClose } from "react-icons/vsc";
 import Logo from "../assets/images/228743894_131464025787268_5332280447651671160_n.jpg";
 import { AppContext } from "../context";
 import { GoHomeFill } from "react-icons/go";
+import { FaUser } from "react-icons/fa";
 
 const Navbar = ({ toggle, setToggle }) => {
   const { user } = useContext(AppContext);
@@ -54,18 +55,29 @@ const Navbar = ({ toggle, setToggle }) => {
           >
             <VscClose />
           </button>
+          {user?.file_upload ? (
+            <img
+              className="w-40 h-40 mb-10 rounded-full shadow-lg"
+              src={user?.file_upload}
+              alt={user?.name}
+            />
+          ) : (
+            <div className="w-40 h-40 flex items-center justify-center bg-gray-200 mx-1 mr-0 rounded-full">
+              <FaUser className="text-gray-400/70 text-6xl" />
+            </div>
+          )}
 
-          <img
-            className="w-full mb-10"
-            src={Logo}
-            alt="Collegio de Kidapawan logo"
-          />
-          <h1>Collegio de Kidapawan Branch</h1>
-
-          {filteredNavLinks().map((data) => (
-            // {navLinks.map((data) => (
-            <NavItem array={filteredNavLinks()} key={data.title} data={data} />
-          ))}
+          {/* <h1>{user?.name}</h1> */}
+          <div className="mt-10">
+            {filteredNavLinks().map((data) => (
+              // {navLinks.map((data) => (
+              <NavItem
+                array={filteredNavLinks()}
+                key={data.title}
+                data={data}
+              />
+            ))}
+          </div>
         </div>
       </nav>
     </>

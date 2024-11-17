@@ -149,9 +149,14 @@ const getValueById = (arr, id, param) => {
 };
 
 const toFixedMethod = (number) => {
-  const num = isNaN(number) ? "0.00" : parseFloat(number).toFixed(2);
+  const num =
+    number === null || number === undefined || number === '' ||
+      number === 'null' || number === 'undefined' || isNaN(number)
+      ? "0.00"
+      : parseFloat(number).toFixed(2);
   return num.toString();
 };
+
 
 /* Exports
 ============================================================================= */

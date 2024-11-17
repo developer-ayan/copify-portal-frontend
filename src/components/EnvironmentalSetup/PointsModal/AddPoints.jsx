@@ -24,7 +24,7 @@ const AddPointModal = ({ isOpen, closeModal, handleAddPoints, isLoading }) => {
         <div className="bg-white rounded-lg shadow-lg p-4 overflow-y-auto max-h-screen">
           <div className="flex justify-between items-center mb-2">
             <h2 className="text-xl font-semibold text-gray-800">
-              Handle Each Order Point Add
+              Points Handle
             </h2>
             <button
               onClick={closeModal}
@@ -41,28 +41,26 @@ const AddPointModal = ({ isOpen, closeModal, handleAddPoints, isLoading }) => {
               className="w-5/12 px-3 py-2 border rounded-md text-center mb-2"
               placeholder="Each Order"
             /> */}
-
-          <div className="mb-2">
+          <div className="flex space-x-2 mt-4 justify-center items-center">
+            <input
+              id="instituteName"
+              className="block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+              placeholder="PHP"
+              value={"1 PHP"}
+              onChange={(e) => handleNumericInput(e, setPhp)}
+              disabled
+            />
+            <h1>=</h1>
             <input
               id="instituteName"
               className="block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
               placeholder="Points"
               value={points}
               onChange={(e) => handleNumericInput(e, setPoints)}
-               type='number'
+              type="number"
             />
           </div>
 
-          <div className="mb-2">
-            <input
-              id="instituteName"
-              className="block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-              placeholder="PHP"
-              value={php}
-              onChange={(e) => handleNumericInput(e, setPhp)}
-               type='number'
-            />
-          </div>
           {/* <p className="text-lg font-medium mb-2">into</p> */}
           {/* </div> */}
 

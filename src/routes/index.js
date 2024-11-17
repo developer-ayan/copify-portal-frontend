@@ -26,6 +26,7 @@ import {
 import { base_url } from "../utils/url";
 import RiderStatusCheck from "../pages/RiderStatusCheck";
 import OrderLogs from "../pages/OrderLogs";
+import Subscription from "../components/DashBoardSection/Subscription/Subscription";
 
 // Router component handles the routing of the application
 const Router = () => {
@@ -109,12 +110,13 @@ const Router = () => {
               path="/advertising-and-annoucements"
               element={privateRoutes(Advertising)}
             />
-            <Route path="/BranchChat" element={privateRoutes(BranchChat)} />
+            <Route path="/BranchChat" element={privateRoutes(AdminChat)} />
+            <Route path="/Subscription" element={privateRoutes(Subscription)} />
             <Route
               path="/RiderActivity"
               element={privateRoutes(RiderStatusCheck)}
             />
-            <Route path="/OrderLogs" element={privateRoutes(OrderLogs)} />
+            <Route path="/OrderSummary" element={privateRoutes(OrderLogs)} />
             <Route path="/Chat" element={privateRoutes(BranchChat)} />
             {/* <Route
               path="/payment-methods"
@@ -137,8 +139,8 @@ const Router = () => {
                   user?.role_id == "4"
                     ? TeachersDashbord
                     : user?.role_id == "2"
-                    ? Orders
-                    : Dashboard
+                      ? Orders
+                      : Dashboard
                 )}
               />
               <Route

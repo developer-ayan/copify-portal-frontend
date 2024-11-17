@@ -33,7 +33,7 @@ const RiderStatusCheck = () => {
 
   return (
     <Page
-      title="Collegio de Kidapawan Branch"
+      title="Collegio de Kidapawan Brnch"
       containerStyles={`relative !bg-[#EEF2F5] !p-0`}
       headerStyles="px-5 !m-0 !py-2 bg-white"
       enableHeader

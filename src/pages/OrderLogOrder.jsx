@@ -4,15 +4,17 @@ import { call, formatDate, formatTime, toFixedMethod } from "../utils/helper";
 import { AppContext } from "../context";
 import toast from "react-hot-toast";
 import { Loader } from "../components";
-import { fileColorDropdown } from "../constants/data";
+import { fileColorDropdown, orderStatus } from "../constants/data";
 import DateRangePicker from "../components/DateRangePicker/DateRangePicker";
+import { Link } from "react-router-dom";
 
 const OrderLogOrder = () => {
-  const { user } = useContext(AppContext);
+  const { user, setOrderDetail } = useContext(AppContext);
   const [loader, setLoader] = useState(false);
   const [uploads, setUploads] = useState([]);
   const [branches, setBranches] = useState([]);
   const [selectBranch, setSelectBranch] = useState("");
+  const [status, setStatus] = useState(1);
 
   const getOrders = async (start_date, end_date) => {
     try {
@@ -30,8 +32,16 @@ const OrderLogOrder = () => {
         "POST",
         formData
       );
-      setUploads(response?.data);
-      setLoader(false);
+      if (user?.role_id == "2") {
+        const filter = response.data.filter(
+          (item, index) => item.branch_id == user?.user_id
+        );
+        setUploads(filter);
+        setLoader(false);
+      } else {
+        setUploads(response?.data);
+        setLoader(false);
+      }
     } catch (error) {
       setUploads([]);
       toast.error(error?.message, { duration: 2000 });
@@ -72,16 +82,50 @@ const OrderLogOrder = () => {
     setLoader(false);
   };
 
+  const displayData = () => {
+    if (status == 1) {
+      return uploads;
+    } else if (status == 2) {
+      const filter = uploads?.filter(
+        (item, index) => item.order_status == orderStatus.pending
+      );
+      return filter;
+    } else if (status == 3) {
+      const filter = uploads?.filter(
+        (item, index) => item.order_status == orderStatus.completed
+      );
+      return filter;
+    } else if (status == 4) {
+      const filter = uploads?.filter(
+        (item, index) => item.order_status == orderStatus.in_process
+      );
+      return filter;
+    } else if (status == 5) {
+      const filter = uploads?.filter(
+        (item, index) => item.order_status == orderStatus.cancel
+      );
+      return filter;
+    }
+  };
+
   useEffect(() => {
     fetchAPIs();
   }, [selectBranch]);
 
-  const totalPriceReduce = uploads.reduce(
+  const totalPriceReduce = displayData().reduce(
     (sum, file) => parseFloat(sum) + parseFloat(file.total_price),
     0
   );
 
-  console.log("branches", branches);
+  const totalDeliveryChargesReduce = displayData().reduce(
+    (sum, file) => parseFloat(sum) + parseFloat(file.rider_charges || 0),
+    0
+  );
+
+  const printingCharges = displayData().reduce(
+    (sum, file) => parseFloat(sum) + parseFloat(file.sub_total || 0),
+    0
+  );
 
   // const PriorityOrders = uploads?.filter((item, index) => item.priority)
   // const CampusOrder = uploads?.filter((item, index) => item.order_status != "completed")
@@ -94,7 +138,7 @@ const OrderLogOrder = () => {
       ) : (
         <div className="bg-white p-6 rounded shadow mt-9">
           <h2 className="text-2xl font-semibold mb-4 text-center">
-            Order logs
+            Order Summary
           </h2>
           <div className="container mx-auto p-4">
             {/* <div className="w-full lg:w-2/3 overflow-x-auto mb-8 lg:mb-0"> */}
@@ -105,6 +149,17 @@ const OrderLogOrder = () => {
                     getOrders(start_date, end_date)
                   }
                 />
+                <select
+                  className="border w-1/6 px-2 py-1 rounded ml-5"
+                  defaultValue="1"
+                  onChange={(e) => setStatus(e.target.value)}
+                >
+                  <option value="1">All</option>
+                  <option value="2">Pending</option>
+                  <option value="3">Completed</option>
+                  <option value="4">In Process</option>
+                  <option value="5">Cancel</option>
+                </select>
                 {user?.role_id == 1 ? (
                   <select
                     value={selectBranch}
@@ -126,20 +181,28 @@ const OrderLogOrder = () => {
                   <></>
                 )}
               </div>
-              <h2 className="text-xl font-regular mt-5 mb-5">
-                TOTAL EARNING : {toFixedMethod(totalPriceReduce)} PHP
-              </h2>
+              <div className="flex justify-between items-center space-x-5 mt-5 mb-5">
+                <h2 className="text-base font-regular">
+                  TOTAL PRINTING CHARGES: {toFixedMethod(printingCharges)} PHP
+                </h2>
+                <h2 className="text-base font-regular">
+                  TOTAL RIDER CHARGES:{" "}
+                  {toFixedMethod(totalDeliveryChargesReduce)} PHP
+                </h2>
+                <h2 className="text-base font-regular">
+                  TOTAL EARNING: {toFixedMethod(totalPriceReduce)} PHP
+                </h2>
+              </div>
             </div>
 
             {/* {orders.map((orderType, idx) => ( */}
-            {uploads.length > 0 ? (
+            {displayData().length > 0 ? (
               <div className="mb-8">
-                {uploads?.map((order, index) => (
+                {displayData()?.map((order, index) => (
                   <table className="min-w-full bg-white border border-gray-200 mt-2 ">
                     <div className="flex justify-between items-center mb-4 pt-3 pl-4 pr-4">
-                      <h2 className="text-xl font-bold">
-                        {order?.priority && `Priority`} (CN{" "}
-                        {order?.user_detail?.name?.toUpperCase() || ""})
+                      <h2 className="text-xl">
+                        {order?.priority && `Priority 10.00 PHP`}
                       </h2>
                       <span className="text-lg font-semibold">
                         {toFixedMethod(order?.total_price)} PHP
@@ -160,17 +223,22 @@ const OrderLogOrder = () => {
                               {" "}
                               {/* Unique key for each fragment */}
                               <tr className="border-gray-200">
-                                {/* <td className="px-4 py-2 border text-center">
-                                      <div className="flex justify-center items-center">
-                                        <input
-                                          type="radio"
-                                          name="order"
-                                          value={order.id}
-                                          checked={selectedOrder === order.id}
-                                          onChange={() => handleRadioChange(order.id)}
-                                        />
-                                      </div>
-                                    </td> */}
+                                <Link
+                                  to="/dashboard/claim-station"
+                                  className="hover:text-blue-400 hover:underline"
+                                  onClick={() => setOrderDetail(order)}
+                                >
+                                  <td className="px-4 py-2 border text-center">
+                                    <div className="flex justify-center items-center">
+                                      <input
+                                        type="radio"
+                                        name="order"
+                                        value={order.id}
+                                        onChange={() => setOrderDetail(order)}
+                                      />
+                                    </div>
+                                  </td>
+                                </Link>
                                 <td className="px-4 py-2 border">
                                   {order.claim_code}
                                 </td>
@@ -190,8 +258,13 @@ const OrderLogOrder = () => {
                                   {(order.qty || "1") + " " + "Copies"}
                                 </td>
                                 <td className="px-4 py-2 border">
-                                  {(order.qty || "1") + " " + "Copies"}
+                                  {toFixedMethod(item.total_price) +
+                                    " " +
+                                    "PHP"}
                                 </td>
+                                {/* <td className="px-4 py-2 border">
+                                  {(order.qty || "1") + " " + "Copies"}
+                                </td> */}
                                 <td className="px-4 border">
                                   <div className="flex justify-start items-center">
                                     {/* Uncomment this section if you need to display action buttons */}
@@ -249,9 +322,10 @@ const OrderLogOrder = () => {
                             // onClick={() => EditOrderStatus(order?.order_id)}
                             className="bg-blue-500 text-white text-xs font-semibold mr-2 mb-2 px-2 py-2 rounded capitalize"
                           >
-                            {order?.transaction_type
+                            {(order?.transaction_type
                               ? order?.transaction_type
-                              : "Wallet"}
+                              : "Wallet"
+                            ).toUpperCase()}
                           </button>
                           <button
                             // onClick={() => EditOrderStatus(order?.order_id)}

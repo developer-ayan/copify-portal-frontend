@@ -152,7 +152,7 @@ const radioButtons = [
   { value: "All Orders", id: 1 },
   { value: "Pending Orders", id: 2 },
   { value: "In process Orders", id: 5 },
-  { value: "Priting Orders", id: 3 },
+  { value: "Printing Orders", id: 3 },
   { value: "Ready to deliver", id: 6 },
   { value: "Completed Orders", id: 4 },
 ];

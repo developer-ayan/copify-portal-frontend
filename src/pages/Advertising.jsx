@@ -1,18 +1,15 @@
-import Advertising from "../components/NavOptions/Advertising"
+import Advertising from "../components/NavOptions/Advertising";
 import React, { useEffect, useState } from "react";
 import { base_url } from "../utils/url";
 import { Loader, Page } from "../components";
-import ToCampus from "../components/NavOptions/ToCampus"
-import Analysis from "../components/NavOptions/Analysis"
+import ToCampus from "../components/NavOptions/ToCampus";
+import Analysis from "../components/NavOptions/Analysis";
 import ToMobile from "../components/NavOptions/ToMobile";
-
-
-
 
 const Packages = () => {
   const [analytics, setAnalytics] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [selectedOption, setSelectedOption] = useState(1); 
+  const [selectedOption, setSelectedOption] = useState(1);
 
   // const fetchAnalytics = async () => {
   //   setIsLoading(true);
@@ -50,20 +47,17 @@ const Packages = () => {
             <div className="w-full flex justify-center items-center min-h-[90vh]">
               <Loader extraStyles="!static !bg-transparent" />
             </div>
-          )
-           : (
+          ) : (
             <main className="p-8">
-              <Advertising
+              {/* <Advertising
                 selectedOption={selectedOption}
                 setSelectedOption={setSelectedOption}
-              />
-              
-              {selectedOption === 1 && <ToCampus />}
+              /> */}
+
+              <ToCampus />
               {/* {selectedOption === 2 && <ToStudent />}
               {selectedOption === 3 && <ToTeacher />}
               {selectedOption === 4 && <ToBikeRider />} */}
-              {selectedOption === 5 && <ToMobile />}
-              {selectedOption === 6 && <Analysis />}
             </main>
           )}
         </div>

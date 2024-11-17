@@ -14,13 +14,11 @@ const EditPointModal = ({
   useEffect(() => {
     if (currentPromo) {
       setPoints(currentPromo.points);
-      setEachOrder(currentPromo.each_order);
-      setPhp(currentPromo.php);
     }
   }, [currentPromo]);
 
   const handleSave = () => {
-    onSave(currentPromo.each_order, eachOrder, php , points);
+    onSave(currentPromo.each_order, eachOrder, php, points);
   };
 
   if (!isOpen) return null;
@@ -30,9 +28,7 @@ const EditPointModal = ({
       <div className="bg-white w-full max-w-md mx-auto">
         <div className="bg-white rounded-lg shadow-lg p-4 overflow-y-auto max-h-screen">
           <div className="flex justify-between items-center mb-2">
-            <h2 className="text-xl font-semibold text-gray-800">
-              Handle Each Order Point Edit
-            </h2>
+            <h2 className="text-xl font-semibold text-gray-800">Edit Points</h2>
             <button
               onClick={closeModal}
               className="text-gray-400 hover:text-gray-600"
@@ -40,28 +36,23 @@ const EditPointModal = ({
               &times;
             </button>
           </div>
-          <div className="flex justify-center items-center space-x-4 mb-4">
-            {/* <input
-            type="text"
-            value={eachOrder}
-            onChange={(e) => setEachOrder(e.target.value)}
-            className="w-5/12 px-3 py-2 border rounded-md text-center"
-            placeholder="Each order"
-          /> */}
+
+          <div className="flex space-x-2 mt-4 justify-center items-center">
             <input
-              type="text"
+              id="instituteName"
+              className="block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+              placeholder="PHP"
+              value={"1 PHP"}
+              onChange={(e) => setPhp(e, setPhp)}
+              disabled
+            />
+            <h1>=</h1>
+            <input
               value={points}
               onChange={(e) => setPoints(e.target.value)}
-              className="w-5/12 px-3 py-2 border rounded-md text-center mb-2"
+              className="block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
               placeholder="Earn points"
-            />
-            <p className="text-lg font-medium">into</p>
-            <input
-              type="text"
-              value={php}
-              onChange={(e) => setPhp(e.target.value)}
-              className="w-5/12 px-3 py-2 border rounded-md text-center"
-              placeholder="PHP"
+              type="number"
             />
           </div>
 
