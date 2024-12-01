@@ -40,8 +40,8 @@ const Account = ({ toggle, setToggle }) => {
     {
       title: "Log out",
       icon: <MdLogout className="text-base text-red-600" />,
-      clickHandler: logout,
-    },
+      clickHandler: logout
+    }
   ];
 
   const displayRole = () => {
@@ -53,6 +53,8 @@ const Account = ({ toggle, setToggle }) => {
       return "Student";
     } else if (user.role_id == "4") {
       return "Teacher";
+    } else if (user.role_id == "5") {
+      return "Manager";
     } else {
       return "Unknown";
     }

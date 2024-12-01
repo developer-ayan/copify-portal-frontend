@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import { call } from '../../../utils/helper';
-import toast from 'react-hot-toast';
-import { Loader } from '../../Loaders';
-import DeleteModal from '../DeleteModal';
+import React, { useEffect, useState } from "react";
+import { call } from "../../../utils/helper";
+import toast from "react-hot-toast";
+import { Loader } from "../../Loaders";
+import DeleteModal from "../DeleteModal";
 
 const StudentModal = ({ closeModal, dept }) => {
   const [uploads, setUploads] = useState([]);
@@ -12,18 +12,22 @@ const StudentModal = ({ closeModal, dept }) => {
   const [currentDept, setCurrentDept] = useState(false);
 
   const handleDelete = (dept) => {
-    setCurrentDept(dept)
-    setShowDeleteModal(true)
+    setCurrentDept(dept);
+    setShowDeleteModal(true);
   };
 
   const getList = async (listLoader) => {
     try {
       listLoader && setScreenLoader(true);
       const formData = new FormData();
-      formData.append('institute_id', dept?.institute_id);
-      formData.append('role_id', '3');
-      console.log('formData', formData);
-      const response = await call('/admin/fetch_institute_teacher_and_student_list', 'POST', formData);
+      formData.append("institute_id", dept?.institute_id);
+      formData.append("role_id", "3");
+      console.log("formData", formData);
+      const response = await call(
+        "/admin/fetch_institute_teacher_and_student_list",
+        "POST",
+        formData
+      );
       setUploads(response?.data);
       setScreenLoader(false);
     } catch (error) {
@@ -35,23 +39,27 @@ const StudentModal = ({ closeModal, dept }) => {
 
   const handleEditStatus = async (id) => {
     try {
-      setButtonLoader(true)
-      const formData = new FormData()
-      formData.append('user_id', id)
-      const response = await call('/admin/edit_status_teacher_and_student', 'POST', formData)
-      await getList()
+      setButtonLoader(true);
+      const formData = new FormData();
+      formData.append("user_id", id);
+      const response = await call(
+        "/admin/edit_status_teacher_and_student",
+        "POST",
+        formData
+      );
+      await getList();
       setButtonLoader(false);
-      setShowDeleteModal(false)
-      toast.success(response?.message, { duration: 2000 })
+      setShowDeleteModal(false);
+      toast.success(response?.message, { duration: 2000 });
     } catch (error) {
       setButtonLoader(false);
-      toast.error(error?.message, { duration: 2000 })
+      toast.error(error?.message, { duration: 2000 });
     }
   };
 
   const closeDeleteModal = () => {
-    setCurrentDept(dept)
-    setShowDeleteModal(false)
+    setCurrentDept(dept);
+    setShowDeleteModal(false);
   };
 
   useEffect(() => {
@@ -59,17 +67,22 @@ const StudentModal = ({ closeModal, dept }) => {
   }, []);
 
   return (
-    <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center p-6">
-      <div className="bg-white p-6 shadow-md w-full max-w-lg sm:max-w-xl md:max-w-1xl lg:max-w-2xl">
+    <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center p-1">
+      <div className="bg-white p-6 shadow-md w-full max-w-lg sm:max-w-xl md:max-w-1xl lg:max-w-2xl h-[50vh] overflow-auto">
         {screenLoader ? (
-          <div className="w-full flex justify-center items-center">
+          <div className="w-full flex justify-center items-center h-[50vh]">
             <Loader extraStyles="!static !bg-transparent" />
           </div>
-        ) :
-          <div className="bg-white p-6 shadow-md w-full max-w-lg sm:max-w-xl md:max-w-2xl">
+        ) : (
+          <div className="bg-white p-6 shadow-md w-full max-w-lg sm:max-w-xl md:max-w-1xl lg:max-w-2xl">
             <div className="flex justify-between items-center mb-2">
               <h3 className="text-xl font-semibold text-gray-800">Students</h3>
-              <button onClick={closeModal} className="text-gray-400 hover:text-gray-600">&times;</button>
+              <button
+                onClick={closeModal}
+                className="text-gray-400 hover:text-gray-600"
+              >
+                &times;
+              </button>
             </div>
             <div className="overflow-x-auto mt-4">
               <table className="min-w-full bg-white border">
@@ -83,14 +96,24 @@ const StudentModal = ({ closeModal, dept }) => {
                 <tbody>
                   {uploads.map((item) => (
                     <tr key={item.user_id}>
-                      <td className="px-4 py-2 border text-center">{item.name}</td>
-                      <td className="px-4 py-2 border text-center">{item.claim_code}</td>
+                      <td className="px-4 py-2 border text-center">
+                        {item.name}
+                      </td>
+                      <td className="px-4 py-2 border text-center">
+                        {item.claim_code}
+                      </td>
                       <td className="px-4 py-2 border text-center">
                         <button
-                          className={`px-3 py-2 ${item.account_status == 'active' ? 'bg-red-500' : 'bg-blue-500'}  text-white rounded-md`}
+                          className={`px-3 py-2 ${
+                            item.account_status == "active"
+                              ? "bg-red-500"
+                              : "bg-blue-500"
+                          } text-white rounded-md`}
                           onClick={() => handleDelete(item)}
                         >
-                          {item.account_status == 'active' ? 'InActive' : "Active"}
+                          {item.account_status == "active"
+                            ? "InActive"
+                            : "Active"}
                         </button>
                       </td>
                     </tr>
@@ -98,7 +121,8 @@ const StudentModal = ({ closeModal, dept }) => {
                 </tbody>
               </table>
             </div>
-          </div>}
+          </div>
+        )}
 
         {showDeleteModal && (
           <DeleteModal
@@ -106,7 +130,9 @@ const StudentModal = ({ closeModal, dept }) => {
             isLoading={buttonLoader}
             delete_name={currentDept?.name}
             closeModal={closeDeleteModal}
-            customMessage={`Are you sure you want to ${currentDept?.account_status == 'active' ? 'in active' : 'active'} ${currentDept?.name} account?`}
+            customMessage={`Are you sure you want to ${
+              currentDept?.account_status == "active" ? "in active" : "active"
+            } ${currentDept?.name} account?`}
           />
         )}
       </div>

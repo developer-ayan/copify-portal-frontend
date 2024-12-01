@@ -1,12 +1,12 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { FaEye, FaEyeSlash } from 'react-icons/fa';
-import ShopDeleteModal from '../Branches/BranchesModal/BranchesDeleteModal';
-import AddShopModal from '../Branches/BranchesModal/AddBranchesModal';
-import ShopEditModal from '../Branches/BranchesModal/BranchesEditModal';
-import { AppContext } from '../../context';
-import toast from 'react-hot-toast';
-import { Loader } from '../Loaders';
-import { call } from '../../utils/helper';
+import React, { useContext, useEffect, useState } from "react";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
+import ShopDeleteModal from "../Branches/BranchesModal/BranchesDeleteModal";
+import AddShopModal from "../Branches/BranchesModal/AddBranchesModal";
+import ShopEditModal from "../Branches/BranchesModal/BranchesEditModal";
+import { AppContext } from "../../context";
+import toast from "react-hot-toast";
+import { Loader } from "../Loaders";
+import { call } from "../../utils/helper";
 
 const Branches = () => {
   const { user } = useContext(AppContext);
@@ -22,45 +22,58 @@ const Branches = () => {
   const togglePasswordVisibility = (index) => {
     setShowPassword((prevState) => ({
       ...prevState,
-      [index]: !prevState[index],
+      [index]: !prevState[index]
     }));
   };
 
-  const handleAddShop = async (name, email, branch_address, password , file) => {
-    console.log("name, email, branch_address, password , file" , name, email, branch_address, password , file)
+  const handleAddShop = async (
+    name,
+    email,
+    branch_address,
+    password,
+    file,
+    role
+  ) => {
+    console.log(
+      "name, email, branch_address, password , file",
+      name,
+      email,
+      branch_address,
+      password,
+      file
+    );
     try {
-      setButtonLoader(true)
+      setButtonLoader(true);
       const formData = new FormData();
-      formData.append('email', email);
-      formData.append('name', name);
-      formData.append('password', password);
-      formData.append('branch_address', branch_address);
-      formData.append('file_upload', file);
-      formData.append('role_id', "2");
-      const response = await call('/admin/create_branch', 'POST', formData);
-      await getBranches()
-      setButtonLoader(false)
-      setShowAddShopModal(false)
+      formData.append("email", email);
+      formData.append("name", name);
+      formData.append("password", password);
+      formData.append("branch_address", branch_address);
+      formData.append("file_upload", file);
+      formData.append("role_id", role);
+      const response = await call("/admin/create_branch", "POST", formData);
+      await getBranches();
+      setButtonLoader(false);
+      setShowAddShopModal(false);
       toast.success(response?.message, { duration: 2000 });
     } catch (error) {
-      setButtonLoader(false)
+      setButtonLoader(false);
       toast.error(error?.message, { duration: 2000 });
     }
   };
 
-
   const deleteShop = async () => {
     try {
-      setButtonLoader(true)
+      setButtonLoader(true);
       const formData = new FormData();
-      formData.append('user_id', currentDept?.user_id);
-      const response = await call('/admin/delete_user', 'POST', formData);
-      await getBranches()
-      setButtonLoader(false)
-      setShowDeleteModal(false)
+      formData.append("user_id", currentDept?.user_id);
+      const response = await call("/admin/delete_user", "POST", formData);
+      await getBranches();
+      setButtonLoader(false);
+      setShowDeleteModal(false);
       toast.success(response?.message, { duration: 2000 });
     } catch (error) {
-      setButtonLoader(false)
+      setButtonLoader(false);
       toast.error(error?.message, { duration: 2000 });
     }
   };
@@ -70,24 +83,32 @@ const Branches = () => {
     setShowEditModal(true);
   };
 
-  const saveEdit = async (originalEmail, newName, newEmail, newLocation, newPassword , file) => {
+  const saveEdit = async (
+    originalEmail,
+    newName,
+    newEmail,
+    newLocation,
+    newPassword,
+    file,
+    role
+  ) => {
     try {
-      setButtonLoader(true)
+      setButtonLoader(true);
       const formData = new FormData();
-      formData.append('user_id', currentDept?.user_id);
-      formData.append('email', newEmail);
-      formData.append('name', newName);
-      formData.append('password', newPassword);
-      formData.append('branch_address', newLocation);
-      formData.append('file_upload', file);
-      formData.append('role_id', "2");
-      const response = await call('/admin/edit_branch', 'POST', formData);
-      await getBranches()
-      setButtonLoader(false)
-      setShowEditModal(false)
+      formData.append("user_id", currentDept?.user_id);
+      formData.append("email", newEmail);
+      formData.append("name", newName);
+      formData.append("password", newPassword);
+      formData.append("branch_address", newLocation);
+      formData.append("file_upload", file);
+      formData.append("role_id", role);
+      const response = await call("/admin/edit_branch", "POST", formData);
+      await getBranches();
+      setButtonLoader(false);
+      setShowEditModal(false);
       toast.success(response?.message, { duration: 2000 });
     } catch (error) {
-      setButtonLoader(false)
+      setButtonLoader(false);
       toast.error(error?.message, { duration: 2000 });
     }
   };
@@ -100,7 +121,8 @@ const Branches = () => {
     try {
       loading && setScreenLoader(true);
       const formData = new FormData();
-      const response = await call('/admin/fetch_branch_list', 'POST', formData);
+      formData.append("branch_and_manager", true);
+      const response = await call("/admin/fetch_branch_list", "POST", formData);
       setUploads(response?.data);
       loading && setScreenLoader(false);
     } catch (error) {
@@ -111,22 +133,22 @@ const Branches = () => {
   };
 
   const fetchAPIs = async () => {
-    await getBranches(true)
-
+    await getBranches(true);
   };
 
   useEffect(() => {
-    fetchAPIs()
-  }, [])
+    fetchAPIs();
+  }, []);
 
-  console.log('branches ', uploads)
+  const filterBranches = uploads.filter((item, index) => item.role_id == "2");
+  const filterManager = uploads.filter((item, index) => item.role_id == "5");
 
   return screenLoader ? (
     <div className="w-full flex justify-center items-center min-h-[90vh]">
       <Loader extraStyles="!static !bg-transparent" />
     </div>
   ) : (
-    <div className="bg-white rounded-lg shadow-lg p-6 flex flex-col sm:flex-row justify-between mx-2 sm:mx-4 md:mx-8 lg:mx-7">
+    <div className="bg-white rounded-lg shadow-lg p-6 flex flex-col justify-between mx-2 sm:mx-4 md:mx-8 lg:mx-7">
       <div className="w-full mb-4 md:mb-0">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-2xl font-bold">Branches</h2>
@@ -134,7 +156,7 @@ const Branches = () => {
             className="px-4 py-2 bg-blue-500 text-white rounded-md"
             onClick={() => setShowAddShopModal(true)}
           >
-            + Add Branch
+            + Add Role
           </button>
         </div>
 
@@ -150,10 +172,14 @@ const Branches = () => {
               </tr>
             </thead>
             <tbody>
-              {uploads.map((upload, index) => (
+              {filterBranches.map((upload, index) => (
                 <tr key={index}>
-                  <td className="px-4 py-2 border text-center">{upload.name}</td>
-                  <td className="px-4 py-2 border text-center">{upload.email}</td>
+                  <td className="px-4 py-2 border text-center">
+                    {upload.name}
+                  </td>
+                  <td className="px-4 py-2 border text-center">
+                    {upload.email}
+                  </td>
                   {/* <td className="px-4 py-2 border text-center">
                     <div className="flex justify-center items-center">
                       <span>
@@ -169,7 +195,9 @@ const Branches = () => {
                       </button>
                     </div>
                   </td> */}
-                  <td className="px-4 py-2 border text-center">{upload.branch_address}</td>
+                  <td className="px-4 py-2 border text-center">
+                    {upload.branch_address}
+                  </td>
                   <td className="px-4 py-2 border flex space-x-2 justify-center">
                     <button
                       className="px-3 py-2 bg-blue-500 text-white rounded-md"
@@ -179,7 +207,83 @@ const Branches = () => {
                     </button>
                     <button
                       className="px-3 py-2 bg-red-500 text-white rounded-md"
-                      onClick={() => { setCurrentDept(upload); setShowDeleteModal(true); }}
+                      onClick={() => {
+                        setCurrentDept(upload);
+                        setShowDeleteModal(true);
+                      }}
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div className="w-full mt-10">
+        <div className="flex justify-between items-center mb-4">
+          <h2 className="text-2xl font-bold">Managers</h2>
+          {/* <button
+            className="px-4 py-2 bg-blue-500 text-white rounded-md"
+            onClick={() => setShowAddShopModal(true)}
+          >
+            + Add Role
+          </button> */}
+        </div>
+
+        <div className="overflow-x-auto">
+          <table className="min-w-full bg-white">
+            <thead>
+              <tr>
+                <th className="px-4 py-2 border">Name</th>
+                <th className="px-4 py-2 border">Email</th>
+                {/* <th className="px-4 py-2 border">Password</th> */}
+                <th className="px-4 py-2 border">Location</th>
+                <th className="px-4 py-2 border">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filterManager.map((upload, index) => (
+                <tr key={index}>
+                  <td className="px-4 py-2 border text-center">
+                    {upload.name}
+                  </td>
+                  <td className="px-4 py-2 border text-center">
+                    {upload.email}
+                  </td>
+                  {/* <td className="px-4 py-2 border text-center">
+                    <div className="flex justify-center items-center">
+                      <span>
+                        {showPassword[index]
+                          ? upload.password
+                          : "*".repeat(upload.password.length)}
+                      </span>
+                      <button
+                        onClick={() => togglePasswordVisibility(index)}
+                        className="ml-2 text-blue-500"
+                      >
+                        {showPassword[index] ? <FaEyeSlash /> : <FaEye />}
+                      </button>
+                    </div>
+                  </td> */}
+                  <td className="px-4 py-2 border text-center">
+                    {upload.branch_address}
+                  </td>
+                  <td className="px-4 py-2 border flex space-x-2 justify-center">
+                    <button
+                      className="px-3 py-2 bg-blue-500 text-white rounded-md"
+                      onClick={() => handleEdit(upload)}
+                    >
+                      Edit
+                    </button>
+                    <button
+                      className="px-3 py-2 bg-red-500 text-white rounded-md"
+                      onClick={() => {
+                        setCurrentDept(upload);
+                        setShowDeleteModal(true);
+                      }}
                     >
                       Delete
                     </button>

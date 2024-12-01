@@ -15,6 +15,9 @@ const Navbar = ({ toggle, setToggle }) => {
       return navLinks.filter((link) =>
         [1, 2, 4, 5, 6, 8, 9, 10].includes(link.id)
       );
+    } else if (user?.role_id == 5) {
+      // Show these items when user role is 1
+      return navLinks.filter((link) => [2].includes(link.id));
     } else if (user?.role_id == 2) {
       // Show these items when user role is 2
       return navLinks.filter((link) => [3, 7, 10].includes(link.id));

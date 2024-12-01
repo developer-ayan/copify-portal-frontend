@@ -12,8 +12,8 @@ const TeacherModal = ({ closeModal, dept }) => {
   const [currentDept, setCurrentDept] = useState(false);
 
   const handleDelete = (dept) => {
-    setCurrentDept(dept)
-    setShowDeleteModal(true)
+    setCurrentDept(dept);
+    setShowDeleteModal(true);
   };
 
   const getList = async (listLoader) => {
@@ -35,23 +35,23 @@ const TeacherModal = ({ closeModal, dept }) => {
 
   const handleEditStatus = async (id) => {
     try {
-      setButtonLoader(true)
-      const formData = new FormData()
-      formData.append('user_id', id)
-      const response = await call('/admin/edit_status_teacher_and_student', 'POST', formData)
-      await getList()
+      setButtonLoader(true);
+      const formData = new FormData();
+      formData.append('user_id', id);
+      const response = await call('/admin/edit_status_teacher_and_student', 'POST', formData);
+      await getList();
       setButtonLoader(false);
-      setShowDeleteModal(false)
-      toast.success(response?.message, { duration: 2000 })
+      setShowDeleteModal(false);
+      toast.success(response?.message, { duration: 2000 });
     } catch (error) {
       setButtonLoader(false);
-      toast.error(error?.message, { duration: 2000 })
+      toast.error(error?.message, { duration: 2000 });
     }
   };
 
   const closeDeleteModal = () => {
-    setCurrentDept(dept)
-    setShowDeleteModal(false)
+    setCurrentDept(dept);
+    setShowDeleteModal(false);
   };
 
   useEffect(() => {
@@ -60,13 +60,13 @@ const TeacherModal = ({ closeModal, dept }) => {
 
   return (
     <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center p-6">
-      <div className="bg-white p-6 shadow-md w-full max-w-lg sm:max-w-xl md:max-w-1xl lg:max-w-2xl">
+      <div className="bg-white p-6 shadow-md w-full max-w-lg sm:max-w-xl md:max-w-1xl lg:max-w-2xl max-h-[50vh] overflow-auto">
         {screenLoader ? (
           <div className="w-full flex justify-center items-center">
             <Loader extraStyles="!static !bg-transparent" />
           </div>
-        ) :
-          <div className="bg-white p-6 shadow-md w-full max-w-lg sm:max-w-xl md:max-w-2xl">
+        ) : (
+          <div>
             <div className="flex justify-between items-center mb-2">
               <h3 className="text-xl font-semibold text-gray-800">Teachers</h3>
               <button onClick={closeModal} className="text-gray-400 hover:text-gray-600">&times;</button>
@@ -98,7 +98,8 @@ const TeacherModal = ({ closeModal, dept }) => {
                 </tbody>
               </table>
             </div>
-          </div>}
+          </div>
+        )}
 
         {showDeleteModal && (
           <DeleteModal

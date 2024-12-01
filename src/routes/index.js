@@ -136,11 +136,13 @@ const Router = () => {
               <Route
                 index
                 element={privateRoutes(
-                  user?.role_id == "4"
-                    ? TeachersDashbord
-                    : user?.role_id == "2"
-                      ? Orders
-                      : Dashboard
+                  user?.role_id == "5"
+                    ? EducationInstitute :
+                    user?.role_id == "4"
+                      ? TeachersDashbord
+                      : user?.role_id == "2"
+                        ? Orders
+                        : Dashboard
                 )}
               />
               <Route

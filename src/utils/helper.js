@@ -157,6 +157,16 @@ const toFixedMethod = (number) => {
   return num.toString();
 };
 
+const philipinesDateMethod = (futureData) => {
+  const manilaOffset = 8 * 60; // Manila is UTC +8
+  const currentUtcDate = new Date();
+  const utcTimeInMinutes = currentUtcDate.getTime() / 60000;
+  const manilaTimeInMinutes = utcTimeInMinutes + manilaOffset;
+  const manilaDate = new Date(manilaTimeInMinutes * 60000);
+  // Add 8 months to Manila date
+  futureData && manilaDate.setMonth(manilaDate.getMonth() + futureData);
+  return manilaDate
+}
 
 /* Exports
 ============================================================================= */
@@ -172,4 +182,5 @@ export {
   defaultSelect,
   getValueById,
   toFixedMethod,
+  philipinesDateMethod
 };

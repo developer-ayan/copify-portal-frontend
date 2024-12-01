@@ -12,6 +12,7 @@ import { call } from "../../../utils/helper";
 import { Loader } from "../../Loaders";
 import { riderAccountStatus } from "../../../constants/data";
 import Page from "../../Page";
+import SubscriptionRenewModal from "../../Modals/subsciptionRenewModal";
 
 const Subscription = ({ selectedOption }) => {
     const { user } = useContext(AppContext);
@@ -98,6 +99,23 @@ const Subscription = ({ selectedOption }) => {
         }
     };
 
+    const handleEditPlan = async (subsrciption_plan_id) => {
+        try {
+            setButtonLoader(true)
+            const formData = new FormData()
+            formData.append('user_id', currentDept?.user_id)
+            formData.append('subsrciption_plan_id', subsrciption_plan_id)
+            const response = await call('/app/edit_subscription_plan', 'POST', formData)
+            await getList()
+            setButtonLoader(false);
+            setShowEditModal(false)
+            toast.success(response?.message, { duration: 2000 })
+        } catch (error) {
+            setButtonLoader(false);
+            toast.error(error?.message, { duration: 2000 })
+        }
+    };
+
     const closeDeleteModal = () => {
         setCurrentDept(null)
         setShowDeleteModal(false)
@@ -117,6 +135,9 @@ const Subscription = ({ selectedOption }) => {
         setShowDeleteModal(true)
     };
 
+
+    console.log("uploads", uploads)
+
     return screenLoader ? (
         <div className="w-full flex justify-center items-center min-h-[90vh]">
             <Loader extraStyles="!static !bg-transparent" />
@@ -130,76 +151,51 @@ const Subscription = ({ selectedOption }) => {
         >
             <div className="w-full mb-4 md:mb-0">
                 <div className="overflow-x-auto">
-                    <table className="min-w-full bg-white">
-                        <thead>
+                    <table className="min-w-full bg-white border border-gray-200 shadow-md rounded-lg overflow-hidden">
+                        <thead className="bg-gray-100 border-b border-gray-200">
                             <tr>
-                                <th className="px-4 py-2 border">Name</th>
-                                <th className="px-4 py-2 border">Email Address</th>
-                                <th className="px-4 py-2 border">Subscription Plan</th>
-                                {/* <th className="px-4 py-2 border">Status</th> */}
-                                <th className="px-4 py-2 border">Action</th>
+                                <th className="px-6 py-3 text-left text-gray-600 text-sm font-medium uppercase">Name</th>
+                                <th className="px-6 py-3 text-left text-gray-600 text-sm font-medium uppercase">Email Address</th>
+                                <th className="px-6 py-3 text-left text-gray-600 text-sm font-medium uppercase">Subscription Plan</th>
+                                <th className="px-6 py-3 text-center text-gray-600 text-sm font-medium uppercase">Action</th>
                             </tr>
                         </thead>
                         <tbody>
                             {uploads.map((upload, index) => (
-                                <tr key={index}>
-                                    <td className="px-4 py-2 border text-center">
-                                        {upload?.user_detail?.name}
+                                <tr
+                                    key={index}
+                                    className={`${index % 2 === 0 ? "bg-gray-50" : "bg-white"
+                                        } hover:bg-gray-100 transition duration-150`}
+                                >
+                                    <td className="px-6 py-4 border-b border-gray-200 text-gray-800 text-sm">
+                                        {upload?.user_detail?.name || "N/A"}
                                     </td>
-                                    <td className="px-4 py-2 border text-center">
-                                        {upload?.user_detail?.email}
+                                    <td className="px-6 py-4 border-b border-gray-200 text-gray-800 text-sm">
+                                        {upload?.user_detail?.email || "N/A"}
                                     </td>
-                                    <td className="px-4 py-2 border text-center">
-                                        {upload?.subscrption_plan_detail?.month || "Invalid."}
+                                    <td className="px-6 py-4 border-b border-gray-200 text-gray-800 text-sm">
+                                        {upload?.subscrption_plan_detail?.month || "Invalid"}
                                     </td>
-                                    <td className="px-4 py-2 border text-center">
-                                        <td className="px-4 py-2 text-center">
+                                    <td className="px-6 py-4 border-b border-gray-200 text-center">
+                                        {/* Flexbox container to center buttons */}
+                                        <div className="flex justify-center items-center space-x-5">
                                             <button
-                                                className={`px-3 py-2 ${upload?.user_detail?.account_status == 'active' ? 'bg-red-500' : 'bg-blue-500'}  text-white rounded-md`}
+                                                className={`px-4 py-2 text-sm font-medium rounded-md ${upload?.user_detail?.account_status === "active"
+                                                    ? "bg-red-500 hover:bg-red-600"
+                                                    : "bg-blue-500 hover:bg-blue-600"
+                                                    } text-white transition duration-150`}
                                                 onClick={() => handleDelete(upload?.user_detail)}
                                             >
-                                                {upload?.user_detail?.account_status == 'active' ? 'InActive' : "Active"}
+                                                {upload?.user_detail?.account_status === "active" ? "InActive" : "Active"}
                                             </button>
-                                        </td>
+                                            <button
+                                                className="px-4 py-2 text-sm font-medium rounded-md bg-blue-500 hover:bg-blue-600 text-white transition duration-150"
+                                                onClick={() => handleEdit(upload?.user_detail)}
+                                            >
+                                                Renew Plan
+                                            </button>
+                                        </div>
                                     </td>
-                                    {/* <td className="px-4 py-2 border text-center">
-                    {upload.rider_status_for_student}
-                  </td> */}
-                                    {/* <button
-                      className="px-3 py-2 bg-blue-500 text-white rounded-md"
-                      onClick={() => { setCurrentDept(upload); setShowSubjectModal(true); }}
-                    >
-                      Subject
-                    </button> */}
-
-
-
-
-                                    {/* <button
-                      className="px-3 py-2 bg-blue-500 text-white rounded-md"
-                      onClick={() => {
-                        setCurrentDept(upload);
-                        setShowTeacherModal(true);
-                      }} // New Teacher button
-                    >
-                      Teachers
-                    </button> */}
-
-                                    {/* <button
-                      className="px-3 py-2 bg-blue-500 text-white rounded-md"
-                      onClick={() => handleEdit(upload)}
-                    >
-                      Edit
-                    </button> */}
-                                    {/* <button
-                      className="px-3 py-2 bg-red-500 text-white rounded-md"
-                      onClick={() => {
-                        setCurrentDept(upload);
-                        setShowDeleteModal(true);
-                      }}
-                    >
-                      Delete
-                    </button> */}
                                 </tr>
                             ))}
                         </tbody>
@@ -251,6 +247,19 @@ const Subscription = ({ selectedOption }) => {
                     customMessage={`Are you sure you want to ${currentDept?.account_status == 'active' ? 'in active' : 'active'} ${currentDept?.name} account?`}
                 />
             )}
+
+
+
+
+            {showEditModal && (
+                <SubscriptionRenewModal
+                    isLoading={buttonLoader}
+                    onClose={() => setShowEditModal(false)}
+                    show={showEditModal}
+                    onSave={handleEditPlan}
+                />
+            )}
+
         </Page>
     );
 };
